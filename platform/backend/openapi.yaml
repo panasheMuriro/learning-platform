@@ -1,0 +1,337 @@
+openapi: 3.0.3
+info:
+  title: Juju + Terraform Course API
+  version: 0.1.0
+  description: |
+    Local backend API for the Juju + Terraform hands-on course.
+    No auth — everything runs locally in the Workshop container.
+    Base URL: http://localhost:8080/api
+
+paths:
+  /outline:
+    get:
+      summary: Get course outline
+      operationId: getOutline
+      responses:
+        "200":
+          description: Course outline with modules, lectures, labs, quizzes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Outline"
+
+  /modules/{moduleId}/lectures/{lectureId}:
+    get:
+      summary: Get a lecture
+      operationId: getLecture
+      parameters:
+        - $ref: "#/components/parameters/ModuleId"
+        - name: lectureId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Lecture with markdown content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lecture"
+        "404":
+          description: Lecture not found
+
+  /modules/{moduleId}/quiz:
+    get:
+      summary: Get a module's quiz
+      operationId: getQuiz
+      parameters:
+        - $ref: "#/components/parameters/ModuleId"
+      responses:
+        "200":
+          description: Quiz questions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quiz"
+        "404":
+          description: Quiz not found
+
+  /modules/{moduleId}/quiz/submit:
+    post:
+      summary: Submit quiz answers for scoring
+      operationId: submitQuiz
+      parameters:
+        - $ref: "#/components/parameters/ModuleId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answers:
+                  type: object
+                  additionalProperties: true
+                  description: Map of questionId -> answer (string or string[])
+      responses:
+        "200":
+          description: Quiz score
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizResult"
+
+  /modules/{moduleId}/labs/{labId}:
+    get:
+      summary: Get lab instructions
+      operationId: getLab
+      parameters:
+        - $ref: "#/components/parameters/ModuleId"
+        - name: labId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Lab instructions markdown
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LabInstructions"
+        "404":
+          description: Lab not found
+
+  /modules/{moduleId}/labs/{labId}/check:
+    post:
+      summary: Run lab check.sh and get grading result
+      operationId: checkLab
+      parameters:
+        - $ref: "#/components/parameters/ModuleId"
+        - name: labId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Grading result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GradeResult"
+
+  /files:
+    get:
+      summary: List files in a directory
+      operationId: listFiles
+      parameters:
+        - name: path
+          in: query
+          required: true
+          schema: { type: string }
+          description: Relative path within the lab root
+      responses:
+        "200":
+          description: File listing
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FileEntry"
+
+  /files/content:
+    get:
+      summary: Read file content
+      operationId: readFile
+      parameters:
+        - name: path
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: File content as plain text
+          content:
+            text/plain:
+              schema: { type: string }
+        "404":
+          description: File not found
+    put:
+      summary: Write file content
+      operationId: writeFile
+      parameters:
+        - name: path
+          in: query
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema: { type: string }
+      responses:
+        "204":
+          description: File written
+
+  /progress:
+    get:
+      summary: Get learner progress
+      operationId: getProgress
+      responses:
+        "200":
+          description: Progress state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Progress"
+
+  /ws/terminal:
+    get:
+      summary: WebSocket terminal (upgrade)
+      description: |
+        Upgrades to a WebSocket. Messages are JSON:
+        - Client -> Server: {"type":"input","data":"..."} or {"type":"resize","cols":80,"rows":24}
+        - Server -> Client: raw terminal output as text messages
+      responses:
+        "101":
+          description: Switching Protocols
+
+components:
+  parameters:
+    ModuleId:
+      name: moduleId
+      in: path
+      required: true
+      schema: { type: string }
+
+  schemas:
+    Outline:
+      type: object
+      properties:
+        title: { type: string }
+        modules:
+          type: array
+          items: { $ref: "#/components/schemas/Module" }
+
+    Module:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        lectures:
+          type: array
+          items: { $ref: "#/components/schemas/LectureRef" }
+        labs:
+          type: array
+          items: { $ref: "#/components/schemas/LabRef" }
+        quiz:
+          $ref: "#/components/schemas/QuizRef"
+
+    LectureRef:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+
+    LabRef:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+
+    QuizRef:
+      type: object
+      properties:
+        id: { type: string }
+
+    Lecture:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        markdown: { type: string }
+
+    LabInstructions:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        markdown: { type: string }
+
+    Quiz:
+      type: object
+      properties:
+        moduleId: { type: string }
+        questions:
+          type: array
+          items: { $ref: "#/components/schemas/QuizQuestion" }
+
+    QuizQuestion:
+      type: object
+      properties:
+        id: { type: string }
+        prompt: { type: string }
+        type:
+          type: string
+          enum: [single-choice, multi-choice, text-answer]
+        options:
+          type: array
+          items: { type: string }
+        answer:
+          oneOf:
+            - type: string
+            - type: array
+              items: { type: string }
+        explanation: { type: string }
+
+    QuizResult:
+      type: object
+      properties:
+        score: { type: integer, description: "0-100" }
+        passed: { type: boolean }
+
+    GradeResult:
+      type: object
+      properties:
+        labId: { type: string }
+        passed: { type: boolean }
+        tasks:
+          type: array
+          items: { $ref: "#/components/schemas/TaskResult" }
+
+    TaskResult:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        passed: { type: boolean }
+        message: { type: string }
+
+    FileEntry:
+      type: object
+      properties:
+        name: { type: string }
+        path: { type: string }
+        isDirectory: { type: boolean }
+
+    Progress:
+      type: object
+      properties:
+        modules:
+          type: array
+          items: { $ref: "#/components/schemas/ModuleProgress" }
+
+    ModuleProgress:
+      type: object
+      properties:
+        moduleId: { type: string }
+        lecturesCompleted:
+          type: array
+          items: { type: string }
+        quizPassed: { type: boolean }
+        quizScore:
+          type: integer
+          nullable: true
+        labsCompleted:
+          type: array
+          items: { type: string }
