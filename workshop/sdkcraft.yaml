@@ -1,0 +1,170 @@
+# Workshop SDK: juju-terraform-course
+#
+# Bundles everything needed for the Juju + Terraform course:
+#   - Juju (snap)
+#   - Terraform
+#   - LXD (pre-initialized)
+#   - code-server (VS Code in the browser — lab file editor + terminal)
+#   - Backend (Go API server, also serves the built frontend as static files)
+#   - Frontend (React SPA, built and served by the backend)
+#   - Course content (notes, quizzes, labs)
+#
+# Based on the Ollama SDK pattern: https://github.com/canonical/ollama-sdk
+# SDKcraft docs: https://ubuntu.com/workshop/docs
+
+name: juju-terraform-course
+adopt-info: juju
+title: Juju + Terraform Course
+summary: Hands-on course for learning Juju and Terraform together
+description: |
+  A complete local environment for learning Juju and Terraform together.
+  Includes Juju, Terraform, LXD, a browser-based course platform (frontend + backend),
+  an embedded VS Code editor (code-server) for the hands-on labs, and course content
+  (lecture notes, quizzes, hands-on labs with auto-grading).
+
+  Everything runs locally — no cloud or remote hosting required.
+  Learners run `workshop launch` and open localhost in their browser.
+
+  ## Key components
+
+  - `juju`: Juju OLM CLI (snap)
+  - `terraform`: Terraform CLI (>= 1.6)
+  - `lxd`: LXD container manager (pre-initialized with lxdbr0)
+  - `code-server`: VS Code in the browser, embedded via iframe in the lab workspace
+  - `course-backend`: Go API server (content, quiz, grading, progress) that also
+    serves the built frontend as static files
+  - `course-frontend`: React SPA (Vanilla Framework + @canonical/react-components)
+  - Course content: lecture notes, quizzes, and labs with auto-grading
+
+  ## Setup actions
+
+  On launch, the SDK:
+  - Adds juju, terraform, and lxd to PATH via /etc/profile.d
+  - Initializes LXD with lxdbr0 bridge and ZFS storage
+  - Starts code-server as a systemd user service on port 8081
+  - Starts the course backend as a systemd user service on port 8080
+    (serving the API and the built frontend on the same port)
+  - Exposes both ports to the host browser via tunnel slots
+
+license: Apache-2.0
+website: https://github.com/juju-tf-course/juju-tf-course
+platforms:
+  ubuntu@24.04:amd64:
+
+# Slots: resources this SDK provides to the host
+slots:
+  # Expose the course web UI (frontend + API + embedded code-server, all
+  # proxied through the backend) to the host browser. Only one port needs to
+  # be exposed — code-server is reverse-proxied at /code-server/ so we don't
+  # rely on the Workshop tunnel interface supporting more than one slot.
+  course-web:
+    interface: tunnel
+    endpoint: 8080
+
+# Parts: how to build/install each component
+parts:
+  # Install Juju via snap
+  juju:
+    plugin: nil
+    override-build: |
+      craftctl default
+      snap download juju --basename=juju
+      unsquashfs -d juju-squashfs juju.snap
+      mkdir -p "$CRAFT_PART_INSTALL/bin"
+      cp juju-squashfs/bin/juju "$CRAFT_PART_INSTALL/bin/juju"
+      chmod +x "$CRAFT_PART_INSTALL/bin/juju"
+      # Read the version out of the downloaded snap's metadata (the "3/stable"
+      # channel naming means we can't grep for "latest/stable" in `snap info`).
+      JUJU_VERSION=$(sed -n 's/^version: *//p' juju-squashfs/meta/snap.yaml | tr -d "'\"")
+      craftctl set version="${JUJU_VERSION:-unknown}"
+    build-packages:
+      - squashfs-tools
+
+  # Install Terraform
+  terraform:
+    plugin: nil
+    override-build: |
+      TF_VERSION="1.9.8"
+      ARCH=$(dpkg --print-architecture)
+      case "$ARCH" in
+        amd64) TF_ARCH="amd64" ;;
+        arm64) TF_ARCH="arm64" ;;
+        *) TF_ARCH="amd64" ;;
+      esac
+      curl -fLO "https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_${TF_ARCH}.zip"
+      unzip -o "terraform_${TF_VERSION}_linux_${TF_ARCH}.zip"
+      mkdir -p "$CRAFT_PART_INSTALL/bin"
+      cp terraform "$CRAFT_PART_INSTALL/bin/terraform"
+      chmod +x "$CRAFT_PART_INSTALL/bin/terraform"
+    build-packages:
+      - unzip
+      - curl
+
+  # Build the backend (Go).
+  # We download the Go toolchain tarball directly instead of using the go
+  # snap: the snap is classic-confinement and channel "1.22" no longer
+  # exists (Go snap channels are now 1.25/1.26/latest). A pinned tarball is
+  # more reproducible anyway, matching the juju/terraform parts above.
+  backend:
+    plugin: nil
+    source: ../platform/backend
+    source-type: local
+    build-packages:
+      - curl
+    override-build: |
+      GO_VERSION="1.22.10"
+      ARCH=$(dpkg --print-architecture)
+      curl -fLO "https://go.dev/dl/go${GO_VERSION}.linux-${ARCH}.tar.gz"
+      tar -C /tmp -xzf "go${GO_VERSION}.linux-${ARCH}.tar.gz"
+      cd "$CRAFT_PART_SRC"
+      /tmp/go/bin/go build -o "$CRAFT_PART_INSTALL/bin/course-server" ./cmd/server
+
+  # Build the frontend (static files), pointing the code-server iframe at
+  # the port the course-editor tunnel slot exposes.
+  frontend:
+    plugin: nil
+    source: ../platform/frontend
+    source-type: local
+    build-packages:
+      - nodejs
+      - npm
+    override-build: |
+      npm install -g bun
+      cd "$CRAFT_PART_SRC"
+      bun install
+      VITE_CODE_SERVER_URL="/code-server/" bun run build
+      mkdir -p "$CRAFT_PART_INSTALL/share/course-frontend"
+      cp -r dist/* "$CRAFT_PART_INSTALL/share/course-frontend/"
+
+  # Install code-server (VS Code in the browser) — used by the lab workspace
+  # iframe for file editing + the integrated terminal.
+  code-server:
+    plugin: nil
+    override-build: |
+      curl -fsSL https://code-server.dev/install.sh | sh -s -- --method standalone --prefix "$CRAFT_PART_INSTALL"
+      # The installer's bin/code-server symlink is an *absolute* path baked to
+      # this build machine's directory layout (e.g. .../workshop/parts/code-server/install/...).
+      # That path doesn't exist once the SDK is installed on a learner's system
+      # (it lands under /var/lib/workshop/sdk/...), so the symlink is dangling
+      # at runtime (systemd reports exit code 127 / command not found).
+      # Recreate it as a relative symlink so it keeps working after install.
+      CS_VERSION_DIR=$(basename "$(find "$CRAFT_PART_INSTALL/lib" -maxdepth 1 -type d -name 'code-server-*')")
+      ln -sf "../lib/${CS_VERSION_DIR}/bin/code-server" "$CRAFT_PART_INSTALL/bin/code-server"
+    build-packages:
+      - curl
+
+  # Copy course content
+  content:
+    plugin: dump
+    source: ../content
+    source-type: local
+    organize:
+      "*": share/course-content/
+
+  # Install systemd service files
+  services:
+    plugin: dump
+    source: services
+    source-type: local
+    organize:
+      "*": services/

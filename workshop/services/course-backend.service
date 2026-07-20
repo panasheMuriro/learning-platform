@@ -1,0 +1,12 @@
+[Unit]
+Description=Juju+Terraform Course Backend
+After=network.target code-server.service
+
+[Service]
+ExecStart=/bin/bash -lc "course-server --addr :8080 --content __SDK__/share/course-content --lab-root ${HOME} --db ${HOME}/course.db --frontend __SDK__/share/course-frontend --code-server-url http://localhost:8081"
+Restart=always
+RestartSec=3
+Environment=HOME=%h
+
+[Install]
+WantedBy=default.target

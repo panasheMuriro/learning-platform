@@ -1,0 +1,12 @@
+# Workshop course definition for the Juju + Terraform course.
+#
+# Learners run: workshop launch
+# This launches a Workshop with the juju-terraform-course SDK,
+# which bundles Juju, Terraform, LXD, the frontend, backend, and course content.
+#
+# The course web UI is exposed at http://localhost:8080 via the tunnel slot.
+
+name: juju-tf-course
+base: ubuntu@24.04
+sdks:
+  - name: try-juju-terraform-course

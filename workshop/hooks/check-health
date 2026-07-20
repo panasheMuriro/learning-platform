@@ -1,0 +1,36 @@
+#!/bin/bash
+# check-health hook — verify the course platform is healthy.
+#
+# Pattern from: https://github.com/canonical/ollama-sdk
+
+set -e
+
+# Hooks don't source /etc/profile.d, so make sure juju/terraform (installed
+# under the SDK's bin dir) are on PATH for this hook's checks below.
+export PATH="${SDK}/bin:${PATH}"
+
+# Check that code-server is responding
+if ! output=$(curl -s http://localhost:8081/ 2>&1); then
+  workshopctl set-health waiting "code-server not responding: $output"
+  exit 0
+fi
+
+# Check that the backend is responding
+if ! output=$(curl -s http://localhost:8080/api/outline 2>&1); then
+  workshopctl set-health waiting "Course backend not responding: $output"
+  exit 0
+fi
+
+# Check that juju is available
+if ! output=$(juju version 2>&1); then
+  workshopctl set-health waiting "juju not available: $output (PATH=$PATH, which juju: $(which juju 2>&1))"
+  exit 0
+fi
+
+# Check that terraform is available
+if ! output=$(terraform version 2>&1); then
+  workshopctl set-health waiting "terraform not available: $output"
+  exit 0
+fi
+
+workshopctl set-health okay
