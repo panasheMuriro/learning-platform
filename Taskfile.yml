@@ -1,0 +1,283 @@
+version: '3'
+
+vars:
+  ROOT: '{{.TASKFILE_DIR}}'
+  BACKEND_DIR: '{{.ROOT}}/platform/backend'
+  FRONTEND_DIR: '{{.ROOT}}/platform/frontend'
+  CONTENT_DIR: '{{.ROOT}}/content'
+  WORKSHOP_DIR: '{{.ROOT}}/workshop'
+  WORKSHOP_NAME: 'juju-tf-course'
+  WORKSHOP_SDK: 'juju-terraform-course'
+  LAB_ROOT: '{{.LAB_ROOT | default "/tmp/lab-test"}}'
+  DB_PATH: '{{.LAB_ROOT}}/course.db'
+  BACKEND_PORT: '{{.BACKEND_PORT | default "8080"}}'
+  CODE_SERVER_PORT: '{{.CODE_SERVER_PORT | default "8081"}}'
+  CODE_SERVER_PASSWORD: '{{.CODE_SERVER_PASSWORD | default "lab123"}}'
+
+tasks:
+  default:
+    desc: List all available tasks
+    cmds:
+      - task --list-all
+
+  # ---------------------------------------------------------------------
+  # Setup / install
+  # ---------------------------------------------------------------------
+  install:
+    desc: Install all dependencies (frontend + backend)
+    cmds:
+      - task: install:frontend
+      - task: install:backend
+
+  install:frontend:
+    desc: Install frontend dependencies (bun)
+    dir: '{{.FRONTEND_DIR}}'
+    cmds:
+      - bun install
+
+  install:backend:
+    desc: Download backend Go module dependencies
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - go mod download
+
+  # ---------------------------------------------------------------------
+  # Development (hot reload, two servers on :3000 + :8080)
+  # ---------------------------------------------------------------------
+  dev:
+    desc: Run frontend (Vite) + backend (Go) in dev mode with hot reload (Ctrl+C stops both)
+    deps:
+      - dev:code-server
+    cmds:
+      - |
+        mkdir -p '{{.LAB_ROOT}}'
+        trap 'kill 0' EXIT
+        (cd '{{.BACKEND_DIR}}' && go run ./cmd/server --addr ':{{.BACKEND_PORT}}' --content '{{.CONTENT_DIR}}' --lab-root '{{.LAB_ROOT}}' --db '{{.DB_PATH}}') &
+        (cd '{{.FRONTEND_DIR}}' && bun run dev) &
+        wait
+
+  dev:frontend:
+    desc: Run the Vite dev server (http://localhost:3000)
+    dir: '{{.FRONTEND_DIR}}'
+    cmds:
+      - bun run dev
+
+  dev:backend:
+    desc: Run the Go backend in dev mode (http://localhost:8080)
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - mkdir -p '{{.LAB_ROOT}}'
+      - go run ./cmd/server --addr ':{{.BACKEND_PORT}}' --content '{{.CONTENT_DIR}}' --lab-root '{{.LAB_ROOT}}' --db '{{.DB_PATH}}'
+
+  dev:code-server:
+    desc: Build (if needed) and start code-server in Docker for local dev, with Terraform pre-installed and access to the host's local Juju controller (idempotent)
+    cmds:
+      - |
+        mkdir -p '{{.LAB_ROOT}}'
+        docker build -t course-code-server '{{.ROOT}}/platform/code-server' >/dev/null
+        if ! docker ps --format '{{"{{"}}.Names{{"}}"}}' | grep -q '^code-server$'; then
+          docker rm -f code-server >/dev/null 2>&1 || true
+          docker run -d --name code-server \
+            --network host \
+            -v '{{.LAB_ROOT}}:/home/coder/project' \
+            -v "${HOME}/.local/share/juju:/home/coder/.local/share/juju:ro" \
+            -e PASSWORD='{{.CODE_SERVER_PASSWORD}}' \
+            -e JUJU_DATA=/home/coder/.local/share/juju \
+            course-code-server \
+            --bind-addr 0.0.0.0:{{.CODE_SERVER_PORT}} \
+            /home/coder/project
+          echo "code-server started on http://localhost:{{.CODE_SERVER_PORT}} (password: {{.CODE_SERVER_PASSWORD}}) — terraform is pre-installed, and the host's Juju controller (if any) is available"
+        else
+          echo "code-server already running on http://localhost:{{.CODE_SERVER_PORT}}"
+        fi
+    status:
+      - docker ps --format '{{"{{"}}.Names{{"}}"}}' | grep -q '^code-server$'
+
+  # ---------------------------------------------------------------------
+  # Build (production artifacts)
+  # ---------------------------------------------------------------------
+  build:
+    desc: Build both frontend and backend for production
+    cmds:
+      - task: build:frontend
+      - task: build:backend
+
+  build:frontend:
+    desc: Build the frontend (outputs to platform/frontend/dist)
+    dir: '{{.FRONTEND_DIR}}'
+    env:
+      VITE_CODE_SERVER_URL: '/code-server/'
+    cmds:
+      - bun run build
+
+  build:backend:
+    desc: Build the backend binary (outputs to platform/backend/server)
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - go build -o server ./cmd/server
+
+  # ---------------------------------------------------------------------
+  # Production (single-command startup, mirrors start-prod.sh)
+  # ---------------------------------------------------------------------
+  prod:
+    desc: Build everything and run in production mode (single backend port serves API + frontend)
+    cmds:
+      - task: build
+      - task: prod:run
+
+  prod:run:
+    desc: Run production mode without rebuilding (assumes build already ran)
+    deps:
+      - dev:code-server
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - mkdir -p '{{.LAB_ROOT}}'
+      - ./server --addr ':{{.BACKEND_PORT}}' --content '{{.CONTENT_DIR}}' --lab-root '{{.LAB_ROOT}}' --db '{{.DB_PATH}}' --frontend '{{.FRONTEND_DIR}}/dist' --code-server-url 'http://localhost:{{.CODE_SERVER_PORT}}'
+
+  # ---------------------------------------------------------------------
+  # Lint / format / test
+  # ---------------------------------------------------------------------
+  lint:
+    desc: Lint frontend (Biome) and backend (go vet)
+    cmds:
+      - task: lint:frontend
+      - task: lint:backend
+
+  lint:frontend:
+    dir: '{{.FRONTEND_DIR}}'
+    cmds:
+      - bun run lint
+
+  lint:backend:
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - go vet ./...
+
+  format:
+    desc: Auto-format frontend source with Biome
+    dir: '{{.FRONTEND_DIR}}'
+    cmds:
+      - bun run format
+
+  test:
+    desc: Run frontend and backend test suites
+    cmds:
+      - task: test:frontend
+      - task: test:backend
+
+  test:frontend:
+    dir: '{{.FRONTEND_DIR}}'
+    cmds:
+      - bun run test --run
+
+  test:backend:
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - go test ./...
+
+  # ---------------------------------------------------------------------
+  # Labs / content helpers
+  # ---------------------------------------------------------------------
+  lab:seed:
+    desc: "Seed a lab working directory with starter files (usage: task lab:seed MODULE=module-01 LAB=lab-01-first-model-app). Note: the backend also auto-seeds a lab the first time it's opened in the UI -- this task is mainly for manual/CLI testing."
+    requires:
+      vars: [MODULE, LAB]
+    cmds:
+      - mkdir -p '{{.LAB_ROOT}}/{{.LAB}}' '{{.LAB_ROOT}}/{{.LAB}}/.grading' '{{.LAB_ROOT}}/{{.LAB}}/.vscode'
+      - cp -n '{{.CONTENT_DIR}}/{{.MODULE}}/{{.LAB}}/starter/'* '{{.LAB_ROOT}}/{{.LAB}}/' 2>/dev/null || true
+      - cp '{{.CONTENT_DIR}}/{{.MODULE}}/{{.LAB}}/check.sh' '{{.LAB_ROOT}}/{{.LAB}}/.grading/'
+      - cp '{{.CONTENT_DIR}}/{{.MODULE}}/{{.LAB}}/setup.sh' '{{.LAB_ROOT}}/{{.LAB}}/.grading/' 2>/dev/null || true
+      - cp '{{.CONTENT_DIR}}/shared/check-helper.sh' '{{.LAB_ROOT}}/{{.LAB}}/.grading/'
+      - chmod +x '{{.LAB_ROOT}}/{{.LAB}}/.grading/'*.sh
+      - |
+        cat > '{{.LAB_ROOT}}/{{.LAB}}/.vscode/settings.json' <<'EOF'
+        {
+          "files.exclude": {
+            ".grading": true,
+            ".vscode": true
+          }
+        }
+        EOF
+      - echo "Lab seeded at {{.LAB_ROOT}}/{{.LAB}} (grading scripts hidden under .grading/)"
+
+  lab:check:
+    desc: 'Run a lab check.sh directly (usage: task lab:check LAB=lab-01-first-model-app)'
+    requires:
+      vars: [LAB]
+    dir: '{{.LAB_ROOT}}/{{.LAB}}'
+    cmds:
+      - bash ./.grading/check.sh
+
+  # ---------------------------------------------------------------------
+  # Workshop (packaged SDK — alternative to dev/prod, still experimental:
+  # the "course-web" tunnel to localhost:8080 is currently unreliable, see
+  # `task workshop:url` below for a workaround)
+  # ---------------------------------------------------------------------
+  workshop:build:
+    desc: Build the Workshop SDK with SDKcraft (outputs a .sdk file in workshop/)
+    dir: '{{.WORKSHOP_DIR}}'
+    cmds:
+      - sdkcraft pack --destructive-mode
+
+  workshop:try:
+    desc: Stage the built SDK into Workshop's try area (run after workshop:build)
+    dir: '{{.WORKSHOP_DIR}}'
+    cmds:
+      - sdkcraft try {{.WORKSHOP_SDK}}_amd64_ubuntu@24.04.sdk
+
+  workshop:launch:
+    desc: "Build, stage, and launch the workshop (usage: task workshop:launch)"
+    dir: '{{.ROOT}}'
+    cmds:
+      - task: workshop:build
+      - task: workshop:try
+      - workshop launch
+      - task: workshop:url
+
+  workshop:refresh:
+    desc: Rebuild, restage, and refresh an already-launched workshop with the latest SDK
+    dir: '{{.ROOT}}'
+    cmds:
+      - task: workshop:build
+      - task: workshop:try
+      - workshop refresh
+      - task: workshop:url
+
+  workshop:url:
+    desc: Print the working course URL for the running workshop (localhost:8080 is currently unreliable — see .workshop-url)
+    dir: '{{.ROOT}}'
+    cmds:
+      - |
+        if [ -f .workshop-url ]; then
+          cat .workshop-url
+        else
+          echo "No .workshop-url file yet — the workshop may still be starting up, or hasn't been launched. Try 'task workshop:launch' or wait a few seconds and re-run 'task workshop:url'."
+        fi
+
+  workshop:stop:
+    desc: Stop the running workshop (keeps it installed — use workshop:remove to fully tear down)
+    cmds:
+      - workshop stop {{.WORKSHOP_NAME}}
+
+  workshop:remove:
+    desc: Fully remove the workshop instance (next launch starts from scratch)
+    cmds:
+      - workshop remove {{.WORKSHOP_NAME}}
+
+  # ---------------------------------------------------------------------
+  # Cleanup
+  # ---------------------------------------------------------------------
+  clean:
+    desc: Stop all running services (backend, frontend dev server, code-server)
+    cmds:
+      - (lsof -t -i:{{.BACKEND_PORT}} | xargs -r kill) 2>/dev/null || true
+      - (lsof -t -i:3000 | xargs -r kill) 2>/dev/null || true
+      - docker rm -f code-server 2>/dev/null || true
+      - echo "Stopped backend, frontend dev server, and code-server"
+
+  clean:build:
+    desc: Remove build artifacts (frontend dist, backend binary)
+    cmds:
+      - rm -rf '{{.FRONTEND_DIR}}/dist'
+      - rm -f '{{.BACKEND_DIR}}/server'
+      - echo "Removed build artifacts"

@@ -1,0 +1,47 @@
+# Docker Compose for local development of the Juju + Terraform course platform.
+#
+# This is a dev fallback — the primary distribution is via the Workshop SDK.
+# Use this when you want to run the frontend + backend without building the SDK.
+#
+# NOTE: The backend's PTY terminal and lab grading require access to LXD + Juju
+# on the host. For full lab functionality, use `workshop launch` instead.
+# This compose file is for frontend/backend development only.
+#
+# Usage:
+#   docker compose up --build
+#   # Frontend: http://localhost:3000
+#   # Backend:  http://localhost:8080
+
+services:
+  backend:
+    build:
+      context: ./platform/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      # Mount course content for live editing
+      - ./content:/content:ro
+      # Mount a lab working directory
+      - lab-data:/home/student
+    environment:
+      - CONTENT_DIR=/content
+      - LAB_ROOT=/home/student
+      - DB_PATH=/data/course.db
+    command: ["./server", "--addr", ":8080", "--content", "/content", "--lab-root", "/home/student", "--db", "/data/course.db"]
+    volumes_from:
+      - lab-data-init
+
+  frontend:
+    build:
+      context: ./platform/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_BASE=http://localhost:8080/api
+
+volumes:
+  lab-data:
