@@ -1,0 +1,211 @@
+// Vanilla Framework SCSS entry point.
+//
+// This imports the full Vanilla Framework and includes all patterns.
+// To customize, override Sass variables BEFORE the @include:
+//
+//   $color-accent: #772953;
+//   @import "vanilla-framework";
+//   @include vanilla;
+//
+
+@import "vanilla-framework";
+@include vanilla;
+
+// Course-specific styles
+:root {
+  --course-content-max-width: 960px;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+}
+
+// Content wrapper for lecture/quiz pages
+.course-content {
+  max-width: var(--course-content-max-width);
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+// Lecture viewer — react-markdown renders raw HTML, so we style the container
+// with plain CSS (not @extend, which requires the target selector to exist)
+.lecture-viewer {
+  h1 {
+    font-size: 1.75rem;
+    margin: 0 0 1rem;
+    font-weight: 400;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    margin: 1.5rem 0 0.75rem;
+    font-weight: 400;
+  }
+
+  h3 {
+    font-size: 1.0625rem;
+    margin: 1.25rem 0 0.5rem;
+    font-weight: 400;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    line-height: 1.6;
+  }
+
+  ul, ol {
+    margin: 0 0 1rem;
+    padding-left: 1.5rem;
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  code {
+    background: #f7f7f7;
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    font-size: 0.875em;
+    font-family: "Fira Code", "Cascadia Code", monospace;
+  }
+
+  pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    overflow-x: auto;
+    margin: 0 0 1rem;
+
+    code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 1rem;
+    font-size: 0.875rem;
+
+    th, td {
+      border: 1px solid #cdcdcd;
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+
+    th {
+      background: #f7f7f7;
+      font-weight: 600;
+    }
+  }
+
+  a {
+    color: #06c;
+  }
+
+  details {
+    margin: 0.5rem 0 1rem;
+    border: 1px solid #cdcdcd;
+    border-radius: 0.25rem;
+    overflow: hidden;
+
+    summary {
+      padding: 0.5rem 0.75rem;
+      background: #f7f7f7;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    &[open] summary {
+      border-bottom: 1px solid #cdcdcd;
+    }
+
+    > :not(summary) {
+      padding: 0 0.75rem;
+    }
+  }
+}
+
+// Lab instructions panel (smaller text)
+.lab-instructions {
+  font-size: 0.875rem;
+  line-height: 1.6;
+
+  h1 {
+    font-size: 1.25rem;
+    margin: 0 0 1rem;
+  }
+
+  h2 {
+    font-size: 1.0625rem;
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  p {
+    margin-bottom: 0.75rem;
+  }
+
+  ul, ol {
+    margin-bottom: 0.75rem;
+    padding-left: 1.25rem;
+  }
+
+  code {
+    background: #f7f7f7;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.125rem;
+    font-size: 0.8125em;
+    font-family: "Fira Code", monospace;
+  }
+
+  pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    overflow-x: auto;
+    margin-bottom: 0.75rem;
+    font-size: 0.8125rem;
+
+    code {
+      background: transparent;
+      padding: 0;
+    }
+  }
+
+  details {
+    margin: 0.5rem 0;
+    border: 1px solid #cdcdcd;
+    border-radius: 0.25rem;
+    overflow: hidden;
+
+    summary {
+      padding: 0.375rem 0.625rem;
+      background: #f7f7f7;
+      cursor: pointer;
+      font-size: 0.8125rem;
+    }
+
+    &[open] summary {
+      border-bottom: 1px solid #cdcdcd;
+    }
+
+    > :not(summary) {
+      padding: 0 0.625rem;
+    }
+  }
+
+  blockquote {
+    border-left: 3px solid #ff9800;
+    margin: 0.5rem 0;
+    padding: 0.25rem 0.75rem;
+    background: #fff8e1;
+    font-size: 0.8125rem;
+  }
+}

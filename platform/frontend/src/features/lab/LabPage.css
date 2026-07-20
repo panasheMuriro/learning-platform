@@ -1,0 +1,128 @@
+.lab-page {
+  display: flex;
+  flex-direction: column;
+  /* ApplicationLayout's main area doesn't set a height, so we use viewport
+     height minus the app header (~49px). This is a pragmatic fix; in a
+     Workshop container the layout is simpler. */
+  height: calc(100vh - 49px);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.lab-page__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #cdcdcd;
+  background: #fff;
+  flex-shrink: 0;
+  gap: 1rem;
+}
+
+.lab-page__toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lab-page__toolbar-left h1 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.lab-page__toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lab-page__badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  border-radius: 3px;
+}
+
+.lab-page__badge--pass {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.lab-page__badge--fail {
+  background: #fbe9e7;
+  color: #c62828;
+}
+
+.lab-page__view-toggle {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.lab-page__view-toggle button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.lab-page__task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.lab-page__task-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.lab-page__task-list .task__msg {
+  color: #666;
+  flex: 1;
+}
+
+.lab-page__grade-panel {
+  padding: 0.75rem 1rem;
+  background: #fbe9e7;
+  border-bottom: 1px solid #ef9a9a;
+  font-size: 0.8125rem;
+  flex-shrink: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.lab-page__body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.lab-page__body--split .lab-page__instructions {
+  flex: 0 0 40%;
+  overflow-y: auto;
+  border-right: 1px solid #cdcdcd;
+  padding: 1rem;
+}
+
+.lab-page__body--split .lab-page__workspace {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.lab-page__body--instructions .lab-page__instructions {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.lab-page__body--workspace .lab-page__workspace {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}

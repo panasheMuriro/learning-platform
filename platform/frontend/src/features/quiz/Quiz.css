@@ -1,0 +1,22 @@
+.quiz__question {
+  margin-bottom: 1.5rem;
+}
+
+.quiz__prompt {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.quiz__options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quiz__explanation {
+  margin-top: 0.75rem;
+  padding: 0.5rem;
+  background: #f7f7f7;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
