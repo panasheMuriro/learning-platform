@@ -1,12 +1,13 @@
 import { useCourseOutline, useProgress } from "@/api/content";
 import type { ModuleOutline, Progress } from "@/api/content";
-import { Card, Col, Row, Strip } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Card } from "@canonical/react-components";
+import { Link, useParams } from "react-router-dom";
 import "./DashboardPage.css";
 
 export function DashboardPage() {
-  const { data: outline, isLoading } = useCourseOutline();
-  const { data: progress } = useProgress();
+  const { courseId = "" } = useParams();
+  const { data: outline, isLoading } = useCourseOutline(courseId);
+  const { data: progress } = useProgress(courseId);
 
   if (isLoading) return <div className="course-content">Loading…</div>;
   if (!outline)
@@ -19,109 +20,83 @@ export function DashboardPage() {
   const totalLabs = outline.modules.reduce((n, m) => n + m.labs.length, 0);
 
   return (
-    <Strip>
-      <div className="course-content">
-        <Row>
-          <Col size={12}>
-            <h1 className="p-heading--1">{outline.title}</h1>
-            <p className="p-text-paragraph">
-              Learn Juju and Terraform together — hands-on, in your browser.
-            </p>
-          </Col>
-        </Row>
-
-        <Row className="dashboard__stats">
-          <Col size={4}>
-            <Card>
-              <div className="dashboard__stat">
-                <span className="dashboard__stat-num">
-                  {outline.modules.length}
-                </span>
-                <span className="dashboard__stat-label">Modules</span>
-              </div>
-            </Card>
-          </Col>
-          <Col size={4}>
-            <Card>
-              <div className="dashboard__stat">
-                <span className="dashboard__stat-num">{totalLectures}</span>
-                <span className="dashboard__stat-label">Lectures</span>
-              </div>
-            </Card>
-          </Col>
-          <Col size={4}>
-            <Card>
-              <div className="dashboard__stat">
-                <span className="dashboard__stat-num">{totalLabs}</span>
-                <span className="dashboard__stat-label">Labs</span>
-              </div>
-            </Card>
-          </Col>
-        </Row>
-
-        <div className="dashboard__modules">
-          {outline.modules.map((mod, idx) => (
-            <ModuleCard
-              key={mod.id}
-              module={mod}
-              index={idx}
-              progress={progress?.modules.find((p) => p.moduleId === mod.id)}
-            />
-          ))}
+    <div className="dashboard">
+      <div className="dashboard__hero">
+        <h1>{outline.title}</h1>
+        <p className="dashboard__subtitle">
+          Hands-on learning — lectures, quizzes, and labs with auto-grading.
+        </p>
+        <div className="dashboard__stats">
+          <Card className="dashboard__stat-card">
+            <span className="dashboard__stat-num">
+              {outline.modules.length}
+            </span>
+            <span className="dashboard__stat-label">Modules</span>
+          </Card>
+          <Card className="dashboard__stat-card">
+            <span className="dashboard__stat-num">{totalLectures}</span>
+            <span className="dashboard__stat-label">Lectures</span>
+          </Card>
+          <Card className="dashboard__stat-card">
+            <span className="dashboard__stat-num">{totalLabs}</span>
+            <span className="dashboard__stat-label">Labs</span>
+          </Card>
         </div>
       </div>
-    </Strip>
+
+      <div className="dashboard__modules">
+        {outline.modules.map((mod, idx) => (
+          <ModuleEvent
+            key={mod.id}
+            module={mod}
+            index={idx}
+            courseId={courseId}
+            progress={progress?.modules.find((p) => p.moduleId === mod.id)}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
-interface ModuleCardProps {
+interface ModuleEventProps {
   module: ModuleOutline;
   index: number;
+  courseId: string;
   progress?: Progress["modules"][number];
 }
 
-function ModuleCard({ module, index, progress }: ModuleCardProps) {
+function ModuleEvent({ module, index, courseId, progress }: ModuleEventProps) {
   const lecturesDone = progress?.lecturesCompleted.length ?? 0;
   const labsDone = progress?.labsCompleted.length ?? 0;
   const totalItems =
     module.lectures.length + module.labs.length + (module.quiz ? 1 : 0);
   const doneItems = lecturesDone + labsDone + (progress?.quizPassed ? 1 : 0);
   const pct = totalItems > 0 ? Math.round((doneItems / totalItems) * 100) : 0;
+  const firstLectureUrl = `/courses/${courseId}/modules/${module.id}/lectures/${module.lectures[0]?.id ?? ""}`;
 
   return (
-    <Link
-      to={`/modules/${module.id}/lectures/${module.lectures[0]?.id ?? ""}`}
-      className="module-card"
-    >
-      <Card>
-        <div className="module-card__header">
-          <span className="module-card__number">{index + 1}</span>
-          <h3 className="p-heading--4 module-card__title">{module.title}</h3>
-          {pct === 100 && (
-            <span className="module-card__status module-card__status--done">
-              ✓
-            </span>
-          )}
-          {doneItems > 0 && pct < 100 && (
-            <span className="module-card__status module-card__status--progress">
-              ●
-            </span>
-          )}
-        </div>
-        <div className="module-card__progress">
-          <div
-            className="module-card__progress-bar"
-            style={{ width: `${pct}%` }}
-          />
-        </div>
-        <div className="module-card__meta">
-          <span>{pct}% complete</span>
-          <span>
-            {module.lectures.length} lectures · {module.labs.length} labs
-            {module.quiz && " · quiz"}
-          </span>
-        </div>
-      </Card>
-    </Link>
+    <Card className="module-card">
+      <div className="module-card__header">
+        <span className="module-card__number">{index + 1}</span>
+        <Link to={firstLectureUrl} className="module-card__title">
+          {module.title}
+        </Link>
+        {pct === 100 && <span className="module-card__done">✓</span>}
+      </div>
+      <div className="module-card__progress">
+        <div
+          className="module-card__progress-bar"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <div className="module-card__meta">
+        <span>{pct}% complete</span>
+        <span>
+          {module.lectures.length} lectures · {module.labs.length} labs
+          {module.quiz && " · quiz"}
+        </span>
+      </div>
+    </Card>
   );
 }

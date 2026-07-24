@@ -3,8 +3,12 @@ import { useParams } from "react-router-dom";
 import { LectureViewer } from "./LectureViewer";
 
 export function LecturePage() {
-  const { moduleId = "", lectureId = "" } = useParams();
-  const { data: lecture, isLoading, error } = useLecture(moduleId, lectureId);
+  const { courseId = "", moduleId = "", lectureId = "" } = useParams();
+  const {
+    data: lecture,
+    isLoading,
+    error,
+  } = useLecture(courseId, moduleId, lectureId);
 
   if (isLoading) return <div className="course-content">Loading lecture…</div>;
   if (error || !lecture)

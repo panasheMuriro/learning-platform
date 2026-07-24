@@ -1,4 +1,5 @@
 import { Shell } from "@/app/Shell";
+import { CourseCatalogPage } from "@/features/catalog/CourseCatalogPage";
 import { LabPage } from "@/features/lab/LabPage";
 import { LecturePage } from "@/features/lecture/LecturePage";
 import { DashboardPage } from "@/features/progress/DashboardPage";
@@ -9,13 +10,20 @@ export function App() {
   return (
     <Shell>
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
+        <Route path="/" element={<CourseCatalogPage />} />
+        <Route path="/courses/:courseId" element={<DashboardPage />} />
         <Route
-          path="/modules/:moduleId/lectures/:lectureId"
+          path="/courses/:courseId/modules/:moduleId/lectures/:lectureId"
           element={<LecturePage />}
         />
-        <Route path="/modules/:moduleId/quiz" element={<QuizPage />} />
-        <Route path="/modules/:moduleId/labs/:labId" element={<LabPage />} />
+        <Route
+          path="/courses/:courseId/modules/:moduleId/quiz"
+          element={<QuizPage />}
+        />
+        <Route
+          path="/courses/:courseId/modules/:moduleId/labs/:labId"
+          element={<LabPage />}
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Shell>

@@ -10,8 +10,12 @@ import "./LabPage.css";
 type ViewMode = "split" | "instructions" | "workspace";
 
 export function LabPage() {
-  const { moduleId = "", labId = "" } = useParams();
-  const { data: lab, isLoading, error } = useLabInstructions(moduleId, labId);
+  const { courseId = "", moduleId = "", labId = "" } = useParams();
+  const {
+    data: lab,
+    isLoading,
+    error,
+  } = useLabInstructions(courseId, moduleId, labId);
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [grade, setGrade] = useState<GradeResult | null>(null);
   const [checking, setChecking] = useState(false);
@@ -19,7 +23,7 @@ export function LabPage() {
   const handleCheck = async () => {
     setChecking(true);
     try {
-      const result = await checkLab(moduleId, labId);
+      const result = await checkLab(courseId, moduleId, labId);
       setGrade(result);
       if (result.passed) setViewMode("workspace");
     } finally {
@@ -35,7 +39,7 @@ export function LabPage() {
     <div className="lab-page">
       <div className="lab-page__toolbar">
         <div className="lab-page__toolbar-left">
-          <h1 className="p-heading--4">{lab.title}</h1>
+          <h1>{lab.title}</h1>
           {grade && (
             <span
               className={`lab-page__badge ${grade.passed ? "lab-page__badge--pass" : "lab-page__badge--fail"}`}
@@ -46,54 +50,55 @@ export function LabPage() {
         </div>
         <div className="lab-page__toolbar-right">
           <div className="lab-page__view-toggle">
-            <Button
-              appearance={viewMode === "instructions" ? "positive" : "base"}
+            <button
+              type="button"
+              className={viewMode === "instructions" ? "active" : ""}
               onClick={() => setViewMode("instructions")}
               title="Instructions only"
             >
               📖
-            </Button>
-            <Button
-              appearance={viewMode === "split" ? "positive" : "base"}
+            </button>
+            <button
+              type="button"
+              className={viewMode === "split" ? "active" : ""}
               onClick={() => setViewMode("split")}
               title="Split view"
             >
               ⬌
-            </Button>
-            <Button
-              appearance={viewMode === "workspace" ? "positive" : "base"}
+            </button>
+            <button
+              type="button"
+              className={viewMode === "workspace" ? "active" : ""}
               onClick={() => setViewMode("workspace")}
               title="Workspace only"
             >
               ⌨
-            </Button>
+            </button>
           </div>
           <Button
+            type="button"
             appearance="positive"
             onClick={handleCheck}
             disabled={checking}
-            loading={checking}
           >
-            {checking ? "Checking…" : "✓ Check"}
+            ✓ Check
           </Button>
         </div>
       </div>
-
       {grade && !grade.passed && (
         <div className="lab-page__grade-panel">
           <strong>Check results:</strong>
-          <ul className="lab-page__task-list">
+          <ul>
             {grade.tasks.map((t) => (
               <li key={t.id} className={t.passed ? "task--pass" : "task--fail"}>
-                <span>{t.passed ? "✅" : "❌"}</span>
-                <strong>{t.name}</strong>
+                <span className="task__icon">{t.passed ? "✅" : "❌"}</span>
+                <span className="task__name">{t.name}</span>
                 <span className="task__msg">{t.message}</span>
               </li>
             ))}
           </ul>
         </div>
       )}
-
       <div className={`lab-page__body lab-page__body--${viewMode}`}>
         {(viewMode === "instructions" || viewMode === "split") && (
           <div className="lab-page__instructions">

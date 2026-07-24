@@ -2,7 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 
 const API_BASE = "/api";
 
-// ---- Types ----
+// ---- Course catalog types ----
+
+export interface CourseSummary {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  icon: string;
+  version: string;
+}
+
+// ---- Outline / module types ----
 
 export interface LectureRef {
   id: string;
@@ -53,6 +64,12 @@ export interface LabInstructions {
   markdown: string;
 }
 
+export interface FileEntry {
+  name: string;
+  path: string;
+  isDirectory: boolean;
+}
+
 export interface GradeResult {
   labId: string;
   passed: boolean;
@@ -69,7 +86,7 @@ export interface Progress {
   }[];
 }
 
-// ---- API functions ----
+// ---- Fetch helpers ----
 
 async function fetchJson<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`);
@@ -87,62 +104,121 @@ async function postJson<T>(path: string, body: unknown): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-// ---- Hooks ----
+// ---- Course catalog hooks ----
 
-export function useCourseOutline() {
+export function useCourses() {
   return useQuery({
-    queryKey: ["outline"],
-    queryFn: () => fetchJson<CourseOutline>("/outline"),
+    queryKey: ["courses"],
+    queryFn: () => fetchJson<CourseSummary[]>("/courses"),
   });
 }
 
-export function useLecture(moduleId: string, lectureId: string) {
+// ---- Course content hooks (course-scoped) ----
+
+export function useCourseOutline(courseId: string) {
   return useQuery({
-    queryKey: ["lecture", moduleId, lectureId],
+    queryKey: ["outline", courseId],
+    queryFn: () => fetchJson<CourseOutline>(`/courses/${courseId}/outline`),
+  });
+}
+
+export function useLecture(
+  courseId: string,
+  moduleId: string,
+  lectureId: string,
+) {
+  return useQuery({
+    queryKey: ["lecture", courseId, moduleId, lectureId],
     queryFn: () =>
-      fetchJson<Lecture>(`/modules/${moduleId}/lectures/${lectureId}`),
+      fetchJson<Lecture>(
+        `/courses/${courseId}/modules/${moduleId}/lectures/${lectureId}`,
+      ),
   });
 }
 
-export function useQuiz(moduleId: string) {
+export function useQuiz(courseId: string, moduleId: string) {
   return useQuery({
-    queryKey: ["quiz", moduleId],
-    queryFn: () => fetchJson<Quiz>(`/modules/${moduleId}/quiz`),
-  });
-}
-
-export function useLabInstructions(moduleId: string, labId: string) {
-  return useQuery({
-    queryKey: ["lab-instructions", moduleId, labId],
+    queryKey: ["quiz", courseId, moduleId],
     queryFn: () =>
-      fetchJson<LabInstructions>(`/modules/${moduleId}/labs/${labId}`),
+      fetchJson<Quiz>(`/courses/${courseId}/modules/${moduleId}/quiz`),
   });
 }
 
-export function useProgress() {
+export function useLabInstructions(
+  courseId: string,
+  moduleId: string,
+  labId: string,
+) {
   return useQuery({
-    queryKey: ["progress"],
-    queryFn: () => fetchJson<Progress>("/progress"),
+    queryKey: ["lab-instructions", courseId, moduleId, labId],
+    queryFn: () =>
+      fetchJson<LabInstructions>(
+        `/courses/${courseId}/modules/${moduleId}/labs/${labId}`,
+      ),
   });
 }
 
-// ---- Mutations ----
+export function useProgress(courseId: string) {
+  return useQuery({
+    queryKey: ["progress", courseId],
+    queryFn: () => fetchJson<Progress>(`/courses/${courseId}/progress`),
+  });
+}
+
+// ---- Mutations (course-scoped) ----
 
 export async function submitQuiz(
+  courseId: string,
   moduleId: string,
   answers: Record<string, string | string[]>,
 ): Promise<{ score: number; passed: boolean }> {
-  return postJson(`/modules/${moduleId}/quiz/submit`, { answers });
+  return postJson(`/courses/${courseId}/modules/${moduleId}/quiz/submit`, {
+    answers,
+  });
 }
 
 export async function checkLab(
+  courseId: string,
   moduleId: string,
   labId: string,
 ): Promise<GradeResult> {
-  return postJson(`/modules/${moduleId}/labs/${labId}/check`, {});
+  return postJson(
+    `/courses/${courseId}/modules/${moduleId}/labs/${labId}/check`,
+    {},
+  );
 }
 
-// Note: File API and Terminal WebSocket are no longer used from the frontend.
-// The lab workspace now uses code-server (VS Code in the browser) which handles
-// file editing and terminal directly. The backend still has the file API and
-// PTY service for the grading endpoint (check.sh runs inside the lab dir).
+// ---- File API (course-agnostic, for lab workspace) ----
+
+export async function listFiles(labPath: string): Promise<FileEntry[]> {
+  return fetchJson<FileEntry[]>(`/files?path=${encodeURIComponent(labPath)}`);
+}
+
+export async function readFile(filePath: string): Promise<string> {
+  const res = await fetch(
+    `${API_BASE}/files/content?path=${encodeURIComponent(filePath)}`,
+  );
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  return res.text();
+}
+
+export async function writeFile(
+  filePath: string,
+  content: string,
+): Promise<void> {
+  await fetch(
+    `${API_BASE}/files/content?path=${encodeURIComponent(filePath)}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "text/plain" },
+      body: content,
+    },
+  );
+}
+
+// ---- Terminal WebSocket (course-agnostic) ----
+
+export function terminalWsUrl(): string {
+  const proto = window.location.protocol === "https:" ? "wss:" : "ws:";
+  return `${proto}//${window.location.host}/ws/terminal`;
+}

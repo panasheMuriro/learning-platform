@@ -1,0 +1,75 @@
+.catalog {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.catalog__hero {
+  margin-bottom: 2rem;
+}
+
+.catalog__hero h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.catalog__subtitle {
+  color: var(--color-mid-text, #666);
+  font-size: 1.1rem;
+}
+
+.catalog__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.catalog__card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.catalog__card {
+  padding: 1.5rem;
+  height: 100%;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.catalog__card-link:hover .catalog__card {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.catalog__card-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.catalog__card-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.catalog__card-summary {
+  color: var(--color-mid-text, #666);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.catalog__card-version {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--color-mid-text, #999);
+  background: var(--color-surface, #f0f0f0);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.catalog__empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--color-mid-text, #666);
+  padding: 3rem;
+}
