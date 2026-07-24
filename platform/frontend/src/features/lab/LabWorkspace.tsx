@@ -1,7 +1,14 @@
-import { type FileEntry, listFiles, readFile, writeFile } from "@/api/content";
+import {
+  type FileEntry,
+  listFiles,
+  openLab,
+  readFile,
+  writeFile,
+} from "@/api/content";
 import { Button } from "@canonical/react-components";
 import Editor from "@monaco-editor/react";
 import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { TerminalPane } from "./TerminalPane";
 import "./LabWorkspace.css";
 
@@ -10,14 +17,36 @@ interface LabWorkspaceProps {
   moduleId: string;
 }
 
-export function LabWorkspace({ labId }: LabWorkspaceProps) {
-  const labPath = `/home/student/${labId}`;
+export function LabWorkspace({ labId, moduleId }: LabWorkspaceProps) {
+  const { courseId = "" } = useParams();
+  const [labPath, setLabPath] = useState<string>(labId);
   const [files, setFiles] = useState<FileEntry[]>([]);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [seeding, setSeeding] = useState(true);
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  // Seed the lab directory on mount — this copies starter files (.tf, etc.)
+  // into the lab workspace so the editor and terminal have content.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const { labPath: path } = await openLab(courseId, moduleId, labId);
+        if (cancelled) return;
+        setLabPath(path);
+      } catch (err) {
+        console.error("failed to seed lab:", err);
+      } finally {
+        if (!cancelled) setSeeding(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [courseId, moduleId, labId]);
 
   const refreshFiles = useCallback(() => {
     listFiles(labPath)
@@ -27,8 +56,9 @@ export function LabWorkspace({ labId }: LabWorkspaceProps) {
   }, [labPath]);
 
   useEffect(() => {
+    if (seeding) return;
     refreshFiles();
-  }, [refreshFiles]);
+  }, [refreshFiles, seeding]);
 
   const handleSelectFile = async (path: string) => {
     if (dirty && selectedFile) {
@@ -75,12 +105,13 @@ export function LabWorkspace({ labId }: LabWorkspaceProps) {
         <div className="lab-workspace__files">
           <div className="lab-workspace__pane-header">Files</div>
           <div className="lab-workspace__pane-body">
-            {loading ? (
+            {seeding ? (
+              <p className="lab-workspace__placeholder">Seeding lab files…</p>
+            ) : loading ? (
               <p className="lab-workspace__placeholder">Loading files…</p>
             ) : files.length === 0 ? (
               <p className="lab-workspace__placeholder">
-                No files yet. Run <code>setup.sh</code> in the terminal to
-                initialize the lab.
+                No files found in {labPath}.
               </p>
             ) : (
               <ul className="lab-workspace__file-list">
@@ -151,7 +182,7 @@ export function LabWorkspace({ labId }: LabWorkspaceProps) {
             Terminal
           </div>
           <div className="lab-workspace__terminal-body">
-            <TerminalPane />
+            <TerminalPane labPath={seeding ? undefined : labPath} />
           </div>
         </div>
       </div>

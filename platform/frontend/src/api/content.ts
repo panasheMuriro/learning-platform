@@ -178,6 +178,44 @@ export async function markLectureComplete(
   );
 }
 
+export async function unmarkLecture(
+  courseId: string,
+  moduleId: string,
+  lectureId: string,
+): Promise<Progress> {
+  const res = await fetch(
+    `${API_BASE}/courses/${courseId}/modules/${moduleId}/lectures/${lectureId}/complete`,
+    { method: "DELETE" },
+  );
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  return res.json() as Promise<Progress>;
+}
+
+export async function unmarkLab(
+  courseId: string,
+  moduleId: string,
+  labId: string,
+): Promise<Progress> {
+  const res = await fetch(
+    `${API_BASE}/courses/${courseId}/modules/${moduleId}/labs/${labId}/complete`,
+    { method: "DELETE" },
+  );
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  return res.json() as Promise<Progress>;
+}
+
+export async function unmarkQuiz(
+  courseId: string,
+  moduleId: string,
+): Promise<Progress> {
+  const res = await fetch(
+    `${API_BASE}/courses/${courseId}/modules/${moduleId}/quiz/complete`,
+    { method: "DELETE" },
+  );
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  return res.json() as Promise<Progress>;
+}
+
 export async function submitQuiz(
   courseId: string,
   moduleId: string,
@@ -195,6 +233,17 @@ export async function checkLab(
 ): Promise<GradeResult> {
   return postJson(
     `/courses/${courseId}/modules/${moduleId}/labs/${labId}/check`,
+    {},
+  );
+}
+
+export async function openLab(
+  courseId: string,
+  moduleId: string,
+  labId: string,
+): Promise<{ labPath: string }> {
+  return postJson(
+    `/courses/${courseId}/modules/${moduleId}/labs/${labId}/open`,
     {},
   );
 }

@@ -171,6 +171,24 @@ func (s *Store) RecordLecture(courseID, moduleID, lectureID string) error {
 	return s.db.Save(&result).Error
 }
 
+// UnrecordLecture removes lecture progress for a course+module+lecture.
+func (s *Store) UnrecordLecture(courseID, moduleID, lectureID string) error {
+	return s.db.Where("course_id = ? AND module_id = ? AND lecture_id = ?",
+		courseID, moduleID, lectureID).Delete(&LectureProgress{}).Error
+}
+
+// UnrecordLab removes lab progress for a course+module+lab.
+func (s *Store) UnrecordLab(courseID, moduleID, labID string) error {
+	return s.db.Where("course_id = ? AND module_id = ? AND lab_id = ?",
+		courseID, moduleID, labID).Delete(&LabResult{}).Error
+}
+
+// UnrecordQuiz removes quiz progress for a course+module.
+func (s *Store) UnrecordQuiz(courseID, moduleID string) error {
+	return s.db.Where("course_id = ? AND module_id = ?",
+		courseID, moduleID).Delete(&QuizResult{}).Error
+}
+
 // ---- Progress response types (kept compatible with the frontend) ----
 
 // ProgressResponse is the full progress state for one course.
@@ -280,6 +298,74 @@ func (s *Store) HandleMarkLectureComplete(w http.ResponseWriter, r *http.Request
 	resp, err := s.GetProgress(courseID)
 	if err != nil {
 		log.Printf("progress query error after lecture mark: %v", err)
+		http.Error(w, "failed to query progress", http.StatusInternalServerError)
+		return
+	}
+	writeJSON(w, resp)
+}
+
+// HandleUnmarkLecture is the HTTP handler for
+// DELETE /api/courses/{courseId}/modules/{moduleId}/lectures/{lectureId}/complete.
+// It removes lecture progress and returns the updated course progress.
+func (s *Store) HandleUnmarkLecture(w http.ResponseWriter, r *http.Request) {
+	courseID := r.PathValue("courseId")
+	moduleID := r.PathValue("moduleId")
+	lectureID := r.PathValue("lectureId")
+
+	if err := s.UnrecordLecture(courseID, moduleID, lectureID); err != nil {
+		log.Printf("unrecord lecture error: %v", err)
+		http.Error(w, "failed to unrecord lecture progress", http.StatusInternalServerError)
+		return
+	}
+
+	resp, err := s.GetProgress(courseID)
+	if err != nil {
+		log.Printf("progress query error after lecture unmark: %v", err)
+		http.Error(w, "failed to query progress", http.StatusInternalServerError)
+		return
+	}
+	writeJSON(w, resp)
+}
+
+// HandleUnmarkLab is the HTTP handler for
+// DELETE /api/courses/{courseId}/modules/{moduleId}/labs/{labId}/complete.
+// It removes lab progress and returns the updated course progress.
+func (s *Store) HandleUnmarkLab(w http.ResponseWriter, r *http.Request) {
+	courseID := r.PathValue("courseId")
+	moduleID := r.PathValue("moduleId")
+	labID := r.PathValue("labId")
+
+	if err := s.UnrecordLab(courseID, moduleID, labID); err != nil {
+		log.Printf("unrecord lab error: %v", err)
+		http.Error(w, "failed to unrecord lab progress", http.StatusInternalServerError)
+		return
+	}
+
+	resp, err := s.GetProgress(courseID)
+	if err != nil {
+		log.Printf("progress query error after lab unmark: %v", err)
+		http.Error(w, "failed to query progress", http.StatusInternalServerError)
+		return
+	}
+	writeJSON(w, resp)
+}
+
+// HandleUnmarkQuiz is the HTTP handler for
+// DELETE /api/courses/{courseId}/modules/{moduleId}/quiz/complete.
+// It removes quiz progress and returns the updated course progress.
+func (s *Store) HandleUnmarkQuiz(w http.ResponseWriter, r *http.Request) {
+	courseID := r.PathValue("courseId")
+	moduleID := r.PathValue("moduleId")
+
+	if err := s.UnrecordQuiz(courseID, moduleID); err != nil {
+		log.Printf("unrecord quiz error: %v", err)
+		http.Error(w, "failed to unrecord quiz progress", http.StatusInternalServerError)
+		return
+	}
+
+	resp, err := s.GetProgress(courseID)
+	if err != nil {
+		log.Printf("progress query error after quiz unmark: %v", err)
 		http.Error(w, "failed to query progress", http.StatusInternalServerError)
 		return
 	}

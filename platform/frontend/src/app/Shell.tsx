@@ -1,6 +1,14 @@
-import { useCourseOutline, useProgress } from "@/api/content";
+import {
+  markLectureComplete,
+  unmarkLab,
+  unmarkLecture,
+  unmarkQuiz,
+  useCourseOutline,
+  useProgress,
+} from "@/api/content";
 import type { CourseOutline, ModuleOutline, Progress } from "@/api/content";
 import { ApplicationLayout } from "@canonical/react-components";
+import { useQueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -61,6 +69,7 @@ function CourseSidebar({
   progress?: Progress;
 }) {
   const { pathname } = useLocation();
+  const queryClient = useQueryClient();
   const [expanded, setExpanded] = useState<Set<string>>(
     () => new Set(outline.modules.map((m) => m.id)),
   );
@@ -72,6 +81,36 @@ function CourseSidebar({
       else next.add(id);
       return next;
     });
+  };
+
+  /** Toggle a lecture/lab/quiz completion. Calls the appropriate API and
+   *  updates the progress cache so the sidebar reflects the change instantly. */
+  const toggleItem = async (
+    type: "lecture" | "lab" | "quiz",
+    moduleId: string,
+    itemId: string,
+    currentlyDone: boolean,
+  ) => {
+    if (currentlyDone) {
+      // Unmark
+      let updated: Progress;
+      if (type === "lecture") {
+        updated = await unmarkLecture(courseId, moduleId, itemId);
+      } else if (type === "lab") {
+        updated = await unmarkLab(courseId, moduleId, itemId);
+      } else {
+        updated = await unmarkQuiz(courseId, moduleId);
+      }
+      queryClient.setQueryData(["progress", courseId], updated);
+    } else {
+      // Mark — only lectures have a mark endpoint; labs/quizzes are marked
+      // implicitly by submitting. For toggle-on we still call the lecture
+      // endpoint; labs and quizzes can only be toggled off from the sidebar.
+      if (type === "lecture") {
+        const updated = await markLectureComplete(courseId, moduleId, itemId);
+        queryClient.setQueryData(["progress", courseId], updated);
+      }
+    }
   };
 
   const stats = useMemo(() => {
@@ -128,6 +167,7 @@ function CourseSidebar({
             expanded={expanded.has(mod.id)}
             onToggle={() => toggleModule(mod.id)}
             pathname={pathname}
+            onToggleItem={toggleItem}
           />
         ))}
       </div>
@@ -142,6 +182,7 @@ function ModuleSection({
   expanded,
   onToggle,
   pathname,
+  onToggleItem,
 }: {
   courseId: string;
   module: ModuleOutline;
@@ -149,6 +190,12 @@ function ModuleSection({
   expanded: boolean;
   onToggle: () => void;
   pathname: string;
+  onToggleItem: (
+    type: "lecture" | "lab" | "quiz",
+    moduleId: string,
+    itemId: string,
+    currentlyDone: boolean,
+  ) => void;
 }) {
   const total =
     module.lectures.length + module.labs.length + (module.quiz ? 1 : 0);
@@ -190,6 +237,9 @@ function ModuleSection({
                 label={lec.title}
                 done={done}
                 active={pathname === href}
+                onToggle={() =>
+                  onToggleItem("lecture", module.id, lec.id, done)
+                }
               />
             );
           })}
@@ -201,6 +251,14 @@ function ModuleSection({
               done={progress?.quizPassed ?? false}
               active={
                 pathname === `/courses/${courseId}/modules/${module.id}/quiz`
+              }
+              onToggle={() =>
+                onToggleItem(
+                  "quiz",
+                  module.id,
+                  module.quiz!.id,
+                  progress?.quizPassed ?? false,
+                )
               }
             />
           )}
@@ -215,6 +273,7 @@ function ModuleSection({
                 label={lab.title}
                 done={done}
                 active={pathname === href}
+                onToggle={() => onToggleItem("lab", module.id, lab.id, done)}
               />
             );
           })}
@@ -230,12 +289,14 @@ function NavItem({
   label,
   done,
   active,
+  onToggle,
 }: {
   href: string;
   icon: ReactNode;
   label: string;
   done: boolean;
   active: boolean;
+  onToggle: () => void;
 }) {
   return (
     <li>
@@ -247,14 +308,21 @@ function NavItem({
       >
         <span className="course-sidebar__item-icon">{icon}</span>
         <span className="course-sidebar__item-label">{label}</span>
-        <span
+        <button
+          type="button"
           className={`course-sidebar__check ${
             done ? "course-sidebar__check--done" : ""
           }`}
-          aria-hidden="true"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onToggle();
+          }}
+          aria-label={done ? "Mark as incomplete" : "Mark as complete"}
+          title={done ? "Mark as incomplete" : "Mark as complete"}
         >
           {done && <CheckIcon />}
-        </span>
+        </button>
       </Link>
     </li>
   );

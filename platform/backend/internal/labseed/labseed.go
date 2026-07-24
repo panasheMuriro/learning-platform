@@ -15,6 +15,7 @@
 package labseed
 
 import (
+	"net/http"
 	"os"
 	"path/filepath"
 
@@ -112,4 +113,28 @@ func (s *Service) Ensure(courseID, moduleID, labID string) (labDir string, err e
 // .grading directory.
 func (s *Service) GradingScriptPath(labID string) string {
 	return filepath.Join(s.labRoot, labID, ".grading", "check.sh")
+}
+
+// HandleOpen seeds a lab working directory and returns the lab path.
+// POST /api/courses/{courseId}/modules/{moduleId}/labs/{labId}/open
+func (s *Service) HandleOpen(w http.ResponseWriter, r *http.Request) {
+	courseID := r.PathValue("courseId")
+	moduleID := r.PathValue("moduleId")
+	labID := r.PathValue("labId")
+
+	labDir, err := s.Ensure(courseID, moduleID, labID)
+	if err != nil {
+		http.Error(w, "failed to seed lab: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Return the lab path relative to the lab root so the file API (which
+	// resolves paths relative to the same root) can access it correctly.
+	relPath, err := filepath.Rel(s.labRoot, labDir)
+	if err != nil {
+		relPath = labID
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_, _ = w.Write([]byte(`{"labPath":"` + relPath + `"}`))
 }

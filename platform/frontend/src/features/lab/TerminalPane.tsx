@@ -5,13 +5,20 @@ import { useEffect, useRef } from "react";
 import "@xterm/xterm/css/xterm.css";
 import "./TerminalPane.css";
 
-export function TerminalPane() {
+interface TerminalPaneProps {
+  /** Lab working directory path. When provided, the terminal shell starts in
+   * this directory. When undefined, the terminal waits (no shell spawned). */
+  labPath?: string;
+}
+
+export function TerminalPane({ labPath }: TerminalPaneProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const termRef = useRef<Terminal | null>(null);
   const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    // Don't connect until the lab path is known (after seeding completes).
+    if (!labPath || !containerRef.current) return;
 
     const term = new Terminal({
       fontSize: 14,
@@ -28,7 +35,10 @@ export function TerminalPane() {
     fitAddon.fit();
     termRef.current = term;
 
-    const ws = new WebSocket(terminalWsUrl());
+    // Pass the lab path as a query param so the backend PTY starts in the
+    // lab working directory.
+    const wsUrl = `${terminalWsUrl()}?path=${encodeURIComponent(labPath)}`;
+    const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 
     ws.onopen = () => {
@@ -85,7 +95,7 @@ export function TerminalPane() {
       ws.close();
       term.dispose();
     };
-  }, []);
+  }, [labPath]);
 
   return (
     <div

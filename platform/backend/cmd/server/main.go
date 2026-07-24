@@ -64,7 +64,6 @@ func main() {
 	gradeSvc := grade.NewService(*labRoot, contentSvc, st)
 	seedSvc := labseed.NewService(*labRoot, contentSvc)
 	ptySvc := pty.NewService(*labRoot)
-	_ = seedSvc // used by a future "open lab" endpoint; wired here for readiness
 
 	mux := http.NewServeMux()
 
@@ -83,9 +82,15 @@ func main() {
 	// Grading (course-scoped)
 	mux.HandleFunc("POST /api/courses/{courseId}/modules/{moduleId}/labs/{labId}/check", gradeSvc.HandleCheck)
 
+	// Lab seeding (course-scoped) — seeds starter files into the lab workspace
+	mux.HandleFunc("POST /api/courses/{courseId}/modules/{moduleId}/labs/{labId}/open", seedSvc.HandleOpen)
+
 	// Progress (course-scoped)
 	mux.HandleFunc("GET /api/courses/{courseId}/progress", st.HandleGetProgress)
 	mux.HandleFunc("POST /api/courses/{courseId}/modules/{moduleId}/lectures/{lectureId}/complete", st.HandleMarkLectureComplete)
+	mux.HandleFunc("DELETE /api/courses/{courseId}/modules/{moduleId}/lectures/{lectureId}/complete", st.HandleUnmarkLecture)
+	mux.HandleFunc("DELETE /api/courses/{courseId}/modules/{moduleId}/labs/{labId}/complete", st.HandleUnmarkLab)
+	mux.HandleFunc("DELETE /api/courses/{courseId}/modules/{moduleId}/quiz/complete", st.HandleUnmarkQuiz)
 
 	// File API (course-agnostic — operates on lab-root)
 	mux.HandleFunc("GET /api/files", fileAPI.HandleList)

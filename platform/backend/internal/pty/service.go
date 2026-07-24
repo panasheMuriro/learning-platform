@@ -61,10 +61,10 @@ func (s *Service) HandleTerminal(w http.ResponseWriter, r *http.Request) {
 	}
 
 	workDir := s.root
-	// If a lab path was specified via query param, use it
+	// If a lab path was specified via query param, resolve it relative to the
+	// lab root. The path is relative (e.g. "lab-01-first-model-app").
 	if labPath := r.URL.Query().Get("path"); labPath != "" {
-		cleaned := filepath.Clean("/" + labPath)
-		fullPath := filepath.Join(s.root, cleaned)
+		fullPath := filepath.Join(s.root, filepath.Clean(labPath))
 		if info, err := os.Stat(fullPath); err == nil && info.IsDir() {
 			workDir = fullPath
 		}
