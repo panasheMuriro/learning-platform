@@ -88,6 +88,7 @@ func (r *Registry) Scan() error {
 			Icon:        meta.Icon,
 			Version:     meta.Version,
 			ContentPath: coursePath,
+			Enabled:     true,
 		}
 		if err := r.store.UpsertCourse(c); err != nil {
 			log.Printf("registry: failed to upsert course %s: %v", slug, err)

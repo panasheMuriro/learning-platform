@@ -1,6 +1,7 @@
 import { checkLab, useLabInstructions } from "@/api/content";
 import type { GradeResult } from "@/api/content";
 import { Button } from "@canonical/react-components";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { LabInstructionsPanel } from "./LabInstructionsPanel";
@@ -11,6 +12,7 @@ type ViewMode = "split" | "instructions" | "workspace";
 
 export function LabPage() {
   const { courseId = "", moduleId = "", labId = "" } = useParams();
+  const queryClient = useQueryClient();
   const {
     data: lab,
     isLoading,
@@ -26,6 +28,10 @@ export function LabPage() {
       const result = await checkLab(courseId, moduleId, labId);
       setGrade(result);
       if (result.passed) setViewMode("workspace");
+      // Refresh progress so the sidebar checkmark updates.
+      await queryClient.invalidateQueries({
+        queryKey: ["progress", courseId],
+      });
     } finally {
       setChecking(false);
     }

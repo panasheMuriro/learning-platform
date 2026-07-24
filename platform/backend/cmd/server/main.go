@@ -85,6 +85,7 @@ func main() {
 
 	// Progress (course-scoped)
 	mux.HandleFunc("GET /api/courses/{courseId}/progress", st.HandleGetProgress)
+	mux.HandleFunc("POST /api/courses/{courseId}/modules/{moduleId}/lectures/{lectureId}/complete", st.HandleMarkLectureComplete)
 
 	// File API (course-agnostic — operates on lab-root)
 	mux.HandleFunc("GET /api/files", fileAPI.HandleList)

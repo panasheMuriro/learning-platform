@@ -262,6 +262,30 @@ func (s *Store) HandleGetProgress(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, resp)
 }
 
+// HandleMarkLectureComplete is the HTTP handler for
+// POST /api/courses/{courseId}/modules/{moduleId}/lectures/{lectureId}/complete.
+// It marks a lecture as completed (idempotent upsert) and returns the updated
+// progress for the course so the client can refresh without a second round-trip.
+func (s *Store) HandleMarkLectureComplete(w http.ResponseWriter, r *http.Request) {
+	courseID := r.PathValue("courseId")
+	moduleID := r.PathValue("moduleId")
+	lectureID := r.PathValue("lectureId")
+
+	if err := s.RecordLecture(courseID, moduleID, lectureID); err != nil {
+		log.Printf("record lecture error: %v", err)
+		http.Error(w, "failed to record lecture progress", http.StatusInternalServerError)
+		return
+	}
+
+	resp, err := s.GetProgress(courseID)
+	if err != nil {
+		log.Printf("progress query error after lecture mark: %v", err)
+		http.Error(w, "failed to query progress", http.StatusInternalServerError)
+		return
+	}
+	writeJSON(w, resp)
+}
+
 // ---- Helpers ----
 
 // DefaultDSN returns a sensible Postgres DSN from the environment or a default.

@@ -167,6 +167,17 @@ export function useProgress(courseId: string) {
 
 // ---- Mutations (course-scoped) ----
 
+export async function markLectureComplete(
+  courseId: string,
+  moduleId: string,
+  lectureId: string,
+): Promise<Progress> {
+  return postJson<Progress>(
+    `/courses/${courseId}/modules/${moduleId}/lectures/${lectureId}/complete`,
+    {},
+  );
+}
+
 export async function submitQuiz(
   courseId: string,
   moduleId: string,

@@ -1,12 +1,14 @@
 import { submitQuiz, useQuiz } from "@/api/content";
 import type { QuizQuestion } from "@/api/content";
 import { Button, Card, Field } from "@canonical/react-components";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import "./Quiz.css";
 
 export function QuizPage() {
   const { courseId = "", moduleId = "" } = useParams();
+  const queryClient = useQueryClient();
   const { data: quiz, isLoading, error } = useQuiz(courseId, moduleId);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [result, setResult] = useState<{
@@ -25,6 +27,8 @@ export function QuizPage() {
     try {
       const res = await submitQuiz(courseId, moduleId, answers);
       setResult(res);
+      // Refresh progress so the sidebar checkmark updates.
+      await queryClient.invalidateQueries({ queryKey: ["progress", courseId] });
     } finally {
       setSubmitting(false);
     }
