@@ -1,72 +1,178 @@
-/* Side navigation — KodeKloud-style collapsible modules.
-   Vanilla Framework's p-side-navigation provides the base styles; we add
-   expand/collapse behavior via the --expandable / --expanded modifiers. */
+/* Custom course sidebar styled after KodeKloud's lesson navigation. */
 
-/* The expand button (module header) */
-.p-side-navigation__button {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 0.5rem 1rem;
-  border: none;
-  background: transparent;
-  color: inherit;
-  font-size: 0.875rem;
+.shell__logo {
+  font-size: 1.25rem;
   font-weight: 600;
-  text-align: left;
-  cursor: pointer;
-  border-radius: 0;
-}
-
-.p-side-navigation__button:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.p-side-navigation__button .p-side-navigation__label {
-  flex: 1;
-}
-
-/* Add a chevron indicator */
-.p-side-navigation__item--expandable > .p-side-navigation__button::after {
-  content: "▸";
-  font-size: 0.75rem;
-  transition: transform 0.15s;
-  margin-left: 0.5rem;
-}
-
-.p-side-navigation__item--expanded > .p-side-navigation__button::after {
-  transform: rotate(90deg);
-}
-
-/* Nested list — hidden by default, shown when expanded */
-.p-side-navigation__item--expandable > .p-side-navigation__list {
-  display: none;
-}
-
-.p-side-navigation__item--expanded > .p-side-navigation__list {
-  display: block;
-}
-
-/* Nested links — indented */
-.p-side-navigation__item--expandable
-  .p-side-navigation__list
-  .p-side-navigation__link {
-  display: block;
-  padding: 0.375rem 1rem 0.375rem 2.25rem;
-  font-size: 0.8125rem;
   text-decoration: none;
   color: inherit;
 }
 
-.p-side-navigation__item--expandable
-  .p-side-navigation__list
-  .p-side-navigation__link:hover {
-  background: rgba(0, 0, 0, 0.05);
+.course-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: #fff;
+  padding: 0.75rem 0;
 }
 
-.p-side-navigation__item--expandable
-  .p-side-navigation__list
-  .p-side-navigation__link[aria-current="page"] {
-  background: var(--color-accent, #06c);
+.course-sidebar__back,
+.course-sidebar__home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 1rem 0.75rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+}
+
+.course-sidebar__back:hover,
+.course-sidebar__home:hover {
   color: #fff;
+}
+
+.course-sidebar__title {
+  padding: 0 1rem 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.course-sidebar__overall {
+  padding: 0 1rem 1rem;
+}
+
+.course-sidebar__overall-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.4rem;
+}
+
+.course-sidebar__progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.course-sidebar__progress-fill {
+  height: 100%;
+  background: #0e8420;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.course-sidebar__modules {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.course-sidebar__module {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.course-sidebar__module-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.course-sidebar__module-header:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.course-sidebar__module-chevron {
+  font-size: 0.65rem;
+  width: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.course-sidebar__module-title {
+  flex: 1;
+}
+
+.course-sidebar__ring {
+  flex-shrink: 0;
+}
+
+.course-sidebar__ring text {
+  fill: currentColor;
+}
+
+.course-sidebar__items {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0.5rem;
+}
+
+.course-sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1rem;
+  padding-left: 2.25rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 0.82rem;
+  border-left: 3px solid transparent;
+  transition: background 0.15s, color 0.15s;
+}
+
+.course-sidebar__item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.course-sidebar__item--active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-left-color: #0e8420;
+}
+
+.course-sidebar__item-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.course-sidebar__item--active .course-sidebar__item-icon {
+  color: #fff;
+}
+
+.course-sidebar__item-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.course-sidebar__check {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+.course-sidebar__check--done {
+  background: #0e8420;
+  border-color: #0e8420;
 }
