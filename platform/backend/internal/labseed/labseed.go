@@ -11,26 +11,25 @@
 //	    check-helper.sh            # shared helper sourced by check.sh
 //	    setup.sh                   # one-time environment setup (if the lab has one)
 //
-// Only the starter files are meant for the learner to see and edit; the
-// .grading directory is hidden from the code-server file explorer via
-// .vscode/settings.json so it doesn't confuse learners who are focused on
-// Terraform, not on how the course itself is graded.
+// The content directory is resolved per-course via the content service.
 package labseed
 
 import (
 	"os"
 	"path/filepath"
+
+	"github.com/juju-tf-course/platform/backend/internal/content"
 )
 
 // Service seeds lab working directories from the course content directory.
 type Service struct {
-	contentDir string
 	labRoot    string
+	contentSvc *content.Service
 }
 
 // NewService creates a lab seeding service.
-func NewService(contentDir, labRoot string) *Service {
-	return &Service{contentDir: contentDir, labRoot: labRoot}
+func NewService(labRoot string, contentSvc *content.Service) *Service {
+	return &Service{labRoot: labRoot, contentSvc: contentSvc}
 }
 
 // hiddenSettings is written to <lab>/.vscode/settings.json so the code-server
@@ -44,20 +43,24 @@ const hiddenSettings = `{
 `
 
 // Ensure makes sure the lab working directory exists and is seeded with the
-// lab's starter files and (hidden) grading scripts. It's idempotent and safe
-// to call every time a lab is opened or checked — starter files are never
-// overwritten once they exist, but the grading scripts are always refreshed
-// to the latest version from the content directory.
-func (s *Service) Ensure(moduleID, labID string) (labDir string, err error) {
+// lab's starter files and (hidden) grading scripts. It's idempotent.
+//
+// The course's content directory is resolved via the content service so labs
+// from any registered course can be seeded.
+func (s *Service) Ensure(courseID, moduleID, labID string) (labDir string, err error) {
 	labDir = filepath.Join(s.labRoot, labID)
-	labContentDir := filepath.Join(s.contentDir, moduleID, labID)
+
+	contentPath, ok := s.contentSvc.ContentPathFor(courseID)
+	if !ok {
+		return "", &os.PathError{Op: "resolve", Path: labID, Err: os.ErrNotExist}
+	}
+	labContentDir := filepath.Join(contentPath, moduleID, labID)
 
 	if err := os.MkdirAll(labDir, 0o755); err != nil {
 		return "", err
 	}
 
-	// Copy starter files, without overwriting anything the learner already
-	// has (so re-opening a lab never clobbers their work).
+	// Copy starter files, without overwriting anything the learner already has.
 	starterDir := filepath.Join(labContentDir, "starter")
 	if entries, err := os.ReadDir(starterDir); err == nil {
 		for _, entry := range entries {
@@ -87,7 +90,8 @@ func (s *Service) Ensure(moduleID, labID string) (labDir string, err error) {
 			_ = os.WriteFile(filepath.Join(gradingDir, name), data, 0o755)
 		}
 	}
-	if data, err := os.ReadFile(filepath.Join(s.contentDir, "shared", "check-helper.sh")); err == nil {
+	// Shared helper lives at the course content root under shared/.
+	if data, err := os.ReadFile(filepath.Join(contentPath, "shared", "check-helper.sh")); err == nil {
 		_ = os.WriteFile(filepath.Join(gradingDir, "check-helper.sh"), data, 0o755)
 	}
 
@@ -105,8 +109,7 @@ func (s *Service) Ensure(moduleID, labID string) (labDir string, err error) {
 }
 
 // GradingScriptPath returns the path to check.sh inside a lab's hidden
-// .grading directory (whether or not it's been seeded yet — callers should
-// use Ensure first).
+// .grading directory.
 func (s *Service) GradingScriptPath(labID string) string {
 	return filepath.Join(s.labRoot, labID, ".grading", "check.sh")
 }
