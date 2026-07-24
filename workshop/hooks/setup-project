@@ -1,70 +1,50 @@
 #!/bin/bash
-# setup-project hook — install and start code-server + the course backend.
+# setup-project hook — install and start the course platform services.
 #
 # This runs after setup-base, when the Workshop is launched.
-# Pattern from: https://github.com/canonical/ollama-sdk
+# Starts Postgres + the course backend (which auto-discovers courses from
+# the content directory and auto-migrates the DB via GORM).
 
 set -e
 
-# Install the systemd service files.
-# course-backend.service references course content/frontend that live under
-# the SDK's install root (read-only assets), not under $HOME (which holds
-# only writable state like the sqlite db and lab working directories). $SDK
-# is only set while this hook runs, so bake the resolved path in now via the
-# __SDK__ placeholder.
+# Initialize Postgres data directory if needed
+PGDATA="$HOME/share/postgres-data"
+mkdir -p "$PGDATA"
+if [ ! -f "$PGDATA/PG_VERSION" ]; then
+  initdb -D "$PGDATA" --auth=trust >/dev/null 2>&1
+fi
+
+# Start Postgres (if not already running)
+if ! pg_ctl status -D "$PGDATA" >/dev/null 2>&1; then
+  pg_ctl start -D "$PGDATA" -l "$HOME/share/postgres.log" -o "-p 5432" >/dev/null 2>&1
+  # Wait for Postgres to be ready
+  for i in $(seq 1 10); do
+    if psql -p 5432 -c "SELECT 1" >/dev/null 2>&1; then
+      break
+    fi
+    sleep 1
+  done
+fi
+
+# Create the course database if it doesn't exist
+psql -p 5432 -c "CREATE DATABASE course" >/dev/null 2>&1 || true
+
+# Install the systemd service file for the backend
 install -D --mode=644 --target-directory ~/.config/systemd/user \
-  "$SDK/services/code-server.service"
-sed "s|__SDK__|$SDK|g" "$SDK/services/course-backend.service" \
-  | install -D --mode=644 /dev/stdin ~/.config/systemd/user/course-backend.service
+  "$SDK/services/course-backend.service"
 
-# Reload systemd and enable both services (code-server first — the backend
-# unit declares `After=code-server.service`)
+# Reload systemd and enable the service
 systemctl --user daemon-reload
-systemctl --user enable --now code-server.service
 systemctl --user enable --now course-backend.service
-
-# Wait for code-server to be ready (up to 15 seconds)
-i=0
-for i in $(seq 1 15); do
-  if curl -s http://localhost:8081/ >/dev/null 2>&1; then
-    echo "code-server is ready at http://localhost:8081 (after ${i}s)"
-    break
-  fi
-  sleep 1
-done
 
 # Wait for the backend to be ready (up to 15 seconds)
 for i in $(seq 1 15); do
-  if curl -s http://localhost:8080/api/outline >/dev/null 2>&1; then
-    echo "Course backend is ready at http://localhost:8080 (after ${i}s)"
-
-    # The "course-web" tunnel (localhost:8080 on the host) is currently
-    # unreliable in this Workshop version, so also surface a direct,
-    # always-working URL via the container's own IP address. /project is
-    # the mounted project directory, so this file is readable on the host
-    # immediately, at <project-dir>/.workshop-url.
-    CONTAINER_IP="$(hostname -I | awk '{print $1}')"
-    if [ -n "$CONTAINER_IP" ] && [ -d /project ]; then
-      cat > /project/.workshop-url <<EOF
-Course URL: http://${CONTAINER_IP}:8080/
-(If http://localhost:8080/ doesn't load, use the URL above instead —
- it's a known Workshop tunnel issue, not a problem with the course itself.)
-EOF
-      echo "Course URL: http://${CONTAINER_IP}:8080/ (also written to .workshop-url in the project directory)"
-    fi
-
+  if curl -s http://localhost:8080/api/courses >/dev/null 2>&1; then
+    echo "Course platform is ready at http://localhost:8080"
     exit 0
   fi
   sleep 1
 done
 
 echo "WARNING: Course backend did not become ready in 15 seconds"
-echo "---- systemctl status code-server ----"
-systemctl --user status code-server.service --no-pager || true
-echo "---- systemctl status course-backend ----"
-systemctl --user status course-backend.service --no-pager || true
-echo "---- journalctl code-server ----"
-journalctl --user -u code-server.service --no-pager -n 50 || true
-echo "---- journalctl course-backend ----"
-journalctl --user -u course-backend.service --no-pager -n 50 || true
-exit 1
+echo "Check: systemctl --user status course-backend"
