@@ -1,0 +1,10 @@
+{
+  "id": "juju-terraform",
+  "slug": "juju-terraform",
+  "title": "Juju + Terraform Hands-On Course",
+  "summary": "Learn Juju and Terraform together — from first model and application to integrations, secrets, and cross-model relations. Hands-on labs with auto-grading.",
+  "icon": "🛠️",
+  "version": "1.0.0",
+  "requiredTools": ["juju", "terraform", "lxd"],
+  "license": "CC-BY-SA-4.0"
+}

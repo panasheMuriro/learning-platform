@@ -1,40 +1,80 @@
 # Content Schema
 
-This document defines the structure for all course content: lectures, quizzes, and labs.
+This document defines the structure for course content: lectures, quizzes, and labs.
 
-## Directory layout
+## Multi-course directory layout
+
+The platform supports multiple courses. Each course lives in its own directory
+under `content/courses/<course-slug>/`. The platform discovers courses by
+scanning this directory at startup (each subdirectory must contain a
+`course.json`).
 
 ```
 content/
-  outline.json                          # course outline (modules, lectures, labs, quiz refs)
-  LICENSE                               # CC-BY-SA 4.0
-  schema.md                             # this file
-  shared/
-    check-helper.sh                     # shared helper sourced by each lab's check.sh
-  module-01/
-    notes/
-      01-what-is-juju.md                # lecture markdown
-      02-what-is-terraform.md
+  courses/
+    <course-slug>/                       # one directory per course
+      course.json                        # course metadata (id, title, tools, ...)
+      outline.json                       # course outline (modules, lectures, labs, quiz refs)
+      LICENSE                            # course license (e.g. CC-BY-SA 4.0)
+      schema.md                          # this file (optional, per-course reference)
+      shared/
+        check-helper.sh                  # shared helper sourced by each lab's check.sh
+      module-01/
+        notes/
+          01-what-is-juju.md             # lecture markdown
+          02-what-is-terraform.md
+          ...
+        quiz.json                        # module quiz
+        lab-01-first-model-app/
+          lab.md                         # lab instructions (shown in browser)
+          starter/                       # files copied into learner's workspace
+            main.tf
+            variables.tf
+          check.sh                       # grading script (runs terraform/juju, emits JSON)
+          setup.sh                       # per-lab environment setup
+        lab-02-variables-outputs/
+          ...
+        lab-03-lifecycle/
+          ...
+      module-02/
+        ...
+    <another-course-slug>/               # a second course
+      course.json
+      outline.json
       ...
-    quiz.json                           # module quiz
-    lab-01-first-model-app/
-      lab.md                             # lab instructions (shown in browser)
-      starter/                           # files copied into learner's workspace
-        main.tf
-        variables.tf
-      check.sh                           # grading script (runs terraform/juju, emits JSON)
-      setup.sh                            # per-lab environment setup
-    lab-02-variables-outputs/
-      ...
-    lab-03-lifecycle/
-      ...
-  module-02/
-    ...
 ```
+
+## course.json
+
+Course metadata. Read by the platform at startup to register the course in
+the database and build the course catalog.
+
+```json
+{
+  "id": "juju-terraform",
+  "slug": "juju-terraform",
+  "title": "Juju + Terraform Hands-On Course",
+  "summary": "Learn Juju and Terraform together...",
+  "icon": "🛠️",
+  "version": "1.0.0",
+  "requiredTools": ["juju", "terraform", "lxd"],
+  "license": "CC-BY-SA-4.0"
+}
+```
+
+Fields:
+- `id` (required): stable unique identifier (used as `course_id` in the DB and API)
+- `slug` (required): URL-safe slug used in routes and the content directory name
+- `title` (required): display title
+- `summary` (optional): short description shown in the catalog
+- `icon` (optional): emoji or icon name shown in the catalog
+- `version` (optional): course version (display only for now)
+- `requiredTools` (optional): tools the course's labs need installed (e.g. `["juju", "terraform", "lxd"]`). The SDK uses this to know what to bundle.
+- `license` (optional): SPDX identifier
 
 ## outline.json
 
-The top-level course outline. Served at `GET /api/outline`.
+The course outline. Served at `GET /api/courses/{courseId}/outline`.
 
 ```json
 {
@@ -57,13 +97,14 @@ The top-level course outline. Served at `GET /api/outline`.
 
 ## Lecture notes
 
-Plain Markdown files under `module-XX/notes/`. Served at `GET /api/modules/{moduleId}/lectures/{lectureId}`.
+Plain Markdown files under `module-XX/notes/`. Served at
+`GET /api/courses/{courseId}/modules/{moduleId}/lectures/{lectureId}`.
 
 Supports GitHub-flavored Markdown. Use `<details><summary>Hint</summary>...</details>` for collapsible hints.
 
 ## Quiz format
 
-JSON file at `module-XX/quiz.json`. Served at `GET /api/modules/{moduleId}/quiz`.
+JSON file at `module-XX/quiz.json`. Served at `GET /api/courses/{courseId}/modules/{moduleId}/quiz`.
 
 ```json
 {
