@@ -85,6 +85,7 @@ tasks:
             -e JUJU_DATA=/home/coder/.local/share/juju \
             course-code-server \
             --bind-addr 0.0.0.0:{{.CODE_SERVER_PORT}} \
+            --trusted-origins '*' \
             /home/coder/project
           echo "code-server started on http://localhost:{{.CODE_SERVER_PORT}} (password: {{.CODE_SERVER_PASSWORD}}) — terraform is pre-installed, and the host's Juju controller (if any) is available"
         else
@@ -106,7 +107,7 @@ tasks:
     desc: Build the frontend (outputs to platform/frontend/dist)
     dir: '{{.FRONTEND_DIR}}'
     env:
-      VITE_CODE_SERVER_URL: '/code-server/'
+      VITE_CODE_SERVER_URL: 'http://localhost:8081/'
     cmds:
       - bun run build
 

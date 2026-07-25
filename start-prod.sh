@@ -73,6 +73,7 @@ if ! lsof -i:${CODE_SERVER_PORT} >/dev/null 2>&1; then
       -e JUJU_DATA=/home/coder/.local/share/juju \
       course-code-server \
       --bind-addr 0.0.0.0:${CODE_SERVER_PORT} \
+      --trusted-origins '*' \
       /home/coder/project 2>/dev/null || true
   elif command -v code-server >/dev/null 2>&1; then
     # Run code-server directly (if installed locally)

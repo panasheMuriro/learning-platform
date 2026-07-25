@@ -3,7 +3,7 @@ Description=code-server (VS Code in the browser) for lab workspace
 After=network.target
 
 [Service]
-ExecStart=/bin/bash -lc "code-server --bind-addr 0.0.0.0:8081 --auth none %h"
+ExecStart=/bin/bash -lc "code-server --bind-addr 0.0.0.0:8081 --auth none --trusted-origins '*' %h"
 Restart=always
 RestartSec=3
 Environment=HOME=%h
