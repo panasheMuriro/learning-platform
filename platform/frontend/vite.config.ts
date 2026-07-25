@@ -12,17 +12,6 @@ export default defineConfig({
       "@": resolve(__dirname, "./src"),
     },
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // vanilla-framework's own SCSS uses deprecated Sass APIs (map-get,
-        // @import, etc.). Silence these so they don't flood stdout and slow
-        // down the dev server. This does not affect our own SCSS.
-        silenceDeprecations: ["global-builtin", "import", "color-functions"],
-        quietDeps: true,
-      },
-    },
-  },
   server: {
     port: 3000,
     // Proxy API + WebSocket calls to the local backend during development
@@ -35,12 +24,15 @@ export default defineConfig({
         target: "ws://localhost:8080",
         ws: true,
       },
-      // Proxy code-server (VS Code in the browser) — lab workspace editor
       "/code-server": {
         target: "http://localhost:8081",
         changeOrigin: true,
         ws: true,
         rewrite: (path) => path.replace(/^\/code-server/, ""),
+      },
+      "/_static": {
+        target: "http://localhost:8081",
+        changeOrigin: true,
       },
     },
   },
