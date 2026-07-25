@@ -1,21 +1,18 @@
 .lab-page {
   display: flex;
   flex-direction: column;
-  /* ApplicationLayout's main area doesn't set a height, so we use viewport
-     height minus the app header (~49px). This is a pragmatic fix; in a
-     Workshop container the layout is simpler. */
-  height: calc(100vh - 49px);
-  min-height: 0;
+  height: 100vh;
   overflow: hidden;
 }
 
+/* Toolbar */
 .lab-page__toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  border-bottom: 1px solid #cdcdcd;
-  background: #fff;
+  border-bottom: 1px solid var(--color-border, #cdcdcd);
+  background: var(--color-surface, #fff);
   flex-shrink: 0;
   gap: 1rem;
 }
@@ -38,6 +35,7 @@
   gap: 0.75rem;
 }
 
+/* Badge */
 .lab-page__badge {
   font-size: 0.75rem;
   font-weight: 600;
@@ -55,34 +53,55 @@
   color: #c62828;
 }
 
+/* View toggle */
 .lab-page__view-toggle {
   display: flex;
-  gap: 0.25rem;
+  border: 1px solid var(--color-border, #cdcdcd);
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .lab-page__view-toggle button {
   padding: 0.25rem 0.5rem;
+  border: none;
+  background: var(--color-surface, #fff);
+  cursor: pointer;
   font-size: 0.875rem;
+  transition: background 0.1s;
 }
 
-.lab-page__task-list {
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0 0;
+.lab-page__view-toggle button:hover {
+  background: var(--color-surface-hover, #eee);
 }
 
-.lab-page__task-list li {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  padding: 0.25rem 0;
+.lab-page__view-toggle button.active {
+  background: var(--color-accent, #06c);
+  color: #fff;
 }
 
-.lab-page__task-list .task__msg {
-  color: #666;
-  flex: 1;
+/* Check button */
+.lab-page__check-btn {
+  padding: 0.375rem 1rem;
+  border: 1px solid #2e7d32;
+  background: #2e7d32;
+  color: #fff;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: opacity 0.1s;
 }
 
+.lab-page__check-btn:hover {
+  opacity: 0.9;
+}
+
+.lab-page__check-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Grade panel (shown when check fails) */
 .lab-page__grade-panel {
   padding: 0.75rem 1rem;
   background: #fbe9e7;
@@ -93,6 +112,34 @@
   overflow-y: auto;
 }
 
+.lab-page__grade-panel ul {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lab-page__grade-panel li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.task__icon {
+  flex-shrink: 0;
+}
+
+.task__name {
+  font-weight: 600;
+  min-width: 180px;
+}
+
+.task__msg {
+  color: #666;
+  flex: 1;
+}
+
+/* Body — split view */
 .lab-page__body {
   flex: 1;
   display: flex;
@@ -103,15 +150,13 @@
 .lab-page__body--split .lab-page__instructions {
   flex: 0 0 40%;
   overflow-y: auto;
-  border-right: 1px solid #cdcdcd;
+  border-right: 1px solid var(--color-border, #cdcdcd);
   padding: 1rem;
 }
 
 .lab-page__body--split .lab-page__workspace {
   flex: 1;
   min-width: 0;
-  min-height: 0;
-  overflow: hidden;
 }
 
 .lab-page__body--instructions .lab-page__instructions {
@@ -123,6 +168,74 @@
 .lab-page__body--workspace .lab-page__workspace {
   flex: 1;
   min-width: 0;
-  min-height: 0;
+}
+
+/* Stepper */
+.lab-page__stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.lab-page__step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: #555;
+  opacity: 0.7;
+}
+
+.lab-page__step--clickable {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.lab-page__step--clickable:hover {
+  background: var(--color-surface-hover, #f0f0f0);
+}
+
+.lab-page__step--active {
+  background: #e3f2fd;
+  color: #0d47a1;
+  opacity: 1;
+  font-weight: 600;
+}
+
+.lab-page__step--done {
+  color: #2e7d32;
+  opacity: 1;
+}
+
+.lab-page__step-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: #e0e0e0;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.lab-page__step--active .lab-page__step-marker {
+  background: #0d47a1;
+  color: #fff;
+}
+
+.lab-page__step--done .lab-page__step-marker {
+  background: #2e7d32;
+  color: #fff;
+}
+
+.lab-page__step-title {
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -58,10 +58,20 @@ export interface Quiz {
   questions: QuizQuestion[];
 }
 
+export interface LabTask {
+  id: string;
+  title: string;
+  instructions: string;
+  hints?: string[];
+  solution?: string;
+  check: string;
+}
+
 export interface LabInstructions {
   id: string;
   title: string;
   markdown: string;
+  tasks?: LabTask[];
 }
 
 export interface FileEntry {
@@ -70,10 +80,17 @@ export interface FileEntry {
   isDirectory: boolean;
 }
 
+export interface TaskResult {
+  id: string;
+  name: string;
+  passed: boolean;
+  message: string;
+}
+
 export interface GradeResult {
   labId: string;
   passed: boolean;
-  tasks: { id: string; name: string; passed: boolean; message: string }[];
+  tasks: TaskResult[];
 }
 
 export interface Progress {
@@ -83,6 +100,7 @@ export interface Progress {
     quizPassed: boolean;
     quizScore: number | null;
     labsCompleted: string[];
+    tasksCompleted?: Record<string, string[]>;
   }[];
 }
 
@@ -233,6 +251,18 @@ export async function checkLab(
 ): Promise<GradeResult> {
   return postJson(
     `/courses/${courseId}/modules/${moduleId}/labs/${labId}/check`,
+    {},
+  );
+}
+
+export async function checkTask(
+  courseId: string,
+  moduleId: string,
+  labId: string,
+  taskId: string,
+): Promise<GradeResult> {
+  return postJson(
+    `/courses/${courseId}/modules/${moduleId}/labs/${labId}/tasks/${taskId}/check`,
     {},
   );
 }
