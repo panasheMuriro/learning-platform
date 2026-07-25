@@ -75,11 +75,22 @@ type Lecture struct {
 	Markdown string `json:"markdown"`
 }
 
-// LabInstructions is a lab's instruction markdown.
+// LabTask is a single task inside a lab.
+type LabTask struct {
+	ID           string   `json:"id"`
+	Title        string   `json:"title"`
+	Instructions string   `json:"instructions"`
+	Hints        []string `json:"hints,omitempty"`
+	Solution     string   `json:"solution,omitempty"`
+	Check        string   `json:"check"`
+}
+
+// LabInstructions is a lab's instruction markdown and structured tasks.
 type LabInstructions struct {
-	ID       string `json:"id"`
-	Title    string `json:"title"`
-	Markdown string `json:"markdown"`
+	ID       string    `json:"id"`
+	Title    string    `json:"title"`
+	Markdown string    `json:"markdown"`
+	Tasks    []LabTask `json:"tasks,omitempty"`
 }
 
 // resolveCourse looks up a course by slug/id and returns its content directory.
@@ -195,22 +206,45 @@ func (s *Service) HandleLab(w http.ResponseWriter, r *http.Request) {
 
 	// Find the lab title from outline
 	outline, err := loadOutline(contentPath)
-	if err == nil {
-		for _, mod := range outline.Modules {
-			if mod.ID == moduleID {
-				for _, lab := range mod.Labs {
-					if lab.ID == labID {
-						mdPath := filepath.Join(contentPath, moduleID, labID, "lab.md")
-						md, err := os.ReadFile(mdPath)
-						if err != nil {
-							http.Error(w, "lab not found", http.StatusNotFound)
-							return
-						}
-						writeJSON(w, LabInstructions{ID: labID, Title: lab.Title, Markdown: string(md)})
-						return
-					}
+	if err != nil {
+		http.Error(w, "lab not found", http.StatusNotFound)
+		return
+	}
+
+	for _, mod := range outline.Modules {
+		if mod.ID != moduleID {
+			continue
+		}
+		for _, lab := range mod.Labs {
+			if lab.ID != labID {
+				continue
+			}
+			labDir := filepath.Join(contentPath, moduleID, labID)
+
+			// Prefer structured tasks.json, fall back to lab.md.
+			tasksPath := filepath.Join(labDir, "tasks.json")
+			if data, err := os.ReadFile(tasksPath); err == nil {
+				var payload struct {
+					Tasks []LabTask `json:"tasks"`
+				}
+				if err := json.Unmarshal(data, &payload); err == nil && len(payload.Tasks) > 0 {
+					writeJSON(w, LabInstructions{
+						ID:    labID,
+						Title: lab.Title,
+						Tasks: payload.Tasks,
+					})
+					return
 				}
 			}
+
+			mdPath := filepath.Join(labDir, "lab.md")
+			md, err := os.ReadFile(mdPath)
+			if err != nil {
+				http.Error(w, "lab not found", http.StatusNotFound)
+				return
+			}
+			writeJSON(w, LabInstructions{ID: labID, Title: lab.Title, Markdown: string(md)})
+			return
 		}
 	}
 
