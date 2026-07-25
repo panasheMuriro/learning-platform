@@ -57,6 +57,16 @@ type LabResult struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
+// LabTaskResult marks an individual task as passed for one (course, module, lab, task).
+type LabTaskResult struct {
+	CourseID  string `gorm:"primaryKey" json:"-"`
+	ModuleID  string `gorm:"primaryKey" json:"-"`
+	LabID     string `gorm:"primaryKey" json:"-"`
+	TaskID    string `gorm:"primaryKey" json:"taskId"`
+	Passed    bool   `gorm:"default:true" json:"passed"`
+	UpdatedAt time.Time `json:"updatedAt"`
+}
+
 // LectureProgress marks a lecture as completed for one (course, module, lecture).
 type LectureProgress struct {
 	CourseID  string `gorm:"primaryKey" json:"-"`
@@ -91,6 +101,7 @@ func Open(dsn string) (*Store, error) {
 		&QuizResult{},
 		&LabResult{},
 		&LectureProgress{},
+		&LabTaskResult{},
 	); err != nil {
 		return nil, fmt.Errorf("auto-migrate: %w", err)
 	}
@@ -198,11 +209,12 @@ type ProgressResponse struct {
 
 // ModuleProgress is the progress for a single module within a course.
 type ModuleProgress struct {
-	ModuleID          string   `json:"moduleId"`
-	LecturesCompleted []string `json:"lecturesCompleted"`
-	QuizPassed        bool     `json:"quizPassed"`
-	QuizScore         *int     `json:"quizScore"`
-	LabsCompleted     []string `json:"labsCompleted"`
+	ModuleID          string            `json:"moduleId"`
+	LecturesCompleted []string          `json:"lecturesCompleted"`
+	QuizPassed        bool              `json:"quizPassed"`
+	QuizScore         *int              `json:"quizScore"`
+	LabsCompleted     []string          `json:"labsCompleted"`
+	TasksCompleted    map[string][]string `json:"tasksCompleted"`
 }
 
 // GetProgress returns all progress for a course.
@@ -224,6 +236,12 @@ func (s *Store) GetProgress(courseID string) (ProgressResponse, error) {
 	// Lecture progress
 	var lectures []LectureProgress
 	if err := s.db.Where("course_id = ? AND completed = ?", courseID, true).Find(&lectures).Error; err != nil {
+		return resp, err
+	}
+
+	// Lab task results
+	var taskResults []LabTaskResult
+	if err := s.db.Where("course_id = ? AND passed = ?", courseID, true).Find(&taskResults).Error; err != nil {
 		return resp, err
 	}
 
@@ -255,6 +273,17 @@ func (s *Store) GetProgress(courseID string) (ProgressResponse, error) {
 		}
 		mp.LecturesCompleted = append(mp.LecturesCompleted, l.LectureID)
 	}
+	for _, t := range taskResults {
+		mp := modules[t.ModuleID]
+		if mp == nil {
+			mp = &ModuleProgress{ModuleID: t.ModuleID}
+			modules[t.ModuleID] = mp
+		}
+		if mp.TasksCompleted == nil {
+			mp.TasksCompleted = make(map[string][]string)
+		}
+		mp.TasksCompleted[t.LabID] = append(mp.TasksCompleted[t.LabID], t.TaskID)
+	}
 
 	for _, mp := range modules {
 		if mp.LecturesCompleted == nil {
@@ -263,9 +292,24 @@ func (s *Store) GetProgress(courseID string) (ProgressResponse, error) {
 		if mp.LabsCompleted == nil {
 			mp.LabsCompleted = []string{}
 		}
+		if mp.TasksCompleted == nil {
+			mp.TasksCompleted = make(map[string][]string)
+		}
 		resp.Modules = append(resp.Modules, *mp)
 	}
 	return resp, nil
+}
+
+// RecordLabTask marks a single lab task as passed (upsert).
+func (s *Store) RecordLabTask(courseID, moduleID, labID, taskID string) error {
+	result := LabTaskResult{
+		CourseID: courseID,
+		ModuleID: moduleID,
+		LabID:    labID,
+		TaskID:   taskID,
+		Passed:   true,
+	}
+	return s.db.Save(&result).Error
 }
 
 // HandleGetProgress is the HTTP handler for GET /api/courses/{courseId}/progress.
