@@ -161,8 +161,36 @@ Passing score: 70%.
 
 Each lab is a directory under `module-XX/lab-XX-name/` containing:
 
-### lab.md
-Lab instructions shown in the browser. Markdown with numbered tasks and `<details>` hints.
+### tasks.json (preferred)
+Canonical structured task content. The backend loads this first. It supports per-task instructions, hints, solutions, and individual grading.
+
+```json
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create a Juju model",
+      "instructions": "Write a `juju_model` resource named \"development\"...",
+      "hints": [
+        "A model needs at minimum a `name`."
+      ],
+      "solution": "```hcl\nresource \"juju_model\" \"development\" {\n  name = \"development\"\n}\n```",
+      "check": "task-1"
+    }
+  ]
+}
+```
+
+Fields:
+- `id` (required): stable task identifier (used in grading and progress)
+- `title` (required): short task name shown in the stepper
+- `instructions` (required): task instructions (Markdown)
+- `hints` (optional): array of Markdown hints. The UI reveals one at a time.
+- `solution` (optional): complete answer/solution in Markdown. Shown only after the learner explicitly opts in.
+- `check` (required): task id passed to `check.sh` for per-task grading
+
+### lab.md (fallback)
+Lab instructions shown in the browser when `tasks.json` is absent. Markdown with numbered tasks and `<details>` hints.
 
 ```markdown
 # First Model + Application
@@ -193,7 +221,7 @@ Files copied into the learner's workspace at lab start. Typically:
 - `versions.tf` — provider requirements
 
 ### check.sh
-The grading script. Runs real `terraform`/`juju` commands and emits a JSON result.
+The grading script. Runs real `terraform`/`juju` commands and emits a JSON result. It should accept an optional task-id argument. When called with a task id, it grades only that task; when called without arguments, it grades all tasks.
 
 Must source `content/shared/check-helper.sh` and emit JSON in this format:
 
