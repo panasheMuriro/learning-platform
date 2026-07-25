@@ -117,7 +117,8 @@
   padding: 0 0 0.5rem;
 }
 
-.course-sidebar__item {
+.course-sidebar__item,
+.course-sidebar__item:visited {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -130,15 +131,16 @@
   transition: background 0.15s, color 0.15s;
 }
 
-.course-sidebar__item:hover {
+.course-sidebar__item:hover,
+.course-sidebar__item:visited:hover {
   background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  color: rgba(255, 255, 255, 0.85);
 }
 
-.course-sidebar__item--active {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+.course-sidebar__item--active,
+.course-sidebar__item--active:visited {
   border-left-color: #0e8420;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .course-sidebar__item-icon {
@@ -147,10 +149,6 @@
   justify-content: center;
   width: 1rem;
   color: rgba(255, 255, 255, 0.7);
-}
-
-.course-sidebar__item--active .course-sidebar__item-icon {
-  color: #fff;
 }
 
 .course-sidebar__item-label {

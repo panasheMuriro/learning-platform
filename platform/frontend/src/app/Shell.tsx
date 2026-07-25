@@ -243,25 +243,30 @@ function ModuleSection({
               />
             );
           })}
-          {module.quiz && (
-            <NavItem
-              href={`/courses/${courseId}/modules/${module.id}/quiz`}
-              icon={<QuizIcon />}
-              label="Quiz"
-              done={progress?.quizPassed ?? false}
-              active={
-                pathname === `/courses/${courseId}/modules/${module.id}/quiz`
-              }
-              onToggle={() =>
-                onToggleItem(
-                  "quiz",
-                  module.id,
-                  module.quiz!.id,
-                  progress?.quizPassed ?? false,
-                )
-              }
-            />
-          )}
+          {module.quiz &&
+            (() => {
+              const quizId = module.quiz.id;
+              return (
+                <NavItem
+                  href={`/courses/${courseId}/modules/${module.id}/quiz`}
+                  icon={<QuizIcon />}
+                  label="Quiz"
+                  done={progress?.quizPassed ?? false}
+                  active={
+                    pathname ===
+                    `/courses/${courseId}/modules/${module.id}/quiz`
+                  }
+                  onToggle={() =>
+                    onToggleItem(
+                      "quiz",
+                      module.id,
+                      quizId,
+                      progress?.quizPassed ?? false,
+                    )
+                  }
+                />
+              );
+            })()}
           {module.labs.map((lab) => {
             const href = `/courses/${courseId}/modules/${module.id}/labs/${lab.id}`;
             const done = progress?.labsCompleted.includes(lab.id) ?? false;
