@@ -1,0 +1,16 @@
+.markdown-pre {
+  position: relative;
+}
+
+.markdown-pre__copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.markdown-pre:hover .markdown-pre__copy,
+.markdown-pre:focus-within .markdown-pre__copy {
+  opacity: 1;
+}

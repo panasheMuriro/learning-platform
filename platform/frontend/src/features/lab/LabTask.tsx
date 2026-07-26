@@ -1,10 +1,7 @@
 import type { LabTask as LabTaskType, TaskResult } from "@/api/content";
+import { Markdown } from "@/components/Markdown";
 import { Button } from "@canonical/react-components";
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import rehypeSanitize from "rehype-sanitize";
-import remarkGfm from "remark-gfm";
 import "./LabTask.css";
 
 interface LabTaskProps {
@@ -57,12 +54,7 @@ export function LabTask({
       </div>
 
       <div className="lab-task__instructions">
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeSanitize, rehypeHighlight]}
-        >
-          {task.instructions}
-        </ReactMarkdown>
+        <Markdown>{task.instructions}</Markdown>
       </div>
 
       {task.hints && task.hints.length > 0 && (
@@ -81,12 +73,7 @@ export function LabTask({
             <ol className="lab-task__hint-list">
               {task.hints.slice(0, revealedHints).map((hint) => (
                 <li key={hint} className="lab-task__hint">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeSanitize, rehypeHighlight]}
-                  >
-                    {hint}
-                  </ReactMarkdown>
+                  <Markdown>{hint}</Markdown>
                 </li>
               ))}
             </ol>
@@ -127,12 +114,7 @@ export function LabTask({
           ) : (
             <div className="lab-task__solution-content">
               <h3>Solution</h3>
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeSanitize, rehypeHighlight]}
-              >
-                {task.solution}
-              </ReactMarkdown>
+              <Markdown>{task.solution}</Markdown>
             </div>
           )}
         </div>
