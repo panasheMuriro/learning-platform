@@ -4,10 +4,6 @@
       "id": "task-1",
       "title": "Define the provider",
       "instructions": "Open `main.tf` and add the Terraform provider configuration for Juju:\n\n```hcl\nterraform {\n  required_providers {\n    juju = {\n      source  = \"juju/juju\"\n      version = \"~> 2.1.0\"\n    }\n  }\n}\n\nprovider \"juju\" {}\n```\n\nThe empty `provider \"juju\" {}` block uses your Juju CLI config for authentication.",
-      "hints": [
-        "When `provider \"juju\" {}` has no arguments, it reads your Juju CLI config (`~/.local/share/juju/`) for controller credentials. As long as `juju whoami` works, the provider will too."
-      ],
-      "solution": "```hcl\nterraform {\n  required_providers {\n    juju = {\n      source  = \"juju/juju\"\n      version = \"~> 2.1.0\"\n    }\n  }\n}\n\nprovider \"juju\" {}\n```",
       "check": "task-1"
     },
     {
