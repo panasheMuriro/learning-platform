@@ -103,14 +103,10 @@ export function LabPage() {
   };
 
   const handleStepClick = (index: number) => {
-    // Allow free navigation to previous or current task; only completed tasks
-    // unlock future ones.
-    if (
-      index <= currentTaskIndex ||
-      completedTaskIds.has(tasks[index - 1]?.id ?? "")
-    ) {
-      setCurrentTaskIndex(index);
-    }
+    // Dev mode: unrestricted navigation so authors/testers can jump between
+    // tasks without completing them. In production this would be gated so
+    // learners can only view completed tasks or the next unlocked one.
+    setCurrentTaskIndex(index);
   };
 
   if (isLoading) return <div className="course-content">Loading lab…</div>;
@@ -201,15 +197,11 @@ export function LabPage() {
                   {tasks.map((task, idx) => {
                     const completed = completedTaskIds.has(task.id);
                     const active = idx === currentTaskIndex;
-                    const clickable =
-                      idx <= currentTaskIndex ||
-                      completedTaskIds.has(tasks[idx - 1]?.id ?? "");
                     return (
                       <button
                         key={task.id}
                         type="button"
-                        disabled={!clickable}
-                        className={`lab-page__step ${active ? "lab-page__step--active" : ""} ${completed ? "lab-page__step--done" : ""} ${clickable ? "lab-page__step--clickable" : ""}`}
+                        className={`lab-page__step ${active ? "lab-page__step--active" : ""} ${completed ? "lab-page__step--done" : ""}`}
                         onClick={() => handleStepClick(idx)}
                         title={task.title}
                       >
