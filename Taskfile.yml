@@ -44,17 +44,39 @@ tasks:
   # ---------------------------------------------------------------------
   # Development (hot reload, two servers on :3000 + :8080)
   # ---------------------------------------------------------------------
+  start:
+    desc: Start the full course platform in dev mode (Postgres + code-server + backend + frontend)
+    cmds:
+      - task: dev
+
   dev:
     desc: Run frontend (Vite) + backend (Go) in dev mode with hot reload (Ctrl+C stops both)
     deps:
+      - dev:db
       - dev:code-server
     cmds:
       - |
         mkdir -p '{{.LAB_ROOT}}'
         trap 'kill 0' EXIT
-        (cd '{{.BACKEND_DIR}}' && go run ./cmd/server --addr ':{{.BACKEND_PORT}}' --content '{{.CONTENT_DIR}}' --lab-root '{{.LAB_ROOT}}' --db '{{.DB_PATH}}') &
+        (cd '{{.BACKEND_DIR}}' && go run ./cmd/server --addr ':{{.BACKEND_PORT}}' --content-root '{{.CONTENT_DIR}}' --lab-root '{{.LAB_ROOT}}' --db-dsn 'postgres://course:course@localhost:5432/course?sslmode=disable') &
         (cd '{{.FRONTEND_DIR}}' && bun run dev) &
         wait
+
+  dev:db:
+    desc: Start the Postgres 16 container for local dev (idempotent)
+    cmds:
+      - |
+        docker ps --format '{{"{{"}}.Names{{"}}"}}' | grep -q '^learning-db-1$' || \
+        docker compose -f '{{.ROOT}}/docker-compose.yml' up -d db
+        # Wait for Postgres to be ready before downstream tasks start
+        for i in $(seq 1 30); do
+          if docker exec learning-db-1 pg_isready -U course >/dev/null 2>&1; then
+            break
+          fi
+          sleep 1
+        done
+    status:
+      - docker ps --format '{{"{{"}}.Names{{"}}"}}' | grep -q '^learning-db-1$'
 
   dev:frontend:
     desc: Run the Vite dev server (http://localhost:3000)
@@ -67,7 +89,7 @@ tasks:
     dir: '{{.BACKEND_DIR}}'
     cmds:
       - mkdir -p '{{.LAB_ROOT}}'
-      - go run ./cmd/server --addr ':{{.BACKEND_PORT}}' --content '{{.CONTENT_DIR}}' --lab-root '{{.LAB_ROOT}}' --db '{{.DB_PATH}}'
+      - go run ./cmd/server --addr ':{{.BACKEND_PORT}}' --content-root '{{.CONTENT_DIR}}' --lab-root '{{.LAB_ROOT}}' --db-dsn 'postgres://course:course@localhost:5432/course?sslmode=disable'
 
   dev:code-server:
     desc: Build (if needed) and start code-server in Docker for local dev, with Terraform pre-installed and access to the host's local Juju controller (idempotent)
