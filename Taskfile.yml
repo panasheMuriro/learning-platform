@@ -201,15 +201,17 @@ tasks:
   # Labs / content helpers
   # ---------------------------------------------------------------------
   lab:seed:
-    desc: "Seed a lab working directory with starter files (usage: task lab:seed MODULE=module-01 LAB=lab-01-first-model-app). Note: the backend also auto-seeds a lab the first time it's opened in the UI -- this task is mainly for manual/CLI testing."
+    desc: "Seed a lab working directory with starter files (usage: task lab:seed COURSE=juju-terraform MODULE=module-01 LAB=lab-01-first-model-app). Note: the backend also auto-seeds a lab the first time it's opened in the UI -- this task is mainly for manual/CLI testing."
     requires:
       vars: [MODULE, LAB]
+    vars:
+      COURSE: '{{.COURSE | default "juju-terraform"}}'
     cmds:
       - mkdir -p '{{.LAB_ROOT}}/{{.LAB}}' '{{.LAB_ROOT}}/{{.LAB}}/.grading' '{{.LAB_ROOT}}/{{.LAB}}/.vscode'
-      - cp -n '{{.CONTENT_DIR}}/{{.MODULE}}/{{.LAB}}/starter/'* '{{.LAB_ROOT}}/{{.LAB}}/' 2>/dev/null || true
-      - cp '{{.CONTENT_DIR}}/{{.MODULE}}/{{.LAB}}/check.sh' '{{.LAB_ROOT}}/{{.LAB}}/.grading/'
-      - cp '{{.CONTENT_DIR}}/{{.MODULE}}/{{.LAB}}/setup.sh' '{{.LAB_ROOT}}/{{.LAB}}/.grading/' 2>/dev/null || true
-      - cp '{{.CONTENT_DIR}}/shared/check-helper.sh' '{{.LAB_ROOT}}/{{.LAB}}/.grading/'
+      - cp -n '{{.CONTENT_DIR}}/courses/{{.COURSE}}/{{.MODULE}}/{{.LAB}}/starter/'* '{{.LAB_ROOT}}/{{.LAB}}/' 2>/dev/null || true
+      - cp '{{.CONTENT_DIR}}/courses/{{.COURSE}}/{{.MODULE}}/{{.LAB}}/check.sh' '{{.LAB_ROOT}}/{{.LAB}}/.grading/'
+      - cp '{{.CONTENT_DIR}}/courses/{{.COURSE}}/{{.MODULE}}/{{.LAB}}/setup.sh' '{{.LAB_ROOT}}/{{.LAB}}/.grading/' 2>/dev/null || true
+      - cp '{{.CONTENT_DIR}}/courses/{{.COURSE}}/shared/check-helper.sh' '{{.LAB_ROOT}}/{{.LAB}}/.grading/'
       - chmod +x '{{.LAB_ROOT}}/{{.LAB}}/.grading/'*.sh
       - |
         cat > '{{.LAB_ROOT}}/{{.LAB}}/.vscode/settings.json' <<'EOF'
