@@ -12,7 +12,6 @@ vars:
   DB_PATH: '{{.LAB_ROOT}}/course.db'
   BACKEND_PORT: '{{.BACKEND_PORT | default "8080"}}'
   CODE_SERVER_PORT: '{{.CODE_SERVER_PORT | default "8081"}}'
-  CODE_SERVER_PASSWORD: '{{.CODE_SERVER_PASSWORD | default "lab123"}}'
 
 tasks:
   default:
@@ -103,13 +102,13 @@ tasks:
             --network host \
             -v '{{.LAB_ROOT}}:/home/coder/project' \
             -v "${HOME}/.local/share/juju:/home/coder/.local/share/juju:ro" \
-            -e PASSWORD='{{.CODE_SERVER_PASSWORD}}' \
             -e JUJU_DATA=/home/coder/.local/share/juju \
             course-code-server \
             --bind-addr 0.0.0.0:{{.CODE_SERVER_PORT}} \
+            --auth none \
             --trusted-origins '*' \
             /home/coder/project
-          echo "code-server started on http://localhost:{{.CODE_SERVER_PORT}} (password: {{.CODE_SERVER_PASSWORD}}) — terraform is pre-installed, and the host's Juju controller (if any) is available"
+          echo "code-server started on http://localhost:{{.CODE_SERVER_PORT}} — terraform is pre-installed, and the host's Juju controller (if any) is available"
         else
           echo "code-server already running on http://localhost:{{.CODE_SERVER_PORT}}"
         fi
