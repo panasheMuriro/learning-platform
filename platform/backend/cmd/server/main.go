@@ -85,6 +85,7 @@ func main() {
 
 	// Lab seeding (course-scoped) — seeds starter files into the lab workspace
 	mux.HandleFunc("POST /api/courses/{courseId}/modules/{moduleId}/labs/{labId}/open", seedSvc.HandleOpen)
+	mux.HandleFunc("POST /api/courses/{courseId}/modules/{moduleId}/labs/{labId}/tasks/{taskId}/workspace", seedSvc.HandleWorkspace)
 
 	// Progress (course-scoped)
 	mux.HandleFunc("GET /api/courses/{courseId}/progress", st.HandleGetProgress)

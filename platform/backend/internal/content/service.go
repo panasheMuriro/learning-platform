@@ -77,12 +77,13 @@ type Lecture struct {
 
 // LabTask is a single task inside a lab.
 type LabTask struct {
-	ID           string   `json:"id"`
-	Title        string   `json:"title"`
-	Instructions string   `json:"instructions"`
-	Hints        []string `json:"hints,omitempty"`
-	Solution     string   `json:"solution,omitempty"`
-	Check        string   `json:"check"`
+	ID           string            `json:"id"`
+	Title        string            `json:"title"`
+	Instructions string            `json:"instructions"`
+	Hints        []string          `json:"hints,omitempty"`
+	Solution     string            `json:"solution,omitempty"`
+	Check        string            `json:"check"`
+	Workspace    map[string]string `json:"workspace,omitempty"`
 }
 
 // LabInstructions is a lab's instruction markdown and structured tasks.

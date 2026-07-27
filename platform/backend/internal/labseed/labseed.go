@@ -15,6 +15,7 @@
 package labseed
 
 import (
+	"encoding/json"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -137,4 +138,73 @@ func (s *Service) HandleOpen(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	_, _ = w.Write([]byte(`{"labPath":"` + relPath + `"}`))
+}
+
+// ApplyWorkspace writes the file contents defined by a task's workspace into
+// the lab directory. Existing files are overwritten so the workspace matches
+// the currently selected task.
+func (s *Service) ApplyWorkspace(courseID, moduleID, labID, taskID string) error {
+	contentPath, ok := s.contentSvc.ContentPathFor(courseID)
+	if !ok {
+		return &os.PathError{Op: "resolve", Path: labID, Err: os.ErrNotExist}
+	}
+
+	tasksPath := filepath.Join(contentPath, moduleID, labID, "tasks.json")
+	data, err := os.ReadFile(tasksPath)
+	if err != nil {
+		return nil // no tasks.json — nothing to apply
+	}
+
+	var payload struct {
+		Tasks []struct {
+			ID        string            `json:"id"`
+			Workspace map[string]string `json:"workspace,omitempty"`
+		} `json:"tasks"`
+	}
+	if err := json.Unmarshal(data, &payload); err != nil {
+		return err
+	}
+
+	var workspace map[string]string
+	for _, t := range payload.Tasks {
+		if t.ID == taskID {
+			workspace = t.Workspace
+			break
+		}
+	}
+	if len(workspace) == 0 {
+		return nil
+	}
+
+	labDir := filepath.Join(s.labRoot, labID)
+	if err := os.MkdirAll(labDir, 0o755); err != nil {
+		return err
+	}
+	for relPath, content := range workspace {
+		fullPath := filepath.Join(labDir, relPath)
+		if err := os.MkdirAll(filepath.Dir(fullPath), 0o755); err != nil {
+			return err
+		}
+		if err := os.WriteFile(fullPath, []byte(content), 0o644); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// HandleWorkspace applies a task's workspace files.
+// POST /api/courses/{courseId}/modules/{moduleId}/labs/{labId}/tasks/{taskId}/workspace
+func (s *Service) HandleWorkspace(w http.ResponseWriter, r *http.Request) {
+	courseID := r.PathValue("courseId")
+	moduleID := r.PathValue("moduleId")
+	labID := r.PathValue("labId")
+	taskID := r.PathValue("taskId")
+
+	if err := s.ApplyWorkspace(courseID, moduleID, labID, taskID); err != nil {
+		http.Error(w, "failed to apply workspace: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_, _ = w.Write([]byte(`{"ok":true}`))
 }
