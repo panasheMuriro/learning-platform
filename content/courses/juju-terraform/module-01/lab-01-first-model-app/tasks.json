@@ -4,6 +4,9 @@
       "id": "task-1",
       "title": "Define the provider",
       "instructions": "Open `main.tf` and add the Terraform provider configuration for Juju:\n\n```hcl\nterraform {\n  required_providers {\n    juju = {\n      source  = \"juju/juju\"\n      version = \"~> 2.1.0\"\n    }\n  }\n}\n\nprovider \"juju\" {}\n```\n\nThe empty `provider \"juju\" {}` block uses your Juju CLI config for authentication.",
+      "workspace": {
+        "main.tf": "# TODO: Add the Terraform provider configuration for Juju\n"
+      },
       "check": "task-1"
     },
     {
@@ -14,6 +17,9 @@
         "Make sure you are inside the lab working directory before running `terraform init`."
       ],
       "solution": "```bash\nterraform init\n```",
+      "workspace": {
+        "main.tf": "terraform {\n  required_providers {\n    juju = {\n      source  = \"juju/juju\"\n      version = \"~> 2.1.0\"\n    }\n  }\n}\n\nprovider \"juju\" {}\n\n# TODO: Run terraform init to download the Juju provider\n"
+      },
       "check": "task-2"
     },
     {
@@ -24,6 +30,9 @@
         "If you omit cloud and region, Juju uses the controller's default cloud (LXD in our case)."
       ],
       "solution": "```hcl\nresource \"juju_model\" \"development\" {\n  name = \"development\"\n}\n```",
+      "workspace": {
+        "main.tf": "terraform {\n  required_providers {\n    juju = {\n      source  = \"juju/juju\"\n      version = \"~> 2.1.0\"\n    }\n  }\n}\n\nprovider \"juju\" {}\n\n# TODO: Add a juju_model resource named \"development\"\n"
+      },
       "check": "task-3"
     },
     {
@@ -34,6 +43,9 @@
         "`model_uuid` is a computed attribute on the `juju_model` resource, so you can reference it as `juju_model.development.uuid`."
       ],
       "solution": "```hcl\nresource \"juju_application\" \"ubuntu\" {\n  name       = \"ubuntu\"\n  model_uuid = juju_model.development.uuid\n  charm {\n    name    = \"ubuntu\"\n    channel = \"latest/stable\"\n  }\n  units = 1\n}\n```",
+      "workspace": {
+        "main.tf": "terraform {\n  required_providers {\n    juju = {\n      source  = \"juju/juju\"\n      version = \"~> 2.1.0\"\n    }\n  }\n}\n\nprovider \"juju\" {}\n\nresource \"juju_model\" \"development\" {\n  name = \"development\"\n}\n\n# TODO: Add a juju_application resource that deploys the ubuntu charm\n"
+      },
       "check": "task-4"
     },
     {
@@ -44,6 +56,9 @@
         "`terraform plan` is read-only and shows the changes. `terraform apply -auto-approve` applies them without prompting."
       ],
       "solution": "```bash\nterraform plan\nterraform apply -auto-approve\n```",
+      "workspace": {
+        "main.tf": "terraform {\n  required_providers {\n    juju = {\n      source  = \"juju/juju\"\n      version = \"~> 2.1.0\"\n    }\n  }\n}\n\nprovider \"juju\" {}\n\nresource \"juju_model\" \"development\" {\n  name = \"development\"\n}\n\nresource \"juju_application\" \"ubuntu\" {\n  name       = \"ubuntu\"\n  model_uuid = juju_model.development.uuid\n  charm {\n    name    = \"ubuntu\"\n    channel = \"latest/stable\"\n  }\n  units = 1\n}\n\n# TODO: Run terraform plan and terraform apply to create the resources\n"
+      },
       "check": "task-5"
     },
     {
@@ -54,6 +69,9 @@
         "If the model name is different, replace `development` with your model name."
       ],
       "solution": "```bash\njuju status --model development\n```",
+      "workspace": {
+        "main.tf": "terraform {\n  required_providers {\n    juju = {\n      source  = \"juju/juju\"\n      version = \"~> 2.1.0\"\n    }\n  }\n}\n\nprovider \"juju\" {}\n\nresource \"juju_model\" \"development\" {\n  name = \"development\"\n}\n\nresource \"juju_application\" \"ubuntu\" {\n  name       = \"ubuntu\"\n  model_uuid = juju_model.development.uuid\n  charm {\n    name    = \"ubuntu\"\n    channel = \"latest/stable\"\n  }\n  units = 1\n}\n\n# TODO: Run juju status --model development to verify the deployment\n"
+      },
       "check": "task-6"
     },
     {
