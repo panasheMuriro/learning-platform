@@ -68,11 +68,22 @@ type QuizRef struct {
 	ID string `json:"id"`
 }
 
-// Lecture is a full lecture with markdown content.
+// Question is a single multiple-choice or text-answer question.
+type Question struct {
+	ID          string   `json:"id"`
+	Prompt      string   `json:"prompt"`
+	Type        string   `json:"type"` // "single-choice", "multi-choice", "text-answer"
+	Options     []string `json:"options,omitempty"`
+	Answer      any      `json:"answer"` // string or []string
+	Explanation string   `json:"explanation,omitempty"`
+}
+
+// Lecture is a full lecture with markdown content and optional review questions.
 type Lecture struct {
-	ID       string `json:"id"`
-	Title    string `json:"title"`
-	Markdown string `json:"markdown"`
+	ID        string     `json:"id"`
+	Title     string     `json:"title"`
+	Markdown  string     `json:"markdown"`
+	Questions []Question `json:"questions,omitempty"`
 }
 
 // LabTask is a single task inside a lab.
@@ -167,7 +178,19 @@ func (s *Service) HandleLecture(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, Lecture{ID: lectureID, Title: title, Markdown: string(md)})
+	lecture := Lecture{ID: lectureID, Title: title, Markdown: string(md)}
+
+	quizPath := filepath.Join(contentPath, moduleID, "notes", lectureID+".quiz.json")
+	if data, err := os.ReadFile(quizPath); err == nil {
+		var payload struct {
+			Questions []Question `json:"questions"`
+		}
+		if err := json.Unmarshal(data, &payload); err == nil {
+			lecture.Questions = payload.Questions
+		}
+	}
+
+	writeJSON(w, lecture)
 }
 
 // HandleQuiz serves a module's quiz

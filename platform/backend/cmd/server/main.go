@@ -78,6 +78,7 @@ func main() {
 
 	// Quiz scoring (course-scoped)
 	mux.HandleFunc("POST /api/courses/{courseId}/modules/{moduleId}/quiz/submit", quizSvc.HandleSubmit)
+	mux.HandleFunc("POST /api/courses/{courseId}/modules/{moduleId}/lectures/{lectureId}/quiz/submit", quizSvc.HandleSubmitLecture)
 
 	// Grading (course-scoped)
 	mux.HandleFunc("POST /api/courses/{courseId}/modules/{moduleId}/labs/{labId}/check", gradeSvc.HandleCheck)

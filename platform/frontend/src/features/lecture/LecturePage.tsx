@@ -2,6 +2,7 @@ import { markLectureComplete, useLecture } from "@/api/content";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { LectureQuiz } from "./LectureQuiz";
 import { LectureViewer } from "./LectureViewer";
 
 export function LecturePage() {
@@ -50,7 +51,15 @@ export function LecturePage() {
 
   return (
     <div className="course-content">
-      <LectureViewer markdown={lecture.markdown} />
+      <LectureViewer markdown={lecture.markdown} />{" "}
+      {lecture.questions && lecture.questions.length > 0 && (
+        <LectureQuiz
+          courseId={courseId}
+          moduleId={moduleId}
+          lectureId={lectureId}
+          questions={lecture.questions}
+        />
+      )}{" "}
     </div>
   );
 }

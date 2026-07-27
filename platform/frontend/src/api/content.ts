@@ -42,6 +42,7 @@ export interface Lecture {
   id: string;
   title: string;
   markdown: string;
+  questions?: QuizQuestion[];
 }
 
 export interface QuizQuestion {
@@ -243,6 +244,18 @@ export async function submitQuiz(
   return postJson(`/courses/${courseId}/modules/${moduleId}/quiz/submit`, {
     answers,
   });
+}
+
+export async function submitLectureQuiz(
+  courseId: string,
+  moduleId: string,
+  lectureId: string,
+  answers: Record<string, string | string[]>,
+): Promise<{ score: number; passed: boolean }> {
+  return postJson(
+    `/courses/${courseId}/modules/${moduleId}/lectures/${lectureId}/quiz/submit`,
+    { answers },
+  );
 }
 
 export async function checkLab(
