@@ -95,6 +95,9 @@ tasks:
     cmds:
       - |
         mkdir -p '{{.LAB_ROOT}}'
+        # Ensure the container's coder user (UID 1000) can write to the lab root.
+        # On a typical single-user Linux host this is harmless; adjust if needed.
+        chmod -R ugo+rwx '{{.LAB_ROOT}}' 2>/dev/null || true
         docker build -t course-code-server '{{.ROOT}}/platform/code-server' >/dev/null
         if ! docker ps --format '{{"{{"}}.Names{{"}}"}}' | grep -q '^code-server$'; then
           docker rm -f code-server >/dev/null 2>&1 || true
