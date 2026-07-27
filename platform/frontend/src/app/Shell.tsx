@@ -70,9 +70,7 @@ function CourseSidebar({
 }) {
   const { pathname } = useLocation();
   const queryClient = useQueryClient();
-  const [expanded, setExpanded] = useState<Set<string>>(
-    () => new Set(outline.modules.map((m) => m.id)),
-  );
+  const [expanded, setExpanded] = useState<Set<string>>(() => new Set());
 
   const toggleModule = (id: string) => {
     setExpanded((prev) => {
