@@ -65,6 +65,7 @@ export interface LabTask {
   hints?: string[];
   solution?: string;
   check: string;
+  workspace?: Record<string, string>;
 }
 
 export interface LabInstructions {
@@ -274,6 +275,18 @@ export async function openLab(
 ): Promise<{ labPath: string }> {
   return postJson(
     `/courses/${courseId}/modules/${moduleId}/labs/${labId}/open`,
+    {},
+  );
+}
+
+export async function applyTaskWorkspace(
+  courseId: string,
+  moduleId: string,
+  labId: string,
+  taskId: string,
+): Promise<{ ok: boolean }> {
+  return postJson(
+    `/courses/${courseId}/modules/${moduleId}/labs/${labId}/tasks/${taskId}/workspace`,
     {},
   );
 }

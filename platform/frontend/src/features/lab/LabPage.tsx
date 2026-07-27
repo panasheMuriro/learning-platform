@@ -2,6 +2,7 @@ import {
   type GradeResult,
   type LabTask as LabTaskType,
   type TaskResult,
+  applyTaskWorkspace,
   checkLab,
   checkTask,
   useLabInstructions,
@@ -58,14 +59,15 @@ export function LabPage() {
     return completed;
   }, [progress, moduleId, labId, taskResults]);
 
-  // Restore position to the first incomplete task on load.
+  // Restore position to the first incomplete task on load and apply the
+  // corresponding workspace so code-server reflects the current task.
   useEffect(() => {
     if (tasks.length === 0) return;
     const firstIncomplete = tasks.findIndex((t) => !completedTaskIds.has(t.id));
-    setCurrentTaskIndex(
-      firstIncomplete === -1 ? tasks.length - 1 : firstIncomplete,
-    );
-  }, [tasks, completedTaskIds]);
+    const index = firstIncomplete === -1 ? tasks.length - 1 : firstIncomplete;
+    setCurrentTaskIndex(index);
+    void applyTaskWorkspace(courseId, moduleId, labId, tasks[index].id);
+  }, [tasks, completedTaskIds, courseId, moduleId, labId]);
 
   const handleCheckTask = async (taskId: string) => {
     setCheckingTaskId(taskId);
@@ -107,6 +109,7 @@ export function LabPage() {
     // tasks without completing them. In production this would be gated so
     // learners can only view completed tasks or the next unlocked one.
     setCurrentTaskIndex(index);
+    void applyTaskWorkspace(courseId, moduleId, labId, tasks[index].id);
   };
 
   if (isLoading) return <div className="course-content">Loading lab…</div>;
