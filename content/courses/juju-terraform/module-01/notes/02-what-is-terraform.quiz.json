@@ -1,0 +1,69 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What configuration language does Terraform use?",
+      "type": "single-choice",
+      "options": [
+        "YAML",
+        "JSON",
+        "HCL",
+        "Python"
+      ],
+      "answer": "HCL",
+      "explanation": "Terraform configurations are written in HashiCorp Configuration Language (HCL)."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which command initializes a Terraform working directory?",
+      "type": "single-choice",
+      "options": [
+        "terraform init",
+        "terraform plan",
+        "terraform apply",
+        "terraform destroy"
+      ],
+      "answer": "terraform init",
+      "explanation": "terraform init downloads providers and prepares the working directory."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which file tracks the resources Terraform has created?",
+      "type": "single-choice",
+      "options": [
+        ".terraform.lock.hcl",
+        "terraform.tfstate",
+        "main.tf",
+        "variables.tf"
+      ],
+      "answer": "terraform.tfstate",
+      "explanation": "terraform.tfstate is Terraform's source of truth for existing infrastructure."
+    },
+    {
+      "id": "q4",
+      "prompt": "Terraform is best described as:",
+      "type": "single-choice",
+      "options": [
+        "Imperative",
+        "Declarative",
+        "Procedural",
+        "Object-oriented"
+      ],
+      "answer": "Declarative",
+      "explanation": "You describe the desired end state and Terraform figures out how to achieve it."
+    },
+    {
+      "id": "q5",
+      "prompt": "What does terraform plan do?",
+      "type": "single-choice",
+      "options": [
+        "Creates infrastructure",
+        "Destroys infrastructure",
+        "Shows what Terraform will do without making changes",
+        "Downloads provider plugins"
+      ],
+      "answer": "Shows what Terraform will do without making changes",
+      "explanation": "terraform plan is a dry run that shows the planned changes."
+    }
+  ]
+}

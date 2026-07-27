@@ -1,0 +1,69 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is Juju at its core?",
+      "type": "single-choice",
+      "options": [
+        "An Infrastructure-as-Code tool",
+        "A container orchestrator",
+        "An Operator Lifecycle Manager",
+        "A virtual machine hypervisor"
+      ],
+      "answer": "An Operator Lifecycle Manager",
+      "explanation": "Juju is Canonical's Operator Lifecycle Manager (OLM)."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which Juju concept acts like a workspace or namespace for applications?",
+      "type": "single-choice",
+      "options": [
+        "Controller",
+        "Model",
+        "Unit",
+        "Charm"
+      ],
+      "answer": "Model",
+      "explanation": "A Juju model is a workspace that contains applications."
+    },
+    {
+      "id": "q3",
+      "prompt": "What is a charm?",
+      "type": "single-choice",
+      "options": [
+        "A virtual machine",
+        "A reusable operator",
+        "A Juju CLI command",
+        "A Terraform provider"
+      ],
+      "answer": "A reusable operator",
+      "explanation": "Charms are reusable operators that know how to deploy and manage applications."
+    },
+    {
+      "id": "q4",
+      "prompt": "Where are charms published and shared?",
+      "type": "single-choice",
+      "options": [
+        "Docker Hub",
+        "Charmhub",
+        "Terraform Registry",
+        "Snap Store"
+      ],
+      "answer": "Charmhub",
+      "explanation": "Charmhub is the marketplace for Juju charms."
+    },
+    {
+      "id": "q5",
+      "prompt": "Which tool is best suited for day-2 application operations such as scaling and upgrades?",
+      "type": "single-choice",
+      "options": [
+        "Terraform",
+        "Juju",
+        "Ansible",
+        "Docker"
+      ],
+      "answer": "Juju",
+      "explanation": "Juju operates applications throughout their lifecycle, including day-2 operations."
+    }
+  ]
+}

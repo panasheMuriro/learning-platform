@@ -1,0 +1,67 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which resource creates a Juju workspace?",
+      "type": "single-choice",
+      "options": [
+        "juju_application",
+        "juju_model",
+        "juju_integration",
+        "juju_machine"
+      ],
+      "answer": "juju_model",
+      "explanation": "juju_model creates a workspace for applications."
+    },
+    {
+      "id": "q2",
+      "prompt": "What computed attribute of a model must applications use to reference it?",
+      "type": "single-choice",
+      "options": [
+        "name",
+        "uuid",
+        "id",
+        "slug"
+      ],
+      "answer": "uuid",
+      "explanation": "Use juju_model.<name>.uuid to reference a model from an application."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which block is required inside every juju_application resource?",
+      "type": "single-choice",
+      "options": [
+        "model",
+        "charm",
+        "cloud",
+        "provider"
+      ],
+      "answer": "charm",
+      "explanation": "The charm block specifies which charm to deploy."
+    },
+    {
+      "id": "q4",
+      "prompt": "For a subordinate charm, what should you do with the units field?",
+      "type": "single-choice",
+      "options": [
+        "Set units to 0",
+        "Omit units entirely",
+        "Set units to 1",
+        "Use machines instead"
+      ],
+      "answer": "Omit units entirely",
+      "explanation": "Subordinate charms do not have their own units."
+    },
+    {
+      "id": "q5",
+      "prompt": "Can you set both units and machines on a juju_application at the same time?",
+      "type": "single-choice",
+      "options": [
+        "Yes",
+        "No"
+      ],
+      "answer": "No",
+      "explanation": "units and machines are mutually exclusive."
+    }
+  ]
+}

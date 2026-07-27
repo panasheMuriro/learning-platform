@@ -1,0 +1,67 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the source identifier for the Juju Terraform provider?",
+      "type": "single-choice",
+      "options": [
+        "hashicorp/juju",
+        "juju/juju",
+        "canonical/juju",
+        "ubuntu/juju"
+      ],
+      "answer": "juju/juju",
+      "explanation": "The provider is published as juju/juju on the Terraform Registry."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which authentication method uses an empty provider block and reads Juju CLI config?",
+      "type": "single-choice",
+      "options": [
+        "Username/password",
+        "Client certificate",
+        "CLI config",
+        "JAAS"
+      ],
+      "answer": "CLI config",
+      "explanation": "provider \"juju\" {} reads credentials from ~/.local/share/juju/."
+    },
+    {
+      "id": "q3",
+      "prompt": "To reference a model from a juju_application, you must use:",
+      "type": "single-choice",
+      "options": [
+        "model name",
+        "model_uuid",
+        "model id",
+        "model slug"
+      ],
+      "answer": "model_uuid",
+      "explanation": "Applications reference models by the computed uuid attribute."
+    },
+    {
+      "id": "q4",
+      "prompt": "The Juju Terraform provider supports deploying bundles directly.",
+      "type": "single-choice",
+      "options": [
+        "True",
+        "False"
+      ],
+      "answer": "False",
+      "explanation": "The provider deploys charms individually; use Terraform modules to emulate bundles."
+    },
+    {
+      "id": "q5",
+      "prompt": "Which provider argument targets a specific controller by address instead of the current one?",
+      "type": "single-choice",
+      "options": [
+        "controller_name",
+        "controller_addresses",
+        "current_controller",
+        "endpoint"
+      ],
+      "answer": "controller_addresses",
+      "explanation": "controller_addresses lets you specify which controller to connect to."
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is Kubernetes primarily?",
+      "type": "single-choice",
+      "options": [
+        "A virtual machine manager",
+        "A container orchestration platform",
+        "A code repository",
+        "A relational database"
+      ],
+      "answer": "A container orchestration platform",
+      "explanation": "Kubernetes automates the deployment, scaling, and management of containerized applications."
+    },
+    {
+      "id": "q2",
+      "prompt": "What is the smallest deployable unit in Kubernetes?",
+      "type": "single-choice",
+      "options": [
+        "Node",
+        "Pod",
+        "Deployment",
+        "Service"
+      ],
+      "answer": "Pod",
+      "explanation": "A Pod is the smallest deployable unit in Kubernetes."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which Kubernetes feature automatically restarts failed containers?",
+      "type": "single-choice",
+      "options": [
+        "Scaling",
+        "Self-healing",
+        "Rolling updates",
+        "Service discovery"
+      ],
+      "answer": "Self-healing",
+      "explanation": "Self-healing restarts failed containers and replaces unhealthy pods."
+    },
+    {
+      "id": "q4",
+      "prompt": "What is a Namespace used for?",
+      "type": "single-choice",
+      "options": [
+        "A pod type",
+        "A resource division mechanism",
+        "A network policy",
+        "A storage volume"
+      ],
+      "answer": "A resource division mechanism",
+      "explanation": "Namespaces divide cluster resources between multiple users or workloads."
+    }
+  ]
+}

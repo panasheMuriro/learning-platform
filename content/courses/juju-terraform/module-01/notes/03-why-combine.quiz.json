@@ -1,0 +1,69 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which tool is recommended for Day 0 infrastructure provisioning?",
+      "type": "single-choice",
+      "options": [
+        "Juju",
+        "Terraform",
+        "Charmhub",
+        "Kubernetes"
+      ],
+      "answer": "Terraform",
+      "explanation": "Terraform provisions infrastructure such as VMs, networks, and storage."
+    },
+    {
+      "id": "q2",
+      "prompt": "What can you declare with the Juju Terraform provider?",
+      "type": "single-choice",
+      "options": [
+        "Only virtual machines",
+        "Only Kubernetes pods",
+        "Juju models, applications, and integrations",
+        "Cloud credentials only"
+      ],
+      "answer": "Juju models, applications, and integrations",
+      "explanation": "The provider lets you manage Juju resources declaratively from Terraform."
+    },
+    {
+      "id": "q3",
+      "prompt": "What is a key benefit of combining Terraform and Juju?",
+      "type": "single-choice",
+      "options": [
+        "Manual CLI steps are required",
+        "A single source of truth for infrastructure and applications",
+        "No state tracking",
+        "No dependency management"
+      ],
+      "answer": "A single source of truth for infrastructure and applications",
+      "explanation": "Both infrastructure and application topology live in .tf files."
+    },
+    {
+      "id": "q4",
+      "prompt": "Which command shows both infrastructure and application changes before applying?",
+      "type": "single-choice",
+      "options": [
+        "terraform apply",
+        "terraform plan",
+        "juju status",
+        "juju deploy"
+      ],
+      "answer": "terraform plan",
+      "explanation": "terraform plan previews the full picture of changes."
+    },
+    {
+      "id": "q5",
+      "prompt": "How does Terraform know to create a model before an application that references it?",
+      "type": "single-choice",
+      "options": [
+        "You must run commands in order",
+        "Terraform infers dependencies from references",
+        "Juju tells Terraform",
+        "You use a special flag"
+      ],
+      "answer": "Terraform infers dependencies from references",
+      "explanation": "Referencing juju_model.dev.uuid creates an implicit dependency."
+    }
+  ]
+}
