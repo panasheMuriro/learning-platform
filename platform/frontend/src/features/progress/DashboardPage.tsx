@@ -1,13 +1,21 @@
-import { useCourseOutline, useProgress } from "@/api/content";
+import {
+  resetCourseProgress,
+  useCourseOutline,
+  useProgress,
+} from "@/api/content";
 import type { ModuleOutline, Progress } from "@/api/content";
-import { Card } from "@canonical/react-components";
+import { Button, Card } from "@canonical/react-components";
+import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./DashboardPage.css";
 
 export function DashboardPage() {
   const { courseId = "" } = useParams();
+  const queryClient = useQueryClient();
   const { data: outline, isLoading } = useCourseOutline(courseId);
   const { data: progress } = useProgress(courseId);
+  const [resetting, setResetting] = useState(false);
 
   if (isLoading) return <div className="course-content">Loading…</div>;
   if (!outline)
@@ -19,10 +27,37 @@ export function DashboardPage() {
   );
   const totalLabs = outline.modules.reduce((n, m) => n + m.labs.length, 0);
 
+  const handleReset = async () => {
+    if (
+      !window.confirm(
+        "Are you sure you want to reset all progress for this course? This cannot be undone.",
+      )
+    ) {
+      return;
+    }
+    setResetting(true);
+    try {
+      const updated = await resetCourseProgress(courseId);
+      queryClient.setQueryData(["progress", courseId], updated);
+    } finally {
+      setResetting(false);
+    }
+  };
+
   return (
     <div className="dashboard">
       <div className="dashboard__hero">
-        <h1>{outline.title}</h1>
+        <div className="dashboard__hero-header">
+          <h1>{outline.title}</h1>
+          <Button
+            type="button"
+            appearance="negative"
+            disabled={resetting}
+            onClick={handleReset}
+          >
+            {resetting ? "Resetting…" : "Reset Progress"}
+          </Button>
+        </div>
         <p className="dashboard__subtitle">
           Hands-on learning — lectures, quizzes, and labs with auto-grading.
         </p>

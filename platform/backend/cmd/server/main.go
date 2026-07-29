@@ -90,6 +90,7 @@ func main() {
 
 	// Progress (course-scoped)
 	mux.HandleFunc("GET /api/courses/{courseId}/progress", st.HandleGetProgress)
+	mux.HandleFunc("DELETE /api/courses/{courseId}/progress", st.HandleResetCourseProgress)
 	mux.HandleFunc("POST /api/courses/{courseId}/modules/{moduleId}/lectures/{lectureId}/complete", st.HandleMarkLectureComplete)
 	mux.HandleFunc("DELETE /api/courses/{courseId}/modules/{moduleId}/lectures/{lectureId}/complete", st.HandleUnmarkLecture)
 	mux.HandleFunc("DELETE /api/courses/{courseId}/modules/{moduleId}/labs/{labId}/complete", st.HandleUnmarkLab)

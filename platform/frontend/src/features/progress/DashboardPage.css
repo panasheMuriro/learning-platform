@@ -1,42 +1,68 @@
-.dashboard__stats {
+.dashboard {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Hero */
+.dashboard__hero {
   margin-bottom: 2rem;
 }
 
-.dashboard__stat {
+.dashboard__hero-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard__hero-header h1 {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.dashboard__subtitle {
+  color: var(--color-text-muted, #666);
+  font-size: 1rem;
+  margin: 0 0 1.5rem;
+}
+
+.dashboard__stats {
+  display: flex;
+  gap: 1rem;
+}
+
+.dashboard__stat-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 1rem 1.5rem;
+  min-width: 100px;
 }
 
 .dashboard__stat-num {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #06c;
+  color: var(--color-accent, #06c);
 }
 
 .dashboard__stat-label {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #666;
+  color: var(--color-text-muted, #666);
   margin-top: 0.25rem;
 }
 
-.dashboard__modules {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
+/* Module cards inside timeline */
 .module-card {
-  text-decoration: none;
-  color: inherit;
-  display: block;
+  padding: 1rem 1.25rem;
+  transition: box-shadow 0.15s;
 }
 
-.module-card:hover .p-card {
-  border-color: #06c;
+.module-card:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
@@ -52,7 +78,7 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #06c;
+  background: var(--color-accent, #06c);
   color: #fff;
   display: flex;
   align-items: center;
@@ -62,25 +88,25 @@
 }
 
 .module-card__title {
-  margin: 0;
   flex: 1;
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
 }
 
-.module-card__status {
-  font-size: 1rem;
+.module-card__title:hover {
+  color: var(--color-accent, #06c);
 }
 
-.module-card__status--done {
+.module-card__done {
   color: #2e7d32;
-}
-
-.module-card__status--progress {
-  color: #ff9800;
+  font-size: 1rem;
 }
 
 .module-card__progress {
   height: 4px;
-  background: #eee;
+  background: var(--color-surface-muted, #eee);
   border-radius: 2px;
   overflow: hidden;
   margin-bottom: 0.5rem;
@@ -97,5 +123,5 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.75rem;
-  color: #666;
+  color: var(--color-text-muted, #666);
 }

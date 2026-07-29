@@ -236,6 +236,14 @@ export async function unmarkQuiz(
   return res.json() as Promise<Progress>;
 }
 
+export async function resetCourseProgress(courseId: string): Promise<Progress> {
+  const res = await fetch(`${API_BASE}/courses/${courseId}/progress`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  return res.json() as Promise<Progress>;
+}
+
 export async function submitQuiz(
   courseId: string,
   moduleId: string,

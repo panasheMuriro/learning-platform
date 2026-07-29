@@ -200,6 +200,26 @@ func (s *Store) UnrecordQuiz(courseID, moduleID string) error {
 		courseID, moduleID).Delete(&QuizResult{}).Error
 }
 
+// ResetCourseProgress deletes all progress for a course (lectures, quizzes,
+// labs, and lab tasks). Used when a learner wants to start over.
+func (s *Store) ResetCourseProgress(courseID string) error {
+	return s.db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("course_id = ?", courseID).Delete(&LectureProgress{}).Error; err != nil {
+			return err
+		}
+		if err := tx.Where("course_id = ?", courseID).Delete(&QuizResult{}).Error; err != nil {
+			return err
+		}
+		if err := tx.Where("course_id = ?", courseID).Delete(&LabResult{}).Error; err != nil {
+			return err
+		}
+		if err := tx.Where("course_id = ?", courseID).Delete(&LabTaskResult{}).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+}
+
 // ---- Progress response types (kept compatible with the frontend) ----
 
 // ProgressResponse is the full progress state for one course.
@@ -414,6 +434,21 @@ func (s *Store) HandleUnmarkQuiz(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, resp)
+}
+
+// HandleResetCourseProgress is the HTTP handler for
+// DELETE /api/courses/{courseId}/progress.
+// It deletes all progress for the course and returns the empty progress state.
+func (s *Store) HandleResetCourseProgress(w http.ResponseWriter, r *http.Request) {
+	courseID := r.PathValue("courseId")
+
+	if err := s.ResetCourseProgress(courseID); err != nil {
+		log.Printf("reset course progress error: %v", err)
+		http.Error(w, "failed to reset course progress", http.StatusInternalServerError)
+		return
+	}
+
+	writeJSON(w, ProgressResponse{Modules: []ModuleProgress{}})
 }
 
 // ---- Helpers ----
