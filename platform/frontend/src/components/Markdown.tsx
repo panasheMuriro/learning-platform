@@ -1,5 +1,5 @@
 import { Button } from "@canonical/react-components";
-import { type ReactNode, useCallback, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useId, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSanitize from "rehype-sanitize";
@@ -14,6 +14,84 @@ interface MarkdownProps {
 interface CodeBlockProps {
   children?: ReactNode;
   className?: string;
+}
+
+type MermaidAPI = typeof import("mermaid").default;
+
+let mermaidModule: Promise<MermaidAPI> | null = null;
+
+function loadMermaid(): Promise<MermaidAPI> {
+  if (mermaidModule) return mermaidModule;
+  mermaidModule = import("mermaid").then((m) => {
+    const mermaid = m.default as MermaidAPI;
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "default",
+      securityLevel: "loose",
+    });
+    return mermaid;
+  });
+  return mermaidModule;
+}
+
+function MermaidDiagram({ source }: { source: string }) {
+  const id = useId().replace(/[^a-zA-Z0-9]/g, "");
+  const containerId = `mermaid-${id}`;
+  const [svg, setSvg] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadMermaid()
+      .then(async (mermaid) => {
+        try {
+          const { svg } = await mermaid.render(containerId, source);
+          if (!cancelled) setSvg(svg);
+        } catch (err) {
+          if (!cancelled) setError(String(err));
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) setError(String(err));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [containerId, source]);
+
+  if (error) {
+    return (
+      <div className="mermaid-diagram mermaid-diagram--error">
+        <pre>{error}</pre>
+      </div>
+    );
+  }
+  if (!svg) {
+    return <div className="mermaid-diagram mermaid-diagram--loading" />;
+  }
+  return (
+    <div
+      className="mermaid-diagram"
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
+}
+
+function InlineCode({
+  className,
+  children,
+}: {
+  className?: string;
+  children?: ReactNode;
+}) {
+  const language = /language-(\S+)/.exec(className || "")?.[1];
+  const source = extractText(children).trim();
+
+  if (language === "mermaid" && source) {
+    return <MermaidDiagram source={source} />;
+  }
+
+  return <code className={className}>{children}</code>;
 }
 
 function CodeBlock({ children, className }: CodeBlockProps) {
@@ -70,6 +148,7 @@ export function Markdown({ children, className }: MarkdownProps) {
         rehypePlugins={[rehypeSanitize, rehypeHighlight]}
         components={{
           pre: CodeBlock,
+          code: InlineCode,
         }}
       >
         {children}

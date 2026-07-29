@@ -14,3 +14,28 @@
 .markdown-pre:focus-within .markdown-pre__copy {
   opacity: 1;
 }
+
+.mermaid-diagram {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.mermaid-diagram--loading {
+  min-height: 120px;
+  background: var(--color-surface-muted, #f7f7f7);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.mermaid-diagram--error {
+  color: #c62828;
+  padding: 0.5rem;
+  background: #fbe9e7;
+  border-radius: 4px;
+}
+
+.mermaid-diagram--error pre {
+  margin: 0;
+  white-space: pre-wrap;
+}
