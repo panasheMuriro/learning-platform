@@ -1,5 +1,5 @@
 import type { QuizQuestion } from "@/api/content";
-import { Field } from "@canonical/react-components";
+import { CheckboxInput, Field, RadioInput } from "@canonical/react-components";
 
 interface QuizQuestionInputProps {
   question: QuizQuestion;
@@ -34,16 +34,15 @@ export function QuizQuestionInput({
       <Field label="Select one">
         <div className="quiz__choices">
           {question.options.map((opt) => (
-            <label key={opt} className="quiz__choice">
-              <input
-                type="radio"
-                name={question.id}
-                disabled={revealed}
-                checked={answer === opt}
-                onChange={() => onChange(opt)}
-              />
-              {opt}
-            </label>
+            <RadioInput
+              key={opt}
+              id={`${question.id}-${opt}`}
+              label={opt}
+              name={question.id}
+              disabled={revealed}
+              checked={answer === opt}
+              onChange={() => onChange(opt)}
+            />
           ))}
         </div>
       </Field>
@@ -56,21 +55,20 @@ export function QuizQuestionInput({
       <Field label="Select all that apply">
         <div className="quiz__choices">
           {question.options.map((opt) => (
-            <label key={opt} className="quiz__choice">
-              <input
-                type="checkbox"
-                disabled={revealed}
-                checked={selected.includes(opt)}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    onChange([...selected, opt]);
-                  } else {
-                    onChange(selected.filter((s) => s !== opt));
-                  }
-                }}
-              />
-              {opt}
-            </label>
+            <CheckboxInput
+              key={opt}
+              id={`${question.id}-${opt}`}
+              label={opt}
+              disabled={revealed}
+              checked={selected.includes(opt)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.checked) {
+                  onChange([...selected, opt]);
+                } else {
+                  onChange(selected.filter((s) => s !== opt));
+                }
+              }}
+            />
           ))}
         </div>
       </Field>
