@@ -178,12 +178,14 @@
   border-color: rgba(255, 255, 255, 0.7);
 }
 
-.course-sidebar__check--done {
-  background: #0e8420;
-  border-color: #0e8420;
-}
-
-.course-sidebar__check--done:hover {
-  background: #0a6b1a;
-  border-color: #0a6b1a;
+.course-sidebar__check .p-checkbox__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

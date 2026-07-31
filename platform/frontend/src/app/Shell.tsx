@@ -8,7 +8,7 @@ import {
 } from "@/api/content";
 import type { CourseOutline, ModuleOutline, Progress } from "@/api/content";
 import { Icon } from "@/components/Icon";
-import { ApplicationLayout } from "@canonical/react-components";
+import { ApplicationLayout, CheckboxInput } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
@@ -316,21 +316,13 @@ function NavItem({
       >
         <span className="course-sidebar__item-icon">{icon}</span>
         <span className="course-sidebar__item-label">{label}</span>
-        <button
-          type="button"
-          className={`course-sidebar__check ${
-            done ? "course-sidebar__check--done" : ""
-          }`}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onToggle();
-          }}
-          aria-label={done ? "Mark as incomplete" : "Mark as complete"}
-          title={done ? "Mark as incomplete" : "Mark as complete"}
-        >
-          {done && <Icon name="success" size={12} />}
-        </button>
+        <CheckboxInput
+          id={`${href}--toggle`}
+          className="course-sidebar__check"
+          label={done ? "Mark as incomplete" : "Mark as complete"}
+          checked={done}
+          onChange={onToggle}
+        />
       </Link>
     </li>
   );
