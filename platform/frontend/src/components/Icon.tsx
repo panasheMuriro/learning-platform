@@ -57,9 +57,10 @@ type VanillaIconName =
   | "user"
   | "warning";
 
-interface IconProps extends Omit<VanillaIconProps, "name"> {
+interface IconProps extends Omit<VanillaIconProps, "name" | "light"> {
   name: IconName;
   size?: number;
+  light?: boolean;
 }
 
 const ALIAS_MAP: Record<
@@ -121,6 +122,7 @@ export function Icon({
   name,
   size,
   className,
+  light = true,
   ...props
 }: IconProps): ReactNode {
   const vanillaName = resolveName(name);
@@ -128,6 +130,7 @@ export function Icon({
   return (
     <VanillaIcon
       name={vanillaName}
+      light={light}
       className={`icon ${className ?? ""}`.trim()}
       style={style}
       {...props}

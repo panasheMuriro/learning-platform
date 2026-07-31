@@ -11,6 +11,18 @@
 @import "vanilla-framework";
 @include vanilla;
 
+// Include additional Vanilla icons used by the course platform beyond the core set.
+@include vf-p-icon-applications;
+@include vf-p-icon-arrow-left;
+@include vf-p-icon-arrow-right;
+@include vf-p-icon-book;
+@include vf-p-icon-keyboard;
+@include vf-p-icon-lock-locked;
+@include vf-p-icon-lock-unlock;
+@include vf-p-icon-open-terminal;
+@include vf-p-icon-play;
+@include vf-p-icon-topic;
+
 // Course-specific styles
 :root {
   --course-content-max-width: 960px;

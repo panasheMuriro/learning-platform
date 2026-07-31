@@ -11,3 +11,8 @@
 .icon--inline-end {
   margin-inline-start: 0.35em;
 }
+
+/* Ensure icons inherit the surrounding text colour for adequate contrast. */
+.p-icon {
+  background-color: currentColor;
+}
