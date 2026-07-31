@@ -97,7 +97,7 @@ func (a *API) HandleWrite(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := os.WriteFile(fullPath, data, 0o644); err != nil {
+	if err := os.WriteFile(fullPath, data, 0o666); err != nil {
 		http.Error(w, "failed to write file", http.StatusInternalServerError)
 		return
 	}

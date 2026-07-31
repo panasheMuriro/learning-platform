@@ -58,7 +58,7 @@ func (s *Service) Ensure(courseID, moduleID, labID string) (labDir string, err e
 	}
 	labContentDir := filepath.Join(contentPath, moduleID, labID)
 
-	if err := os.MkdirAll(labDir, 0o755); err != nil {
+	if err := os.MkdirAll(labDir, 0o777); err != nil {
 		return "", err
 	}
 
@@ -77,13 +77,13 @@ func (s *Service) Ensure(courseID, moduleID, labID string) (labDir string, err e
 			if err != nil {
 				continue
 			}
-			_ = os.WriteFile(dst, data, 0o644)
+			_ = os.WriteFile(dst, data, 0o666)
 		}
 	}
 
 	// Seed (and keep up to date) the hidden grading scripts.
 	gradingDir := filepath.Join(labDir, ".grading")
-	if err := os.MkdirAll(gradingDir, 0o755); err != nil {
+	if err := os.MkdirAll(gradingDir, 0o777); err != nil {
 		return "", err
 	}
 	for _, name := range []string{"check.sh", "setup.sh"} {
@@ -99,12 +99,12 @@ func (s *Service) Ensure(courseID, moduleID, labID string) (labDir string, err e
 
 	// Hide .grading (and .vscode itself) from the code-server file explorer.
 	vscodeDir := filepath.Join(labDir, ".vscode")
-	if err := os.MkdirAll(vscodeDir, 0o755); err != nil {
+	if err := os.MkdirAll(vscodeDir, 0o777); err != nil {
 		return "", err
 	}
 	settingsPath := filepath.Join(vscodeDir, "settings.json")
 	if _, err := os.Stat(settingsPath); err != nil {
-		_ = os.WriteFile(settingsPath, []byte(hiddenSettings), 0o644)
+		_ = os.WriteFile(settingsPath, []byte(hiddenSettings), 0o666)
 	}
 
 	return labDir, nil
@@ -177,15 +177,15 @@ func (s *Service) ApplyWorkspace(courseID, moduleID, labID, taskID string) error
 	}
 
 	labDir := filepath.Join(s.labRoot, labID)
-	if err := os.MkdirAll(labDir, 0o755); err != nil {
+	if err := os.MkdirAll(labDir, 0o777); err != nil {
 		return err
 	}
 	for relPath, content := range workspace {
 		fullPath := filepath.Join(labDir, relPath)
-		if err := os.MkdirAll(filepath.Dir(fullPath), 0o755); err != nil {
+		if err := os.MkdirAll(filepath.Dir(fullPath), 0o777); err != nil {
 			return err
 		}
-		if err := os.WriteFile(fullPath, []byte(content), 0o644); err != nil {
+		if err := os.WriteFile(fullPath, []byte(content), 0o666); err != nil {
 			return err
 		}
 	}
