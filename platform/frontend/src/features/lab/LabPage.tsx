@@ -189,6 +189,7 @@ export function LabPage() {
                   name={t.passed ? "success" : "error"}
                   className="task__icon"
                   size={16}
+                  light
                 />
                 <span className="task__name">{t.name}</span>
                 <span className="task__msg">{t.message}</span>

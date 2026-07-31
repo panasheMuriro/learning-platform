@@ -41,7 +41,7 @@ export function Shell({ children }: ShellProps) {
     ) : (
       <nav className="course-sidebar" aria-label="Main navigation">
         <Link to="/" className="course-sidebar__back">
-          <Icon name="arrow-left" className="icon--inline-start" />
+          <Icon name="arrow-left" className="icon--inline-start" light />
           All courses
         </Link>
       </nav>
@@ -52,7 +52,7 @@ export function Shell({ children }: ShellProps) {
       sideNavigation={sideNav}
       logo={
         <Link to="/" className="shell__logo">
-          <Icon name="graduation" className="icon--inline-start" />
+          <Icon name="graduation" className="icon--inline-start" light />
           {outline?.title ?? "Course Platform"}
         </Link>
       }
@@ -236,7 +236,7 @@ function ModuleSection({
               <NavItem
                 key={lec.id}
                 href={href}
-                icon={<Icon name="topic" size={14} />}
+                icon={<Icon name="topic" size={14} light />}
                 label={lec.title}
                 done={done}
                 active={pathname === href}
@@ -252,7 +252,7 @@ function ModuleSection({
               return (
                 <NavItem
                   href={`/courses/${courseId}/modules/${module.id}/quiz`}
-                  icon={<Icon name="question" size={14} />}
+                  icon={<Icon name="question" size={14} light />}
                   label="Quiz"
                   done={progress?.quizPassed ?? false}
                   active={
@@ -277,7 +277,7 @@ function ModuleSection({
               <NavItem
                 key={lab.id}
                 href={href}
-                icon={<Icon name="open-terminal" size={14} />}
+                icon={<Icon name="open-terminal" size={14} light />}
                 label={lab.title}
                 done={done}
                 active={pathname === href}

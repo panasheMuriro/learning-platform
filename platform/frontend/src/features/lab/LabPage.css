@@ -65,6 +65,7 @@
   padding: 0.25rem 0.5rem;
   border: none;
   background: var(--color-surface, #fff);
+  color: var(--color-text-default, #111);
   cursor: pointer;
   font-size: 0.875rem;
   transition: background 0.1s;
@@ -76,6 +77,11 @@
 
 .lab-page__view-toggle button.active {
   background: var(--color-accent, #06c);
+  color: #fff;
+}
+
+.lab-page__view-toggle button.active .icon {
+  /* Inherit the white text colour so light-mode Vanilla icons show on the active blue background. */
   color: #fff;
 }
 
@@ -187,7 +193,7 @@
   padding: 0.5rem;
   border-radius: 4px;
   font-size: 0.8125rem;
-  color: #555;
+  color: var(--color-text-default, #111);
   opacity: 0.7;
 }
 
@@ -220,6 +226,7 @@
   height: 1.5rem;
   border-radius: 50%;
   background: #e0e0e0;
+  color: var(--color-text-default, #111);
   font-size: 0.75rem;
   flex-shrink: 0;
 }

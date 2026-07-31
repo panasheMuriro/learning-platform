@@ -122,7 +122,7 @@ export function Icon({
   name,
   size,
   className,
-  light = true,
+  light,
   ...props
 }: IconProps): ReactNode {
   const vanillaName = resolveName(name);
