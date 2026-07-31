@@ -4,6 +4,7 @@ import {
   useProgress,
 } from "@/api/content";
 import type { ModuleOutline, Progress } from "@/api/content";
+import { Icon } from "@/components/Icon";
 import { Button, Card } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -117,7 +118,9 @@ function ModuleEvent({ module, index, courseId, progress }: ModuleEventProps) {
         <Link to={firstLectureUrl} className="module-card__title">
           {module.title}
         </Link>
-        {pct === 100 && <span className="module-card__done">✓</span>}
+        {pct === 100 && (
+          <Icon name="success" className="module-card__done" size={16} />
+        )}
       </div>
       <div className="module-card__progress">
         <div

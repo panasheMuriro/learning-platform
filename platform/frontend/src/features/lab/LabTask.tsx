@@ -1,4 +1,5 @@
 import type { LabTask as LabTaskType, TaskResult } from "@/api/content";
+import { Icon } from "@/components/Icon";
 import { Markdown } from "@/components/Markdown";
 import { Button } from "@canonical/react-components";
 import { useState } from "react";
@@ -128,7 +129,14 @@ export function LabTask({
           disabled={checking || completed}
           className="lab-task__check-btn"
         >
-          {checking ? "Checking…" : completed ? "✅ Passed" : "✓ Check task"}
+          {checking ? (
+            "Checking…"
+          ) : (
+            <>
+              <Icon name={completed ? "success" : "success"} size={14} />
+              {completed ? " Passed" : " Check task"}
+            </>
+          )}
         </Button>
         {completed && (
           <Button
@@ -144,13 +152,14 @@ export function LabTask({
 
       {taskResult && !taskResult.passed && (
         <div className="lab-task__feedback lab-task__feedback--fail">
-          <strong>❌ {taskResult.name}</strong>
+          <Icon name="error" size={14} />
+          <strong>{taskResult.name}</strong>
           <p>{taskResult.message}</p>
         </div>
       )}
       {completed && !taskResult?.passed && (
         <div className="lab-task__feedback lab-task__feedback--pass">
-          ✅ Task passed
+          <Icon name="success" size={14} /> Task passed
         </div>
       )}
     </div>

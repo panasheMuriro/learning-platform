@@ -8,6 +8,7 @@ import {
   useLabInstructions,
   useProgress,
 } from "@/api/content";
+import { Icon } from "@/components/Icon";
 import { Button } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
@@ -129,7 +130,8 @@ export function LabPage() {
             <span
               className={`lab-page__badge ${grade.passed ? "lab-page__badge--pass" : "lab-page__badge--fail"}`}
             >
-              {grade.passed ? "✅ Lab passed" : "❌ Lab check failed"}
+              <Icon name={grade.passed ? "success" : "error"} size={14} />
+              {grade.passed ? " Lab passed" : " Lab check failed"}
             </span>
           )}
         </div>
@@ -141,7 +143,7 @@ export function LabPage() {
               onClick={() => setViewMode("instructions")}
               title="Instructions only"
             >
-              📖
+              <Icon name="book" size={16} />
             </button>
             <button
               type="button"
@@ -149,7 +151,7 @@ export function LabPage() {
               onClick={() => setViewMode("split")}
               title="Split view"
             >
-              ⬌
+              <Icon name="expand" size={16} />
             </button>
             <button
               type="button"
@@ -157,7 +159,7 @@ export function LabPage() {
               onClick={() => setViewMode("workspace")}
               title="Workspace only"
             >
-              ⌨
+              <Icon name="open-terminal" size={16} />
             </button>
           </div>
           <Button
@@ -171,7 +173,8 @@ export function LabPage() {
                 : "Complete all tasks before checking the lab"
             }
           >
-            ✓ Check lab
+            <Icon name="success" size={14} />
+            Check lab
           </Button>
         </div>
       </div>
@@ -182,7 +185,11 @@ export function LabPage() {
           <ul>
             {grade.tasks.map((t) => (
               <li key={t.id} className={t.passed ? "task--pass" : "task--fail"}>
-                <span className="task__icon">{t.passed ? "✅" : "❌"}</span>
+                <Icon
+                  name={t.passed ? "success" : "error"}
+                  className="task__icon"
+                  size={16}
+                />
                 <span className="task__name">{t.name}</span>
                 <span className="task__msg">{t.message}</span>
               </li>
@@ -209,7 +216,11 @@ export function LabPage() {
                         title={task.title}
                       >
                         <span className="lab-page__step-marker">
-                          {completed ? "✓" : idx + 1}
+                          {completed ? (
+                            <Icon name="success" size={12} />
+                          ) : (
+                            idx + 1
+                          )}
                         </span>
                         <span className="lab-page__step-title">
                           {task.title}

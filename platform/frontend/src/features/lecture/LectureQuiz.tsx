@@ -1,5 +1,6 @@
 import { submitLectureQuiz } from "@/api/content";
 import type { QuizQuestion } from "@/api/content";
+import { Icon } from "@/components/Icon";
 import { QuizQuestionInput } from "@/components/QuizQuestionInput";
 import { Button, Card } from "@canonical/react-components";
 import { useState } from "react";
@@ -66,7 +67,10 @@ export function LectureQuiz({
               revealed={!!result}
             />
             {result && q.explanation && (
-              <p className="lecture-quiz__explanation">💡 {q.explanation}</p>
+              <p className="lecture-quiz__explanation">
+                <Icon name="help" size={14} />
+                {q.explanation}
+              </p>
             )}
           </Card>
         ))}
@@ -74,7 +78,8 @@ export function LectureQuiz({
           <div
             className={`lecture-quiz__result ${result.passed ? "lecture-quiz__result--pass" : "lecture-quiz__result--fail"}`}
           >
-            Score: {result.score}% — {result.passed ? "Passed ✅" : "Failed ❌"}
+            <Icon name={result.passed ? "success" : "error"} size={14} />
+            Score: {result.score}% — {result.passed ? "Passed" : "Failed"}
           </div>
         )}
         <div className="lecture-quiz__actions">

@@ -1,0 +1,13 @@
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.icon--inline-start {
+  margin-inline-end: 0.35em;
+}
+
+.icon--inline-end {
+  margin-inline-start: 0.35em;
+}

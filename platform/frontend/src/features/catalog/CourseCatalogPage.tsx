@@ -1,4 +1,5 @@
 import { useCourses } from "@/api/content";
+import { Icon, type IconName } from "@/components/Icon";
 import { Card } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 import "./CourseCatalogPage.css";
@@ -26,7 +27,11 @@ export function CourseCatalogPage() {
             className="catalog__card-link"
           >
             <Card className="catalog__card">
-              <span className="catalog__card-icon">{course.icon || "📚"}</span>
+              <Icon
+                name={(course.icon as IconName) || "book"}
+                className="catalog__card-icon"
+                size={32}
+              />
               <h2 className="catalog__card-title">{course.title}</h2>
               <p className="catalog__card-summary">{course.summary}</p>
               {course.version && (

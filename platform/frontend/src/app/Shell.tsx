@@ -7,6 +7,7 @@ import {
   useProgress,
 } from "@/api/content";
 import type { CourseOutline, ModuleOutline, Progress } from "@/api/content";
+import { Icon } from "@/components/Icon";
 import { ApplicationLayout } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
@@ -40,7 +41,8 @@ export function Shell({ children }: ShellProps) {
     ) : (
       <nav className="course-sidebar" aria-label="Main navigation">
         <Link to="/" className="course-sidebar__back">
-          ← All courses
+          <Icon name="arrow-left" className="icon--inline-start" />
+          All courses
         </Link>
       </nav>
     );
@@ -50,7 +52,8 @@ export function Shell({ children }: ShellProps) {
       sideNavigation={sideNav}
       logo={
         <Link to="/" className="shell__logo">
-          🎓 {outline?.title ?? "Course Platform"}
+          <Icon name="graduation" className="icon--inline-start" />
+          {outline?.title ?? "Course Platform"}
         </Link>
       }
     >
@@ -135,7 +138,8 @@ function CourseSidebar({
   return (
     <nav className="course-sidebar" aria-label="Course navigation">
       <Link to="/" className="course-sidebar__back">
-        ← All courses
+        <Icon name="arrow-left" className="icon--inline-start" />
+        All courses
       </Link>
 
       <div className="course-sidebar__title">{outline.title}</div>
@@ -215,9 +219,10 @@ function ModuleSection({
         onClick={onToggle}
         aria-expanded={expanded}
       >
-        <span className="course-sidebar__module-chevron">
-          {expanded ? "▼" : "▶"}
-        </span>
+        <Icon
+          name={expanded ? "chevron-down" : "chevron-right"}
+          className="course-sidebar__module-chevron"
+        />
         <span className="course-sidebar__module-title">{module.title}</span>
         <ProgressRing pct={pct} />
       </button>
@@ -231,7 +236,7 @@ function ModuleSection({
               <NavItem
                 key={lec.id}
                 href={href}
-                icon={<PlayIcon />}
+                icon={<Icon name="topic" size={14} />}
                 label={lec.title}
                 done={done}
                 active={pathname === href}
@@ -247,7 +252,7 @@ function ModuleSection({
               return (
                 <NavItem
                   href={`/courses/${courseId}/modules/${module.id}/quiz`}
-                  icon={<QuizIcon />}
+                  icon={<Icon name="question" size={14} />}
                   label="Quiz"
                   done={progress?.quizPassed ?? false}
                   active={
@@ -272,7 +277,7 @@ function ModuleSection({
               <NavItem
                 key={lab.id}
                 href={href}
-                icon={<LabIcon />}
+                icon={<Icon name="open-terminal" size={14} />}
                 label={lab.title}
                 done={done}
                 active={pathname === href}
@@ -324,7 +329,7 @@ function NavItem({
           aria-label={done ? "Mark as incomplete" : "Mark as complete"}
           title={done ? "Mark as incomplete" : "Mark as complete"}
         >
-          {done && <CheckIcon />}
+          {done && <Icon name="success" size={12} />}
         </button>
       </Link>
     </li>
@@ -372,70 +377,6 @@ function ProgressRing({ pct }: { pct: number }) {
       >
         {pct}%
       </text>
-    </svg>
-  );
-}
-
-function PlayIcon() {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M8 5v14l11-7z" />
-    </svg>
-  );
-}
-
-function LabIcon() {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <path d="M9 3v6m6-6v6m-9 4h12M6 21h12a2 2 0 0 0 2-2v-6H4v6a2 2 0 0 0 2 2z" />
-    </svg>
-  );
-}
-
-function QuizIcon() {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-      <line x1="12" y1="17" x2="12.01" y2="17" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg
-      width="12"
-      height="12"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="3"
-      aria-hidden="true"
-    >
-      <polyline points="20 6 9 17 4 12" />
     </svg>
   );
 }

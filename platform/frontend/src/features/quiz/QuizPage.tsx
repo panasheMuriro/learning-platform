@@ -1,4 +1,5 @@
 import { submitQuiz, useQuiz } from "@/api/content";
+import { Icon } from "@/components/Icon";
 import { QuizQuestionInput } from "@/components/QuizQuestionInput";
 import { Button, Card } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
@@ -54,7 +55,10 @@ export function QuizPage() {
               revealed={!!result}
             />
             {result && q.explanation && (
-              <p className="quiz__explanation">💡 {q.explanation}</p>
+              <p className="quiz__explanation">
+                <Icon name="help" size={14} />
+                {q.explanation}
+              </p>
             )}
           </Card>
         ))}
@@ -62,7 +66,8 @@ export function QuizPage() {
           <div
             className={`quiz__result ${result.passed ? "quiz__result--pass" : "quiz__result--fail"}`}
           >
-            Score: {result.score}% — {result.passed ? "Passed ✅" : "Failed ❌"}
+            <Icon name={result.passed ? "success" : "error"} size={14} />
+            Score: {result.score}% — {result.passed ? "Passed" : "Failed"}
           </div>
         )}
         <Button type="submit" appearance="positive" disabled={submitting}>
