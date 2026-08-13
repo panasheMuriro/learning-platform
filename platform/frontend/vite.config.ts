@@ -17,11 +17,11 @@ export default defineConfig({
     // Proxy API + WebSocket calls to the local backend during development
     proxy: {
       "/api": {
-        target: "http://localhost:8080",
+        target: "http://localhost:52135",
         changeOrigin: true,
       },
       "/ws": {
-        target: "ws://localhost:8080",
+        target: "ws://localhost:52135",
         ws: true,
       },
       "/code-server": {

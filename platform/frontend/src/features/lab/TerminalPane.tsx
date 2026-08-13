@@ -15,70 +15,40 @@ export function TerminalPane({ labPath }: TerminalPaneProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const termRef = useRef<Terminal | null>(null);
   const wsRef = useRef<WebSocket | null>(null);
+  const resizeHandlerRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     // Don't connect until the lab path is known (after seeding completes).
     if (!labPath || !containerRef.current) return;
 
-    const term = new Terminal({
-      fontSize: 14,
-      fontFamily: "monospace",
-      cursorBlink: true,
-      theme: {
-        background: "#1e1e1e",
-        foreground: "#d4d4d4",
-      },
-    });
-    const fitAddon = new FitAddon();
-    term.loadAddon(fitAddon);
-    term.open(containerRef.current);
-    fitAddon.fit();
-    termRef.current = term;
+    const container = containerRef.current;
 
-    // Pass the lab path as a query param so the backend PTY starts in the
-    // lab working directory.
-    const wsUrl = `${terminalWsUrl()}?path=${encodeURIComponent(labPath)}`;
-    const ws = new WebSocket(wsUrl);
-    wsRef.current = ws;
-
-    ws.onopen = () => {
-      term.writeln("\x1b[32mConnected to lab terminal.\x1b[0m");
-      // Send initial size
-      ws.send(
-        JSON.stringify({
-          type: "resize",
-          cols: term.cols,
-          rows: term.rows,
-        }),
-      );
-    };
-
-    ws.onmessage = (event) => {
-      // Messages from the backend are raw terminal output
-      if (typeof event.data === "string") {
-        term.write(event.data);
-      }
-    };
-
-    ws.onerror = () => {
-      term.writeln("\x1b[31mTerminal connection error.\x1b[0m");
-    };
-
-    ws.onclose = () => {
-      term.writeln("\x1b[33mTerminal disconnected.\x1b[0m");
-    };
-
-    // Send user input to the backend
-    term.onData((data: string) => {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(data);
-      }
-    });
-
-    // Handle resize
-    const handleResize = () => {
+    // Defer initialization to next frame so the container has dimensions.
+    // xterm.js throws if term.open() is called on a zero-size element.
+    const raf = requestAnimationFrame(() => {
+      const term = new Terminal({
+        fontSize: 14,
+        fontFamily: "monospace",
+        cursorBlink: true,
+        theme: {
+          background: "#1e1e1e",
+          foreground: "#d4d4d4",
+        },
+      });
+      const fitAddon = new FitAddon();
+      term.loadAddon(fitAddon);
+      term.open(container);
       fitAddon.fit();
-      if (ws.readyState === WebSocket.OPEN) {
+      termRef.current = term;
+
+      // Pass the lab path as a query param so the backend PTY starts in the
+      // lab working directory.
+      const wsUrl = `${terminalWsUrl()}?path=${encodeURIComponent(labPath)}`;
+      const ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
+
+      ws.onopen = () => {
+        term.writeln("\x1b[32mConnected to lab terminal.\x1b[0m");
         ws.send(
           JSON.stringify({
             type: "resize",
@@ -86,14 +56,52 @@ export function TerminalPane({ labPath }: TerminalPaneProps) {
             rows: term.rows,
           }),
         );
-      }
-    };
-    window.addEventListener("resize", handleResize);
+      };
+
+      ws.onmessage = (event) => {
+        if (typeof event.data === "string") {
+          term.write(event.data);
+        }
+      };
+
+      ws.onerror = () => {
+        term.writeln("\x1b[31mTerminal connection error.\x1b[0m");
+      };
+
+      ws.onclose = () => {
+        term.writeln("\x1b[33mTerminal disconnected.\x1b[0m");
+      };
+
+      term.onData((data: string) => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(data);
+        }
+      });
+
+      const handleResize = () => {
+        fitAddon.fit();
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(
+            JSON.stringify({
+              type: "resize",
+              cols: term.cols,
+              rows: term.rows,
+            }),
+          );
+        }
+      };
+      window.addEventListener("resize", handleResize);
+      resizeHandlerRef.current = handleResize;
+    });
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-      ws.close();
-      term.dispose();
+      cancelAnimationFrame(raf);
+      if (resizeHandlerRef.current) {
+        window.removeEventListener("resize", resizeHandlerRef.current);
+        resizeHandlerRef.current = null;
+      }
+      wsRef.current?.close();
+      termRef.current?.dispose();
     };
   }, [labPath]);
 
