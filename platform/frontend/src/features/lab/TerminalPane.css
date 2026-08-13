@@ -2,8 +2,17 @@
   padding: 0.5rem;
   background: #1e1e1e;
   overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .terminal-pane .xterm {
   padding: 0;
+  flex: 1;
+  min-height: 0;
+}
+
+.terminal-pane .xterm-viewport {
+  overflow-y: auto;
 }

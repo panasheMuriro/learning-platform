@@ -11,6 +11,7 @@ export interface CourseSummary {
   summary: string;
   icon: string;
   version: string;
+  workspace: "code-server" | "terminal";
 }
 
 // ---- Outline / module types ----
@@ -131,6 +132,13 @@ export function useCourses() {
     queryKey: ["courses"],
     queryFn: () => fetchJson<CourseSummary[]>("/courses"),
   });
+}
+
+/** Fetch a single course's metadata by filtering the course list. */
+export function useCourse(courseId: string) {
+  const { data, isLoading, error } = useCourses();
+  const course = data?.find((c) => c.id === courseId || c.slug === courseId);
+  return { data: course, isLoading, error };
 }
 
 // ---- Course content hooks (course-scoped) ----

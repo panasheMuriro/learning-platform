@@ -33,6 +33,7 @@ type Course struct {
 	Summary     string `json:"summary"`
 	Icon        string `json:"icon"`
 	Version     string `json:"version"`
+	Workspace   string `json:"workspace"` // "code-server" (default) or "terminal"
 	ContentPath string `json:"-"`
 	Enabled     bool   `gorm:"default:true" json:"enabled"`
 	CreatedAt   time.Time `json:"createdAt"`

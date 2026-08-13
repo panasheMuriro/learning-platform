@@ -5,6 +5,8 @@ import {
   applyTaskWorkspace,
   checkLab,
   checkTask,
+  openLab,
+  useCourse,
   useLabInstructions,
   useProgress,
 } from "@/api/content";
@@ -16,6 +18,7 @@ import { useParams } from "react-router-dom";
 import { LabInstructionsPanel } from "./LabInstructionsPanel";
 import { LabTask } from "./LabTask";
 import { LabWorkspace } from "./LabWorkspace";
+import { TerminalPane } from "./TerminalPane";
 import "./LabPage.css";
 
 type ViewMode = "split" | "instructions" | "workspace";
@@ -29,6 +32,7 @@ export function LabPage() {
     error,
   } = useLabInstructions(courseId, moduleId, labId);
   const { data: progress } = useProgress(courseId);
+  const { data: course } = useCourse(courseId);
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
   const [taskResults, setTaskResults] = useState<Record<string, TaskResult>>(
@@ -37,6 +41,37 @@ export function LabPage() {
   const [checkingTaskId, setCheckingTaskId] = useState<string | null>(null);
   const [grade, setGrade] = useState<GradeResult | null>(null);
   const [checkingLab, setCheckingLab] = useState(false);
+
+  // Lab seeding: create the lab working directory and copy starter files.
+  // Shared by both code-server and terminal workspace modes.
+  const [labPath, setLabPath] = useState<string | null>(null);
+  const [seeding, setSeeding] = useState(true);
+  const [seedError, setSeedError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setSeeding(true);
+      setSeedError(null);
+      try {
+        const result = await openLab(courseId, moduleId, labId);
+        if (!cancelled) setLabPath(result.labPath);
+      } catch (err) {
+        if (!cancelled) {
+          console.error("failed to seed lab:", err);
+          setSeedError("Failed to seed lab files. The workspace may be empty.");
+        }
+      } finally {
+        if (!cancelled) setSeeding(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [courseId, moduleId, labId]);
+
+  // Determine workspace type from course metadata. Default to code-server.
+  const workspaceType = course?.workspace ?? "code-server";
 
   const tasks = useMemo<LabTaskType[]>(() => {
     if (lab?.tasks && lab.tasks.length > 0) return lab.tasks;
@@ -248,7 +283,21 @@ export function LabPage() {
         )}
         {(viewMode === "workspace" || viewMode === "split") && (
           <div className="lab-page__workspace">
-            <LabWorkspace labId={labId} moduleId={moduleId} />
+            {seeding ? (
+              <div className="lab-workspace">
+                <div className="lab-workspace__loading">
+                  Seeding lab files…
+                </div>
+              </div>
+            ) : seedError ? (
+              <div className="lab-workspace">
+                <div className="lab-workspace__error">{seedError}</div>
+              </div>
+            ) : workspaceType === "terminal" ? (
+              <TerminalPane labPath={labPath ?? undefined} />
+            ) : (
+              <LabWorkspace labPath={labPath ?? labId} />
+            )}
           </div>
         )}
       </div>

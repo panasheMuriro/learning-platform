@@ -39,6 +39,7 @@ type CourseMeta struct {
 	Version       string   `json:"version"`
 	RequiredTools []string `json:"requiredTools"`
 	License       string   `json:"license"`
+	Workspace     string   `json:"workspace"` // "code-server" (default) or "terminal"
 }
 
 // Scan walks <content-root>/courses/*/course.json and upserts each course
@@ -89,6 +90,7 @@ func (r *Registry) Scan() error {
 			Version:     meta.Version,
 			ContentPath: coursePath,
 			Enabled:     true,
+			Workspace:   meta.Workspace,
 		}
 		if err := r.store.UpsertCourse(c); err != nil {
 			log.Printf("registry: failed to upsert course %s: %v", slug, err)
@@ -120,22 +122,28 @@ func (r *Registry) HandleListCourses(w http.ResponseWriter, req *http.Request) {
 	}
 	// Don't leak the filesystem content_path to the frontend.
 	type courseDTO struct {
-		ID      string `json:"id"`
-		Slug    string `json:"slug"`
-		Title   string `json:"title"`
-		Summary string `json:"summary"`
-		Icon    string `json:"icon"`
-		Version string `json:"version"`
+		ID        string `json:"id"`
+		Slug      string `json:"slug"`
+		Title     string `json:"title"`
+		Summary   string `json:"summary"`
+		Icon      string `json:"icon"`
+		Version   string `json:"version"`
+		Workspace string `json:"workspace"`
 	}
 	dtos := make([]courseDTO, 0, len(courses))
 	for _, c := range courses {
+		ws := c.Workspace
+		if ws == "" {
+			ws = "code-server"
+		}
 		dtos = append(dtos, courseDTO{
-			ID:      c.ID,
-			Slug:    c.Slug,
-			Title:   c.Title,
-			Summary: c.Summary,
-			Icon:    c.Icon,
-			Version: c.Version,
+			ID:        c.ID,
+			Slug:      c.Slug,
+			Title:     c.Title,
+			Summary:   c.Summary,
+			Icon:      c.Icon,
+			Version:   c.Version,
+			Workspace: ws,
 		})
 	}
 	writeJSON(w, dtos)
