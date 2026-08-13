@@ -20,6 +20,24 @@ tasks:
       - task --list-all
 
   # ---------------------------------------------------------------------
+  # Stop everything
+  # ---------------------------------------------------------------------
+  stop:
+    desc: Stop all dev services (backend, frontend, code-server, Postgres)
+    cmds:
+      - |
+        # Kill backend + frontend processes started by `task dev`
+        pkill -f 'go run ./cmd/server' 2>/dev/null || true
+        pkill -f 'go-build.*server' 2>/dev/null || true
+        pkill -f 'bun run dev' 2>/dev/null || true
+        pkill -f 'vite' 2>/dev/null || true
+        # Stop code-server container
+        docker rm -f code-server >/dev/null 2>&1 || true
+        # Stop Postgres container
+        docker compose -f '{{.ROOT}}/docker-compose.yml' down >/dev/null 2>&1 || true
+        echo "All dev services stopped."
+
+  # ---------------------------------------------------------------------
   # Setup / install
   # ---------------------------------------------------------------------
   install:
