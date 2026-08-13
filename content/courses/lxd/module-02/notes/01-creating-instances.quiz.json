@@ -1,0 +1,57 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How do you create a virtual machine with lxc launch?",
+      "type": "single-choice",
+      "options": [
+        "lxc launch ubuntu:24.04 myvm --vm",
+        "lxc launch ubuntu:24.04 myvm --virtual",
+        "lxc vm launch ubuntu:24.04 myvm",
+        "lxc launch ubuntu:24.04 myvm --type vm"
+      ],
+      "answer": "lxc launch ubuntu:24.04 myvm --vm",
+      "explanation": "The --vm flag tells LXD to create a virtual machine instead of a container."
+    },
+    {
+      "id": "q2",
+      "prompt": "What is the main advantage of a system container over a VM?",
+      "type": "single-choice",
+      "options": [
+        "Stronger security isolation",
+        "Own kernel",
+        "Lower resource usage and faster startup",
+        "Can run a different operating system"
+      ],
+      "answer": "Lower resource usage and faster startup",
+      "explanation": "Containers share the host kernel, so they start in seconds and use minimal overhead."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you set a memory limit at creation time?",
+      "type": "single-choice",
+      "options": [
+        "lxc launch ubuntu:24.04 myvm --memory 4GiB",
+        "lxc launch ubuntu:24.04 myvm --config limits.memory=4GiB",
+        "lxc launch ubuntu:24.04 myvm --set memory=4GiB",
+        "lxc launch ubuntu:24.04 myvm -m 4GiB"
+      ],
+      "answer": "lxc launch ubuntu:24.04 myvm --config limits.memory=4GiB",
+      "explanation": "Use --config key=value to set instance options at creation time."
+    },
+    {
+      "id": "q4",
+      "prompt": "Select all that are true about LXD virtual machines:",
+      "type": "multi-choice",
+      "options": [
+        "They have their own kernel",
+        "They boot via KVM",
+        "They start faster than containers",
+        "They provide stronger isolation than containers",
+        "They share the host kernel"
+      ],
+      "answer": ["They have their own kernel", "They boot via KVM", "They provide stronger isolation than containers"],
+      "explanation": "VMs have their own kernel, boot via KVM, and provide hardware-level isolation. They do NOT start faster than containers or share the host kernel."
+    }
+  ]
+}

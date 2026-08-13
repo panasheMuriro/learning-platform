@@ -1,0 +1,51 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How do you view all configuration for an instance?",
+      "type": "single-choice",
+      "options": ["lxc config show first", "lxc show first", "lxc info first --config", "lxc inspect first"],
+      "answer": "lxc config show first",
+      "explanation": "lxc config show <name> displays all configuration options for an instance."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you set limits.cpu to 2 for an instance named 'first'?",
+      "type": "single-choice",
+      "options": [
+        "lxc config set first limits.cpu=2",
+        "lxc set first cpu=2",
+        "lxc config first limits.cpu 2",
+        "lxc config edit first --cpu 2"
+      ],
+      "answer": "lxc config set first limits.cpu=2",
+      "explanation": "lxc config set <name> <key>=<value> sets a configuration option."
+    },
+    {
+      "id": "q3",
+      "prompt": "What does lxc config unset do?",
+      "type": "single-choice",
+      "options": [
+        "Deletes the instance",
+        "Removes a config key and reverts to default",
+        "Resets all configuration",
+        "Unsets the instance profile"
+      ],
+      "answer": "Removes a config key and reverts to default",
+      "explanation": "lxc config unset <name> <key> removes a configuration key, reverting it to its default value."
+    },
+    {
+      "id": "q4",
+      "prompt": "What happens if you don't set limits.cpu on a container?",
+      "type": "single-choice",
+      "options": [
+        "The container gets 1 CPU by default",
+        "The container sees all host CPUs",
+        "The container gets no CPU access",
+        "LXD assigns a random number"
+      ],
+      "answer": "The container sees all host CPUs",
+      "explanation": "By default, containers inherit all host resources. Without limits, nproc inside a container shows the host's CPU count."
+    }
+  ]
+}

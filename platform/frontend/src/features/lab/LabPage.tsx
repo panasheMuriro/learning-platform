@@ -285,9 +285,7 @@ export function LabPage() {
           <div className="lab-page__workspace">
             {seeding ? (
               <div className="lab-workspace">
-                <div className="lab-workspace__loading">
-                  Seeding lab files…
-                </div>
+                <div className="lab-workspace__loading">Seeding lab files…</div>
               </div>
             ) : seedError ? (
               <div className="lab-workspace">

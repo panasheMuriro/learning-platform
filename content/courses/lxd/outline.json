@@ -1,0 +1,46 @@
+{
+  "title": "LXD Hands-On Course",
+  "modules": [
+    {
+      "id": "module-01",
+      "title": "Getting Started with LXD",
+      "lectures": [
+        { "id": "01-what-is-lxd", "title": "What is LXD?" },
+        { "id": "02-install-and-init", "title": "Installing & Initializing LXD" },
+        { "id": "03-first-instance", "title": "Your First Instance" }
+      ],
+      "labs": [
+        { "id": "lab-01-install-and-launch", "title": "Install, Initialize & Launch" }
+      ],
+      "quiz": { "id": "module-01-quiz" }
+    },
+    {
+      "id": "module-02",
+      "title": "Managing Instances",
+      "lectures": [
+        { "id": "01-creating-instances", "title": "Creating Containers & VMs" },
+        { "id": "02-configuring-instances", "title": "Configuring Instances" },
+        { "id": "03-shell-and-exec", "title": "Shell Access & Running Commands" },
+        { "id": "04-files-and-snapshots", "title": "Files & Snapshots" }
+      ],
+      "labs": [
+        { "id": "lab-01-instance-lifecycle", "title": "Instance Lifecycle" },
+        { "id": "lab-02-files-and-backups", "title": "Files & Backups" }
+      ],
+      "quiz": { "id": "module-02-quiz" }
+    },
+    {
+      "id": "module-03",
+      "title": "Images",
+      "lectures": [
+        { "id": "01-remote-images", "title": "Remote Image Servers" },
+        { "id": "02-managing-local-images", "title": "Managing Local Images" },
+        { "id": "03-creating-images", "title": "Creating Images" }
+      ],
+      "labs": [
+        { "id": "lab-01-working-with-images", "title": "Working with Images" }
+      ],
+      "quiz": { "id": "module-03-quiz" }
+    }
+  ]
+}

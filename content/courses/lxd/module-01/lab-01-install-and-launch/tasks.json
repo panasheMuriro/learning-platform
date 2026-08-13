@@ -1,0 +1,59 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Verify LXD is installed",
+      "instructions": "Check that LXD is installed on your system by running:\n\n```bash\nlxd --version\n```\n\nIf LXD is not installed, install it with:\n\n```bash\nsudo snap install lxd\n```\n\nThen add your user to the lxd group (if not already):\n\n```bash\nsudo usermod -aG lxd \"$USER\"\nnewgrp lxd\n```",
+      "hints": [
+        "If you get 'command not found', LXD is not installed. Run `sudo snap install lxd`.",
+        "After adding yourself to the lxd group, you may need to log out and back in for it to take effect."
+      ],
+      "solution": "```bash\nlxd --version\n# If not installed:\n# sudo snap install lxd\n# sudo usermod -aG lxd \"$USER\"\n# newgrp lxd\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Initialize LXD",
+      "instructions": "Initialize LXD with a minimal configuration:\n\n```bash\nlxd init --minimal\n```\n\nIf LXD is already initialized, this command may ask if you want to reconfigure. You can skip if it's already set up.\n\nVerify it's working:\n\n```bash\nlxc list\n```\n\nYou should see an empty table with no errors.",
+      "hints": [
+        "If you get a permission error, make sure you're in the lxd group. Run `newgrp lxd` or re-open your terminal.",
+        "lxd init --minimal uses sensible defaults — no need to answer interactive prompts."
+      ],
+      "solution": "```bash\nlxd init --minimal\nlxc list\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Launch your first container",
+      "instructions": "Launch an Ubuntu 24.04 container named `first`:\n\n```bash\nlxc launch ubuntu:24.04 first\n```\n\nThis will download the image (may take a minute on first run) and start the container.\n\nVerify it's running:\n\n```bash\nlxc list\n```\n\nYou should see `first` in the RUNNING state.",
+      "hints": [
+        "The first launch downloads the image from the ubuntu: remote server — it takes longer than subsequent launches.",
+        "If the download is slow, be patient. The image is cached for future use."
+      ],
+      "solution": "```bash\nlxc launch ubuntu:24.04 first\nlxc list\n```",
+      "check": "task-3"
+    },
+    {
+      "id": "task-4",
+      "title": "Create a stopped container",
+      "instructions": "Create a second container named `second` without starting it:\n\n```bash\nlxc init ubuntu:24.04 second\n```\n\nThen list your instances:\n\n```bash\nlxc list\n```\n\nYou should see `first` RUNNING and `second` STOPPED.",
+      "hints": [
+        "lxc init creates but does not start the instance.",
+        "Since the image is already cached from task-3, this should be much faster."
+      ],
+      "solution": "```bash\nlxc init ubuntu:24.04 second\nlxc list\n```",
+      "check": "task-4"
+    },
+    {
+      "id": "task-5",
+      "title": "Start and inspect the second container",
+      "instructions": "Start the `second` container and get detailed information about it:\n\n```bash\nlxc start second\nlxc info second\n```\n\nThe `lxc info` command shows architecture, PID, resource usage, network config, and more.",
+      "hints": [
+        "lxc start <name> starts a stopped instance.",
+        "lxc info <name> gives much more detail than lxc list."
+      ],
+      "solution": "```bash\nlxc start second\nlxc info second\n```",
+      "check": "task-5"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What are the two most common remote image servers in LXD?",
+      "type": "multi-choice",
+      "options": ["ubuntu:", "images:", "docker:", "snapstore:", "hub:"],
+      "answer": ["ubuntu:", "images:"],
+      "explanation": "ubuntu: hosts official Ubuntu images. images: hosts community images for many Linux distributions."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you list images available on the ubuntu: remote?",
+      "type": "single-choice",
+      "options": [
+        "lxc image list ubuntu:",
+        "lxc remote list ubuntu:",
+        "lxc list ubuntu:",
+        "lxc image ubuntu: list"
+      ],
+      "answer": "lxc image list ubuntu:",
+      "explanation": "lxc image list <remote>: lists images available on that remote server."
+    },
+    {
+      "id": "q3",
+      "prompt": "What happens when you launch an instance from a remote image for the first time?",
+      "type": "single-choice",
+      "options": [
+        "LXD downloads the image and caches it locally",
+        "LXD creates the instance directly on the remote server",
+        "LXD refuses — you must download the image first",
+        "LXD creates a minimal instance without the image"
+      ],
+      "answer": "LXD downloads the image and caches it locally",
+      "explanation": "LXD downloads the image from the remote server and caches it. Subsequent launches from the same image use the cached copy."
+    },
+    {
+      "id": "q4",
+      "prompt": "How do you reference an Ubuntu 24.04 image from the ubuntu: remote?",
+      "type": "text-answer",
+      "answer": "ubuntu:24.04",
+      "explanation": "Remote images are referenced as <remote>:<image>, e.g. ubuntu:24.04"
+    }
+  ]
+}

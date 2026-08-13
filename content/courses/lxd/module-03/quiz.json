@@ -1,0 +1,67 @@
+{
+  "moduleId": "module-03",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What are the two main remote image servers in LXD?",
+      "type": "multi-choice",
+      "options": ["ubuntu:", "images:", "docker:", "snapcraft:"],
+      "answer": ["ubuntu:", "images:"],
+      "explanation": "ubuntu: hosts official Ubuntu images. images: hosts community images for many Linux distributions."
+    },
+    {
+      "id": "q2",
+      "prompt": "What happens when you launch an instance from a remote image for the first time?",
+      "type": "single-choice",
+      "options": [
+        "LXD downloads and caches the image locally",
+        "LXD creates the instance on the remote server",
+        "LXD refuses — you must download manually",
+        "LXD creates a minimal instance"
+      ],
+      "answer": "LXD downloads and caches the image locally",
+      "explanation": "LXD downloads the image from the remote and caches it. Subsequent launches use the cached copy."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you list locally cached images?",
+      "type": "single-choice",
+      "options": ["lxc image list", "lxc list --images", "lxc images", "lxc local images"],
+      "answer": "lxc image list",
+      "explanation": "lxc image list (without a remote prefix) shows all locally cached images."
+    },
+    {
+      "id": "q4",
+      "prompt": "How do you create a custom image from a stopped container?",
+      "type": "single-choice",
+      "options": [
+        "lxc publish web --alias my-image",
+        "lxc image create web my-image",
+        "lxc snapshot web --publish my-image",
+        "lxc export web --as-image my-image"
+      ],
+      "answer": "lxc publish web --alias my-image",
+      "explanation": "lxc publish <instance> --alias <name> creates a new image from the instance's filesystem."
+    },
+    {
+      "id": "q5",
+      "prompt": "Can you delete a local image that's in use by a running instance?",
+      "type": "single-choice",
+      "options": [
+        "No — stop or delete the instance first",
+        "Yes — LXD handles it automatically",
+        "Yes — but only with --force",
+        "Yes — the image is kept until the instance is deleted"
+      ],
+      "answer": "No — stop or delete the instance first",
+      "explanation": "LXD prevents deletion of images in use by running instances."
+    },
+    {
+      "id": "q6",
+      "prompt": "How do you create an image from a snapshot named 'clean' on instance 'web'?",
+      "type": "text-answer",
+      "answer": "lxc publish web/clean",
+      "explanation": "lxc publish web/clean --alias <name> creates an image from the snapshot without stopping the instance."
+    }
+  ]
+}

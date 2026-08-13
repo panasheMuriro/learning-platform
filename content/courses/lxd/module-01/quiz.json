@@ -1,0 +1,72 @@
+{
+  "moduleId": "module-01",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is LXD at its core?",
+      "type": "single-choice",
+      "options": [
+        "A system container and virtual machine manager",
+        "A Docker container runtime",
+        "A Kubernetes distribution",
+        "A hypervisor management tool"
+      ],
+      "answer": "A system container and virtual machine manager",
+      "explanation": "LXD manages both system containers and virtual machines through a unified REST API."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which command initializes LXD with default settings?",
+      "type": "single-choice",
+      "options": [
+        "lxc init",
+        "lxd init --minimal",
+        "lxd setup --default",
+        "lxc configure"
+      ],
+      "answer": "lxd init --minimal",
+      "explanation": "lxd init --minimal sets up LXD with sensible defaults: a storage pool, a bridge network, and no clustering."
+    },
+    {
+      "id": "q3",
+      "prompt": "What is the difference between lxc launch and lxc init?",
+      "type": "single-choice",
+      "options": [
+        "lxc launch creates and starts; lxc init creates but does not start",
+        "lxc init creates and starts; lxc launch only downloads",
+        "They are the same command",
+        "lxc launch is for VMs; lxc init is for containers"
+      ],
+      "answer": "lxc launch creates and starts; lxc init creates but does not start",
+      "explanation": "lxc launch = create + start. lxc init = create only (instance stays STOPPED)."
+    },
+    {
+      "id": "q4",
+      "prompt": "Select all valid lxc commands for instance management:",
+      "type": "multi-choice",
+      "options": ["lxc start", "lxc stop", "lxc restart", "lxc boot", "lxc delete", "lxc reboot"],
+      "answer": ["lxc start", "lxc stop", "lxc restart", "lxc delete"],
+      "explanation": "lxc start, stop, restart, and delete are all valid. There is no lxc boot or lxc reboot command."
+    },
+    {
+      "id": "q5",
+      "prompt": "How do you create a VM instead of a container with lxc launch?",
+      "type": "text-answer",
+      "answer": "--vm",
+      "explanation": "Add the --vm flag: lxc launch ubuntu:24.04 myvm --vm"
+    },
+    {
+      "id": "q6",
+      "prompt": "Why must your user be in the lxd group?",
+      "type": "single-choice",
+      "options": [
+        "To install LXD packages",
+        "To access the LXD Unix socket without sudo",
+        "To enable clustering",
+        "To download images from remote servers"
+      ],
+      "answer": "To access the LXD Unix socket without sudo",
+      "explanation": "The lxd group grants access to the LXD daemon's Unix socket, which is how the lxc client communicates with LXD."
+    }
+  ]
+}

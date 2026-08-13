@@ -1,0 +1,50 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How do you list images cached on your local LXD server?",
+      "type": "single-choice",
+      "options": [
+        "lxc image list",
+        "lxc list images",
+        "lxc images",
+        "lxc local image list"
+      ],
+      "answer": "lxc image list",
+      "explanation": "lxc image list (without a remote prefix) shows all locally cached images."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you add a human-readable alias for an image?",
+      "type": "single-choice",
+      "options": [
+        "lxc image alias add my-ubuntu <fingerprint>",
+        "lxc image rename <fingerprint> my-ubuntu",
+        "lxc alias add my-ubuntu <fingerprint>",
+        "lxc image tag <fingerprint> my-ubuntu"
+      ],
+      "answer": "lxc image alias add my-ubuntu <fingerprint>",
+      "explanation": "lxc image alias add <alias> <fingerprint> creates a human-readable name for an image."
+    },
+    {
+      "id": "q3",
+      "prompt": "Can you delete an image that's in use by a running instance?",
+      "type": "single-choice",
+      "options": [
+        "No — you must stop or delete the instance first",
+        "Yes — LXD will automatically stop the instance",
+        "Yes — LXD will keep the image until the instance is deleted",
+        "Yes — but only if you use --force"
+      ],
+      "answer": "No — you must stop or delete the instance first",
+      "explanation": "LXD prevents deleting images that are in use. Stop or delete the instance first."
+    },
+    {
+      "id": "q4",
+      "prompt": "What command exports a local image to a file?",
+      "type": "text-answer",
+      "answer": "lxc image export",
+      "explanation": "lxc image export <fingerprint-or-alias> <path> saves an image to a file for backup or transfer."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the recommended way to install LXD?",
+      "type": "single-choice",
+      "options": ["apt install", "snap install", "pip install", "docker pull"],
+      "answer": "snap install",
+      "explanation": "Snap is the recommended installation method for LXD, ensuring you get the latest version."
+    },
+    {
+      "id": "q2",
+      "prompt": "What command initializes LXD with default settings?",
+      "type": "single-choice",
+      "options": [
+        "lxc init",
+        "lxd init --minimal",
+        "lxd setup",
+        "lxc configure"
+      ],
+      "answer": "lxd init --minimal",
+      "explanation": "lxd init --minimal sets up LXD with sensible defaults (storage pool, network bridge, no clustering)."
+    },
+    {
+      "id": "q3",
+      "prompt": "Why do you need to add your user to the lxd group?",
+      "type": "single-choice",
+      "options": [
+        "To install LXD",
+        "To interact with the LXD daemon without sudo",
+        "To enable clustering",
+        "To download images faster"
+      ],
+      "answer": "To interact with the LXD daemon without sudo",
+      "explanation": "Membership in the lxd group grants access to the LXD Unix socket, which is how lxc talks to the daemon."
+    },
+    {
+      "id": "q4",
+      "prompt": "What does lxc list show when LXD is freshly initialized?",
+      "type": "text-answer",
+      "answer": "empty",
+      "explanation": "A freshly initialized LXD has no instances, so lxc list shows an empty table."
+    }
+  ]
+}
