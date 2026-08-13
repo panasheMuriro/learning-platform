@@ -97,6 +97,14 @@ export function TerminalPane({ labPath }: TerminalPaneProps) {
     };
   }, [labPath]);
 
+  if (!labPath) {
+    return (
+      <div className="terminal-pane">
+        <div className="lab-workspace__loading">Preparing terminal…</div>
+      </div>
+    );
+  }
+
   return (
     <div
       ref={containerRef}
