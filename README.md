@@ -28,48 +28,18 @@ workshop launch
 # -> http://localhost:<port>  (port printed by `workshop launch`)
 ```
 
-From there: read notes, take quizzes, open a lab, edit HCL in the embedded VS Code editor (code-server), run `terraform apply` in its integrated terminal, click **Check** — all without leaving the browser.
-
-## Quick start (developer)
-
-All build/run commands are wrapped in a [Taskfile](https://taskfile.dev) — see [Taskfile.yml](Taskfile.yml) for the full list (`task --list-all`).
-
-```bash
-# Install go-task (once)
-sudo snap install task --classic
-
-# Install dependencies
-task install
-
-# Run in dev mode (Vite hot-reload on :3000, backend on :8080, code-server on :8081)
-task dev
-
-# Build + run in production mode (single port :8080 serves everything)
-task prod
-
-# Lint / format / test
-task lint
-task format
-task test
-
-# Stop all running services (backend, frontend dev server, code-server)
-task clean
-```
-
-See [docs/architecture.md](docs/architecture.md) for how the pieces fit together.
+From there: read notes, take quizzes, open a lab, edit HCL in the in-browser editor, run `terraform apply` in the in-browser terminal, click **Check** — all without leaving the browser.
 
 ## Repository layout
 
 ```
 .
 ├── platform/
-│   ├── frontend/      # React + Vite + Canonical Vanilla Framework / react-components
+│   ├── frontend/      # React + Vite + Canonical Pragma + xterm.js + Monaco
 │   └── backend/       # Go API server (content, quiz, file API, PTY, grading, progress)
 ├── workshop/          # Canonical Workshop SDK (bundles everything for `workshop launch`)
 ├── content/           # Course content: lecture notes, quizzes, labs (Markdown + check.sh)
 ├── docs/              # Architecture, lab authoring guide, learner setup
-├── Taskfile.yml       # All build/dev/prod/lint/test commands (see `task --list-all`)
-├── start-prod.sh      # Standalone production startup script (wrapped by `task prod`)
 └── .github/           # CI workflows
 ```
 
@@ -77,13 +47,11 @@ See [docs/architecture.md](docs/architecture.md) for how the pieces fit together
 
 | Layer | Technology |
 |---|---|
-| Frontend | React 19, Vite, TypeScript, [Vanilla Framework](https://vanillaframework.io) + [@canonical/react-components](https://github.com/canonical/react-components) |
-| Lab editor/terminal | [code-server](https://github.com/coder/code-server) (VS Code in the browser, embedded via iframe) |
-| Backend | Go (REST + WebSocket), serves built frontend in production |
+| Frontend | React 19, Vite, TypeScript, [Canonical Pragma](https://github.com/canonical/pragma), xterm.js, Monaco |
+| Backend | Go (REST + WebSocket) |
 | Lab environment | [Canonical Workshop](https://github.com/canonical/workshop) + LXD + Juju + Terraform |
 | Lab cloud | LXD (native, per-learner) |
 | Progress store | SQLite (local, single profile) |
-| Task runner | [Taskfile](https://taskfile.dev) |
 
 ## Curriculum
 
@@ -100,4 +68,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Content contributions (notes, quizzes, l
 
 ## Status
 
-🚧 **Early development** — Module 1 (Foundations) content complete, platform functional in dev and production modes. Workshop SDK packaging not yet validated end-to-end.
+🚧 **Early development** — Phase 1 (scaffold) in progress. Not yet usable by learners.

@@ -13,12 +13,11 @@ Thanks for your interest in contributing to the Juju + Terraform course!
 ## Repository layout
 
 ```
-platform/frontend/   React + Vite + Vanilla Framework + react-components
+platform/frontend/   React + Vite + Pragma + xterm.js + Monaco
 platform/backend/    Go API server
 workshop/            Canonical Workshop SDK (bundles everything)
 content/             Course content (Markdown notes, quizzes, labs)
 docs/                Documentation
-Taskfile.yml         All build/dev/prod/lint/test commands
 ```
 
 ## Licensing
@@ -33,32 +32,21 @@ By contributing, you agree your contributions will be licensed under:
 
 - Node.js 22+ and Bun (frontend)
 - Go 1.22+ (backend)
-- Docker (for code-server, the in-browser lab editor)
 - LXD + Workshop snap (for running labs locally)
-- [go-task](https://taskfile.dev) (`sudo snap install task --classic`) — wraps all commands below
 
-### All commands are in the Taskfile
+### Frontend
 
 ```bash
-task install       # install frontend + backend deps
-task dev           # run frontend (hot reload) + backend + code-server
-task build         # build frontend + backend for production
-task prod          # build and run production mode (single port)
-task lint          # lint frontend (Biome) + backend (go vet)
-task format        # auto-format frontend
-task test          # run frontend + backend tests
-task clean         # stop all running services
-task --list-all    # see every available task
+cd platform/frontend
+bun install
+bun run dev
 ```
 
-Running the pieces individually (equivalent to what the tasks above do):
+### Backend
 
 ```bash
-# Frontend
-cd platform/frontend && bun install && bun run dev
-
-# Backend
-cd platform/backend && go run ./cmd/server
+cd platform/backend
+go run ./cmd/server
 ```
 
 ### Content
@@ -79,7 +67,7 @@ Content is plain Markdown + shell scripts — no build step. See
 
 - Frontend: Biome (lint + format), TypeScript strict
 - Backend: `gofmt` + `golangci-lint`
-- Commit messages: conventional commits (`feat:`, `fix:`, `docs:`, `content:`, `chore: `, `test: `, )
+- Commit messages: conventional commits (`feat:`, `fix:`, `docs:`, `content:`)
 
 ## Pull requests
 
