@@ -26,12 +26,19 @@ export interface LabRef {
   title: string;
 }
 
+export interface ModuleItem {
+  type: "lecture" | "lab" | "quiz";
+  id: string;
+  title: string;
+}
+
 export interface ModuleOutline {
   id: string;
   title: string;
   lectures: LectureRef[];
   labs: LabRef[];
   quiz?: { id: string };
+  items?: ModuleItem[];
 }
 
 export interface CourseOutline {

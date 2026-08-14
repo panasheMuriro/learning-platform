@@ -49,6 +49,15 @@ type Module struct {
 	Lectures []LectureRef `json:"lectures"`
 	Labs     []LabRef     `json:"labs"`
 	Quiz     *QuizRef     `json:"quiz,omitempty"`
+	Items    []ModuleItem `json:"items,omitempty"` // ordered content flow
+}
+
+// ModuleItem is a single item in the ordered content flow. When present,
+// the frontend renders items in this order instead of lectures→quiz→labs.
+type ModuleItem struct {
+	Type  string `json:"type"`  // "lecture", "lab", "quiz"
+	ID    string `json:"id"`
+	Title string `json:"title"`
 }
 
 // LectureRef is a reference to a lecture.

@@ -1,0 +1,26 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "List remote images",
+      "instructions": "List the Ubuntu images available on the `ubuntu:` remote:\n\n```bash\nlxc image list ubuntu:\n```\n\nYou can also search for a specific version:\n```bash\nlxc image list ubuntu:24.04\n```",
+      "hints": [
+        "The output shows aliases, fingerprints, and sizes for each image.",
+        "You can filter by appending a search term after the remote."
+      ],
+      "solution": "```bash\nlxc image list ubuntu:\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Launch from a specific image",
+      "instructions": "Launch a container named `app` from the Ubuntu 24.04 image:\n\n```bash\nlxc launch ubuntu:24.04 app\n```\n\nVerify it's running:\n```bash\nlxc list\n```",
+      "hints": [
+        "If the image is already cached, this will be fast.",
+        "The container should appear in RUNNING state in lxc list."
+      ],
+      "solution": "```bash\nlxc launch ubuntu:24.04 app\nlxc list\n```",
+      "check": "task-2"
+    }
+  ]
+}

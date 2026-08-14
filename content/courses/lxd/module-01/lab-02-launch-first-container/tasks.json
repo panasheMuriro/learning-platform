@@ -1,0 +1,37 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Launch your first container",
+      "instructions": "Launch an Ubuntu 24.04 container named `first`:\n\n```bash\nlxc launch ubuntu:24.04 first\n```\n\nThis will download the image (may take a minute on first run) and start the container.\n\nVerify it's running:\n\n```bash\nlxc list\n```\n\nYou should see `first` in the RUNNING state.",
+      "hints": [
+        "The first launch downloads the image from the ubuntu: remote server — it takes longer than subsequent launches.",
+        "If the download is slow, be patient. The image is cached for future use."
+      ],
+      "solution": "```bash\nlxc launch ubuntu:24.04 first\nlxc list\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Create a stopped container",
+      "instructions": "Create a second container named `second` without starting it:\n\n```bash\nlxc init ubuntu:24.04 second\n```\n\nThen list your instances:\n\n```bash\nlxc list\n```\n\nYou should see `first` RUNNING and `second` STOPPED.",
+      "hints": [
+        "lxc init creates but does not start the instance.",
+        "Since the image is already cached from task-1, this should be much faster."
+      ],
+      "solution": "```bash\nlxc init ubuntu:24.04 second\nlxc list\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Start and inspect the second container",
+      "instructions": "Start the `second` container and get detailed information about it:\n\n```bash\nlxc start second\nlxc info second\n```\n\nThe `lxc info` command shows architecture, PID, resource usage, network config, and more.",
+      "hints": [
+        "lxc start <name> starts a stopped instance.",
+        "lxc info <name> gives much more detail than lxc list."
+      ],
+      "solution": "```bash\nlxc start second\nlxc info second\n```",
+      "check": "task-3"
+    }
+  ]
+}

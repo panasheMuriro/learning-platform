@@ -1,0 +1,26 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "List local images",
+      "instructions": "List the images cached on your local LXD server:\n\n```bash\nlxc image list\n```\n\nYou should see at least one Ubuntu 24.04 image (from the previous lab). Note the fingerprint — you'll need it in the next task.",
+      "hints": [
+        "lxc image list (without a remote prefix) shows local images only.",
+        "Look for the ALIAS and FINGERPRINT columns in the output."
+      ],
+      "solution": "```bash\nlxc image list\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Add an alias to a local image",
+      "instructions": "Find the fingerprint of your Ubuntu 24.04 image from the previous task, then add a human-readable alias:\n\n```bash\n# Get the fingerprint\nFINGERPRINT=$(lxc image list --format csv -c f | head -1)\n\n# Add an alias\nlxc image alias add my-ubuntu \"$FINGERPRINT\"\n```\n\nVerify the alias:\n```bash\nlxc image list\n```\nYou should see `my-ubuntu` in the ALIAS column.",
+      "hints": [
+        "lxc image alias add <alias> <fingerprint> creates a human-readable name.",
+        "You can use the alias instead of the fingerprint when launching instances."
+      ],
+      "solution": "```bash\nFINGERPRINT=$(lxc image list --format csv -c f | head -1)\nlxc image alias add my-ubuntu \"$FINGERPRINT\"\nlxc image list\n```",
+      "check": "task-2"
+    }
+  ]
+}

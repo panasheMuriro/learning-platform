@@ -1,0 +1,47 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create a file inside the container",
+      "instructions": "Use `lxc exec` to create a file inside the `web` container:\n\n```bash\nlxc exec web -- touch /root/helloworld.txt\n```\n\nVerify it exists:\n```bash\nlxc exec web -- cat /root/helloworld.txt\n```\n(No output since it's empty.)",
+      "hints": [
+        "lxc exec <name> -- <command> runs a single command inside the instance."
+      ],
+      "solution": "```bash\nlxc exec web -- touch /root/helloworld.txt\nlxc exec web -- cat /root/helloworld.txt\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Pull, modify, and push the file",
+      "instructions": "Pull the file from the container to your host, add content, and push it back:\n\n```bash\nlxc file pull web/root/helloworld.txt .\necho \"Hello world\" > helloworld.txt\nlxc file push helloworld.txt web/root/helloworld.txt\n```\n\nVerify the content inside the container:\n```bash\nlxc exec web -- cat /root/helloworld.txt\n```",
+      "hints": [
+        "lxc file pull <instance>/<path> <destination> copies from the instance to the host.",
+        "lxc file push <source> <instance>/<path> copies from the host to the instance."
+      ],
+      "solution": "```bash\nlxc file pull web/root/helloworld.txt .\necho \"Hello world\" > helloworld.txt\nlxc file push helloworld.txt web/root/helloworld.txt\nlxc exec web -- cat /root/helloworld.txt\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Create a snapshot",
+      "instructions": "Create a snapshot of the `web` container named `backup`:\n\n```bash\nlxc snapshot web backup\n```\n\nVerify the snapshot exists:\n```bash\nlxc info web\n```\nLook for the `Snapshots:` section at the bottom.",
+      "hints": [
+        "lxc snapshot <instance> <name> creates a point-in-time snapshot.",
+        "Check the Snapshots section at the bottom of lxc info output."
+      ],
+      "solution": "```bash\nlxc snapshot web backup\nlxc info web\n```",
+      "check": "task-3"
+    },
+    {
+      "id": "task-4",
+      "title": "Delete the file and restore from snapshot",
+      "instructions": "Delete the file inside the container, then restore from the snapshot:\n\n```bash\nlxc exec web -- rm /root/helloworld.txt\nlxc exec web -- ls /root/helloworld.txt\n```\n(This should fail — file is gone.)\n\nNow restore:\n```bash\nlxc restore web backup\n```\n\nVerify the file is back:\n```bash\nlxc exec web -- cat /root/helloworld.txt\n```",
+      "hints": [
+        "After rm, the file is gone. lxc restore brings it back from the snapshot.",
+        "The restored file should still contain 'Hello world'."
+      ],
+      "solution": "```bash\nlxc exec web -- rm /root/helloworld.txt\nlxc restore web backup\nlxc exec web -- cat /root/helloworld.txt\n```",
+      "check": "task-4"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Verify LXD is installed",
+      "instructions": "Check that LXD is installed on your system by running:\n\n```bash\nlxd --version\n```\n\nIf LXD is not installed, install it with:\n\n```bash\nsudo snap install lxd\n```\n\nThen add your user to the lxd group (if not already):\n\n```bash\nsudo usermod -aG lxd \"$USER\"\nnewgrp lxd\n```",
+      "hints": [
+        "If you get 'command not found', LXD is not installed. Run `sudo snap install lxd`.",
+        "After adding yourself to the lxd group, you may need to log out and back in for it to take effect."
+      ],
+      "solution": "```bash\nlxd --version\n# If not installed:\n# sudo snap install lxd\n# sudo usermod -aG lxd \"$USER\"\n# newgrp lxd\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Initialize LXD",
+      "instructions": "Initialize LXD with a minimal configuration:\n\n```bash\nlxd init --minimal\n```\n\nIf LXD is already initialized, this command may ask if you want to reconfigure. You can skip if it's already set up.\n\nVerify it's working:\n\n```bash\nlxc list\n```\n\nYou should see an empty table with no errors.",
+      "hints": [
+        "If you get a permission error, make sure you're in the lxd group. Run `newgrp lxd` or re-open your terminal.",
+        "lxd init --minimal uses sensible defaults — no need to answer interactive prompts."
+      ],
+      "solution": "```bash\nlxd init --minimal\nlxc list\n```",
+      "check": "task-2"
+    }
+  ]
+}

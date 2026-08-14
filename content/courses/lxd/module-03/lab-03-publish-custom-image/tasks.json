@@ -1,0 +1,26 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Publish a custom image",
+      "instructions": "Create a custom image from the `app` container:\n\n1. Stop the container:\n```bash\nlxc stop app\n```\n\n2. Publish it as a new image with alias `my-app`:\n```bash\nlxc publish app --alias my-app\n```\n\n3. Verify the image was created:\n```bash\nlxc image list\n```\nYou should see `my-app` in the ALIAS column.",
+      "hints": [
+        "Containers must be stopped before publishing.",
+        "lxc publish <instance> --alias <name> creates a new local image."
+      ],
+      "solution": "```bash\nlxc stop app\nlxc publish app --alias my-app\nlxc image list\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Launch from your custom image",
+      "instructions": "Launch a new container from the custom image you just created:\n\n```bash\nlxc launch my-app app-clone\n```\n\nVerify it's running:\n```bash\nlxc list\n```\n\nYou should see both `app` (stopped) and `app-clone` (running).",
+      "hints": [
+        "You can launch from a local image alias just like from a remote image.",
+        "The new container is an exact copy of 'app' when the image was published."
+      ],
+      "solution": "```bash\nlxc launch my-app app-clone\nlxc list\n```",
+      "check": "task-2"
+    }
+  ]
+}

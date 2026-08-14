@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# check.sh — grading script for Lab 1: Instance Lifecycle
+# check.sh — grading script for Lab: Create & Configure Instances
 
 set -euo pipefail
 
@@ -40,7 +40,7 @@ if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-1" ]; then
   fi
 fi
 
-# Task 2: Resource limits set (limits.cpu=1, limits.memory=256MiB)
+# Task 2: Resource limits set
 if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-2" ]; then
   cpu_ok=false
   mem_ok=false
@@ -59,47 +59,17 @@ if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-2" ]; then
   fi
 fi
 
-# Task 3: Shell access works (bash is available inside 'web')
+# Task 3: Commands run inside container
 if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-3" ]; then
-  if lxc exec web -- bash -c 'echo ok' >/dev/null 2>&1; then
+  if lxc exec web -- nproc >/dev/null 2>&1; then
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-3" --arg name "Shell access" \
-      --arg msg "Shell access to 'web' works" \
+      --arg id "task-3" --arg name "Verify limits" \
+      --arg msg "Commands run successfully inside 'web'" \
       '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
   else
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-3" --arg name "Shell access" \
+      --arg id "task-3" --arg name "Verify limits" \
       --arg msg "Cannot exec into 'web'. Make sure it's running." \
-      '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
-  fi
-fi
-
-# Task 4: Snapshot 'clean' exists
-if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-4" ]; then
-  if lxc_snapshot_exists "web" "clean"; then
-    tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-4" --arg name "Create snapshot" \
-      --arg msg "Snapshot 'clean' exists for 'web'" \
-      '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
-  else
-    tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-4" --arg name "Create snapshot" \
-      --arg msg "Snapshot 'clean' not found. Run: lxc snapshot web clean" \
-      '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
-  fi
-fi
-
-# Task 5: Bash is restored (works again after restore)
-if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-5" ]; then
-  if lxc exec web -- bash -c 'echo restored' >/dev/null 2>&1; then
-    tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-5" --arg name "Break and restore" \
-      --arg msg "Bash is available — restore worked" \
-      '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
-  else
-    tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-5" --arg name "Break and restore" \
-      --arg msg "Bash is not available. Run: lxc restore web clean" \
       '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
 fi
