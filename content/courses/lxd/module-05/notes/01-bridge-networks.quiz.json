@@ -1,0 +1,40 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the default network type created by lxd init?",
+      "type": "single-choice",
+      "options": ["bridge", "macvlan", "OVN", "physical"],
+      "answer": "bridge",
+      "explanation": "lxd init creates a bridge network (usually lxdbr0) with DHCP and NAT by default."
+    },
+    {
+      "id": "q2",
+      "prompt": "How does a bridge network provide internet access to instances?",
+      "type": "single-choice",
+      "options": [
+        "NAT routes outbound traffic through the host's internet connection",
+        "Each instance gets a public IP directly",
+        "Instances share the host's IP via port forwarding only",
+        "The bridge connects to a physical router"
+      ],
+      "answer": "NAT routes outbound traffic through the host's internet connection",
+      "explanation": "LXD runs NAT on the bridge, so instances can reach the internet through the host's connection."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you list all networks on your LXD server?",
+      "type": "single-choice",
+      "options": ["lxc network list", "lxc list networks", "lxc net show", "lxc network show"],
+      "answer": "lxc network list",
+      "explanation": "lxc network list shows all networks, their type, and managed status."
+    },
+    {
+      "id": "q4",
+      "prompt": "What does LXD run on the bridge to assign IP addresses automatically?",
+      "type": "text-answer",
+      "answer": "DHCP",
+      "explanation": "LXD runs a DHCP server on the bridge network, assigning IPs to instances automatically when they start."
+    }
+  ]
+}

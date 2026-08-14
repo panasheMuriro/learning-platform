@@ -1,0 +1,29 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "List storage pools",
+      "instructions": "List the storage pools on your LXD server to see what's available:\n\n```bash\nlxc storage list\n```\n\nYou should see at least one pool (usually named `default` or `local`) created during `lxd init`. Note the **driver** column — it shows whether the pool uses ZFS, Btrfs, LVM, or dir.\n\nNext, get detailed info about the default pool:\n\n```bash\nlxc storage info default\n```\n\nThis shows total space, used space, and the driver in use. Understanding your storage setup is important before creating instances — the pool determines performance characteristics like snapshot speed and I/O throughput.",
+      "hints": [
+        "If your pool isn't named 'default', check the NAME column from lxc storage list and use that name instead."
+      ],
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Create a directory-backed pool",
+      "instructions": "Create a second storage pool using the `dir` driver. The `dir` driver stores data in a plain directory on the host filesystem — it's the simplest driver and requires no special filesystem:\n\n```bash\nlxc storage create fast-pool dir\n```\n\nVerify it was created:\n```bash\nlxc storage list\n```\n\nYou should now see two pools. Having multiple pools lets you choose different storage backends for different workloads — for example, putting a database instance on a faster pool.",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Launch an instance on the new pool",
+      "instructions": "Launch a container on the new `fast-pool` to verify it works. The `--storage` flag tells LXD which pool to use for the instance's root disk:\n\n```bash\nlxc launch ubuntu:24.04 storage-test --storage fast-pool\n```\n\nVerify the instance is running:\n```bash\nlxc list\n```\n\nThen confirm its root disk is on `fast-pool`:\n```bash\nlxc config device show storage-test\n```\n\nThe output should show a `root` disk device with `pool: fast-pool`.",
+      "hints": [
+        "lxc config device show <instance> displays all devices attached to an instance, including the root disk.",
+        "Look for 'pool: fast-pool' in the root device configuration."
+      ],
+      "check": "task-3"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How do you view all devices (including network) attached to an instance?",
+      "type": "single-choice",
+      "options": ["lxc config device show first", "lxc show first", "lxc info first --devices", "lxc network show first"],
+      "answer": "lxc config device show first",
+      "explanation": "lxc config device show <instance> displays all devices, including NIC (network) devices."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you add a second NIC (eth1) to instance 'first' on network 'lxdbr0'?",
+      "type": "single-choice",
+      "options": [
+        "lxc config device add first eth1 nic network=lxdbr0",
+        "lxc network add first eth1 lxdbr0",
+        "lxc config set first eth1 nic lxdbr0",
+        "lxc device add first eth1 network=lxdbr0"
+      ],
+      "answer": "lxc config device add first eth1 nic network=lxdbr0",
+      "explanation": "lxc config device add <instance> <device_name> nic network=<network> adds a new NIC device."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you check internet connectivity from inside an instance?",
+      "type": "single-choice",
+      "options": [
+        "lxc exec first -- ping -c 3 8.8.8.8",
+        "lxc ping first 8.8.8.8",
+        "lxc network test first",
+        "lxc exec first -- curl google.com"
+      ],
+      "answer": "lxc exec first -- ping -c 3 8.8.8.8",
+      "explanation": "Use lxc exec to run ping inside the instance. The -c 3 flag sends 3 packets and exits."
+    },
+    {
+      "id": "q4",
+      "prompt": "Select all valid LXD NIC types:",
+      "type": "multi-choice",
+      "options": ["bridged", "macvlan", "routed", "wireless", "physical", "bluetooth"],
+      "answer": ["bridged", "macvlan", "routed", "physical"],
+      "explanation": "LXD supports bridged, macvlan, routed, and physical NIC types. Wireless and bluetooth are not LXD NIC types."
+    }
+  ]
+}

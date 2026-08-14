@@ -1,0 +1,68 @@
+{
+  "moduleId": "module-04",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What command lists all storage pools?",
+      "type": "single-choice",
+      "options": ["lxc storage list", "lxc pool list", "lxc list --storage", "lxc storage show"],
+      "answer": "lxc storage list",
+      "explanation": "lxc storage list shows all pools, their driver, and usage."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which storage driver is recommended for most LXD setups?",
+      "type": "single-choice",
+      "options": ["dir", "ZFS", "LVM", "Ceph"],
+      "answer": "ZFS",
+      "explanation": "ZFS supports snapshots, compression, and copy-on-write — making it the recommended default."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you create a custom volume named 'data' in pool 'default'?",
+      "type": "single-choice",
+      "options": [
+        "lxc storage volume create default data",
+        "lxc volume create data default",
+        "lxc storage create default/data",
+        "lxc create volume default data"
+      ],
+      "answer": "lxc storage volume create default data",
+      "explanation": "lxc storage volume create <pool> <name> creates a custom volume."
+    },
+    {
+      "id": "q4",
+      "prompt": "Select all valid reasons to use custom volumes:",
+      "type": "multi-choice",
+      "options": [
+        "Data persistence across instance deletion",
+        "Sharing data between multiple instances",
+        "Independent backups of data",
+        "Faster instance boot times",
+        "Automatic image creation"
+      ],
+      "answer": ["Data persistence across instance deletion", "Sharing data between multiple instances", "Independent backups of data"],
+      "explanation": "Custom volumes persist independently, can be shared, and can be backed up separately. They don't affect boot times or create images."
+    },
+    {
+      "id": "q5",
+      "prompt": "How do you attach a custom volume 'data' to instance 'web' at '/mnt/data'?",
+      "type": "text-answer",
+      "answer": "lxc storage volume attach default data web /mnt/data",
+      "explanation": "lxc storage volume attach <pool> <volume> <instance> <mount-point> attaches a custom volume as a disk device."
+    },
+    {
+      "id": "q6",
+      "prompt": "Can you delete a custom volume that is still attached to an instance?",
+      "type": "single-choice",
+      "options": [
+        "No — you must detach it first",
+        "Yes — LXD detaches it automatically",
+        "Yes — but only with --force",
+        "Yes — the volume is moved to the recycle bin"
+      ],
+      "answer": "No — you must detach it first",
+      "explanation": "LXD prevents deleting volumes that are in use. Detach the volume from all instances first."
+    }
+  ]
+}

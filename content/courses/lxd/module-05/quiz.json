@@ -1,0 +1,62 @@
+{
+  "moduleId": "module-05",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the default network type created by lxd init?",
+      "type": "single-choice",
+      "options": ["bridge", "macvlan", "OVN", "physical"],
+      "answer": "bridge",
+      "explanation": "lxd init creates a bridge network (lxdbr0) with DHCP and NAT."
+    },
+    {
+      "id": "q2",
+      "prompt": "How does a bridge network provide internet access to instances?",
+      "type": "single-choice",
+      "options": [
+        "NAT routes outbound traffic through the host's internet connection",
+        "Each instance gets a public IP",
+        "Port forwarding only",
+        "Direct connection to a physical router"
+      ],
+      "answer": "NAT routes outbound traffic through the host's internet connection",
+      "explanation": "LXD runs NAT on the bridge so instances can reach the internet through the host."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you list all networks?",
+      "type": "single-choice",
+      "options": ["lxc network list", "lxc list networks", "lxc net list", "lxc network show all"],
+      "answer": "lxc network list",
+      "explanation": "lxc network list shows all networks, their type, and managed status."
+    },
+    {
+      "id": "q4",
+      "prompt": "How do you add a second NIC to an instance?",
+      "type": "single-choice",
+      "options": [
+        "lxc config device add first eth1 nic network=lxdbr0",
+        "lxc network add first eth1",
+        "lxc config set first nic eth1 lxdbr0",
+        "lxc add nic first eth1"
+      ],
+      "answer": "lxc config device add first eth1 nic network=lxdbr0",
+      "explanation": "lxc config device add <instance> <name> nic network=<network> adds a new NIC device."
+    },
+    {
+      "id": "q5",
+      "prompt": "Select all valid LXD NIC types:",
+      "type": "multi-choice",
+      "options": ["bridged", "macvlan", "routed", "wireless", "physical"],
+      "answer": ["bridged", "macvlan", "routed", "physical"],
+      "explanation": "LXD supports bridged, macvlan, routed, and physical NIC types."
+    },
+    {
+      "id": "q6",
+      "prompt": "What does LXD run on the bridge to assign IPs automatically?",
+      "type": "text-answer",
+      "answer": "DHCP",
+      "explanation": "LXD runs a DHCP server on the bridge, assigning IPs to instances when they start."
+    }
+  ]
+}

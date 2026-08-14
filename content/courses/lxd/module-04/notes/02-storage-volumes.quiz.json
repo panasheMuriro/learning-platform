@@ -1,0 +1,56 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What are the two main categories of storage volumes in LXD?",
+      "type": "single-choice",
+      "options": [
+        "Instance volumes (auto-created root disks) and custom volumes (user-created)",
+        "Local volumes and remote volumes",
+        "SSD volumes and HDD volumes",
+        "Public volumes and private volumes"
+      ],
+      "answer": "Instance volumes (auto-created root disks) and custom volumes (user-created)",
+      "explanation": "Instance volumes are created automatically when you launch an instance. Custom volumes are created by the user for shared or persistent data."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you create a custom volume named 'data' in the 'default' pool?",
+      "type": "single-choice",
+      "options": [
+        "lxc storage volume create default data",
+        "lxc volume create default data",
+        "lxc create volume default data",
+        "lxc storage create default/data"
+      ],
+      "answer": "lxc storage volume create default data",
+      "explanation": "lxc storage volume create <pool> <name> creates a custom volume in the specified pool."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you attach a custom volume 'data' to container 'web' at '/mnt/data'?",
+      "type": "single-choice",
+      "options": [
+        "lxc storage volume attach default data web /mnt/data",
+        "lxc attach default data web /mnt/data",
+        "lxc storage attach default/data web /mnt/data",
+        "lxc config device add web data disk source=default/data"
+      ],
+      "answer": "lxc storage volume attach default data web /mnt/data",
+      "explanation": "lxc storage volume attach <pool> <volume> <instance> <mount-point> attaches a custom volume to an instance."
+    },
+    {
+      "id": "q4",
+      "prompt": "What happens to a custom volume when the instance it's attached to is deleted?",
+      "type": "single-choice",
+      "options": [
+        "The custom volume persists — it's independent of the instance",
+        "The custom volume is automatically deleted",
+        "The custom volume is detached but marked as read-only",
+        "The custom volume is converted to an image"
+      ],
+      "answer": "The custom volume persists — it's independent of the instance",
+      "explanation": "Custom volumes are independent of instances. They persist until explicitly deleted, making them useful for data that must survive instance deletion."
+    }
+  ]
+}
