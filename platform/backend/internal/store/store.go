@@ -131,10 +131,24 @@ func (s *Store) UpsertCourse(c Course) error {
 	return s.db.Save(&c).Error
 }
 
+// DeleteCourse removes a course row by ID. Used to clean up courses that
+// no longer exist on disk.
+func (s *Store) DeleteCourse(courseID string) error {
+	return s.db.Where("id = ?", courseID).Delete(&Course{}).Error
+}
+
 // ListCourses returns all enabled courses, ordered by title.
 func (s *Store) ListCourses() ([]Course, error) {
 	var courses []Course
 	err := s.db.Where("enabled = ?", true).Order("title").Find(&courses).Error
+	return courses, err
+}
+
+// ListAllCourses returns all courses (including disabled), ordered by title.
+// Used by the registry to detect stale entries.
+func (s *Store) ListAllCourses() ([]Course, error) {
+	var courses []Course
+	err := s.db.Order("title").Find(&courses).Error
 	return courses, err
 }
 

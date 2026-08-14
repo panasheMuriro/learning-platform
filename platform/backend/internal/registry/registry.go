@@ -100,6 +100,24 @@ func (r *Registry) Scan() error {
 	}
 
 	log.Printf("registry: loaded %d course(s) from %s", loaded, coursesDir)
+
+	// Remove stale courses that exist in the DB but no longer have a
+	// course.json on disk (e.g. a course directory was deleted).
+	allCourses, err := r.store.ListAllCourses()
+	if err != nil {
+		log.Printf("registry: failed to list stale courses: %v", err)
+		return nil
+	}
+	for _, c := range allCourses {
+		metaPath := filepath.Join(coursesDir, c.Slug, "course.json")
+		if _, err := os.Stat(metaPath); err != nil {
+			log.Printf("registry: removing stale course %s (no longer on disk)", c.Slug)
+			if err := r.store.DeleteCourse(c.ID); err != nil {
+				log.Printf("registry: failed to delete stale course %s: %v", c.Slug, err)
+			}
+		}
+	}
+
 	return nil
 }
 
