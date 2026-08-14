@@ -10,8 +10,8 @@ vars:
   WORKSHOP_SDK: 'juju-terraform-course'
   LAB_ROOT: '{{.LAB_ROOT | default "/tmp/lab-test"}}'
   DB_PATH: '{{.LAB_ROOT}}/course.db'
-  BACKEND_PORT: '{{.BACKEND_PORT | default "8080"}}'
-  CODE_SERVER_PORT: '{{.CODE_SERVER_PORT | default "8081"}}'
+  BACKEND_PORT: '{{.BACKEND_PORT | default "9090"}}'
+  CODE_SERVER_PORT: '{{.CODE_SERVER_PORT | default "9091"}}'
 
 tasks:
   default:
