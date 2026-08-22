@@ -6,7 +6,12 @@ import {
   useCourseOutline,
   useProgress,
 } from "@/api/content";
-import type { CourseOutline, ModuleOutline, Progress } from "@/api/content";
+import type {
+  CourseOutline,
+  ModuleItem,
+  ModuleOutline,
+  Progress,
+} from "@/api/content";
 import { Icon } from "@/components/Icon";
 import { ApplicationLayout, CheckboxInput } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
@@ -177,6 +182,23 @@ function CourseSidebar({
   );
 }
 
+/** Build the default items list (lectures → quiz → labs) from the module's
+ *  separate arrays. Used when the module has no explicit `items` array. */
+function buildDefaultItems(module: ModuleOutline): ModuleItem[] {
+  const items: ModuleItem[] = module.lectures.map((l) => ({
+    type: "lecture" as const,
+    id: l.id,
+    title: l.title,
+  }));
+  if (module.quiz) {
+    items.push({ type: "quiz", id: module.quiz.id, title: "Quiz" });
+  }
+  for (const lab of module.labs) {
+    items.push({ type: "lab", id: lab.id, title: lab.title });
+  }
+  return items;
+}
+
 function ModuleSection({
   courseId,
   module,
@@ -229,59 +251,38 @@ function ModuleSection({
 
       {expanded && (
         <ul className="course-sidebar__items">
-          {module.lectures.map((lec) => {
-            const href = `/courses/${courseId}/modules/${module.id}/lectures/${lec.id}`;
-            const done = progress?.lecturesCompleted.includes(lec.id) ?? false;
+          {(module.items ?? buildDefaultItems(module)).map((item) => {
+            const href =
+              item.type === "lecture"
+                ? `/courses/${courseId}/modules/${module.id}/lectures/${item.id}`
+                : item.type === "lab"
+                  ? `/courses/${courseId}/modules/${module.id}/labs/${item.id}`
+                  : `/courses/${courseId}/modules/${module.id}/quiz`;
+            const done =
+              item.type === "lecture"
+                ? (progress?.lecturesCompleted.includes(item.id) ?? false)
+                : item.type === "lab"
+                  ? (progress?.labsCompleted.includes(item.id) ?? false)
+                  : (progress?.quizPassed ?? false);
+            const icon =
+              item.type === "lecture" ? (
+                <Icon name="topic" size={14} light />
+              ) : item.type === "lab" ? (
+                <Icon name="open-terminal" size={14} light />
+              ) : (
+                <Icon name="question" size={14} light />
+              );
             return (
               <NavItem
-                key={lec.id}
+                key={`${item.type}-${item.id}`}
                 href={href}
-                icon={<Icon name="topic" size={14} light />}
-                label={lec.title}
+                icon={icon}
+                label={item.title}
                 done={done}
                 active={pathname === href}
                 onToggle={() =>
-                  onToggleItem("lecture", module.id, lec.id, done)
+                  onToggleItem(item.type, module.id, item.id, done)
                 }
-              />
-            );
-          })}
-          {module.quiz &&
-            (() => {
-              const quizId = module.quiz.id;
-              return (
-                <NavItem
-                  href={`/courses/${courseId}/modules/${module.id}/quiz`}
-                  icon={<Icon name="question" size={14} light />}
-                  label="Quiz"
-                  done={progress?.quizPassed ?? false}
-                  active={
-                    pathname ===
-                    `/courses/${courseId}/modules/${module.id}/quiz`
-                  }
-                  onToggle={() =>
-                    onToggleItem(
-                      "quiz",
-                      module.id,
-                      quizId,
-                      progress?.quizPassed ?? false,
-                    )
-                  }
-                />
-              );
-            })()}
-          {module.labs.map((lab) => {
-            const href = `/courses/${courseId}/modules/${module.id}/labs/${lab.id}`;
-            const done = progress?.labsCompleted.includes(lab.id) ?? false;
-            return (
-              <NavItem
-                key={lab.id}
-                href={href}
-                icon={<Icon name="open-terminal" size={14} light />}
-                label={lab.title}
-                done={done}
-                active={pathname === href}
-                onToggle={() => onToggleItem("lab", module.id, lab.id, done)}
               />
             );
           })}
