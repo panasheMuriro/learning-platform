@@ -1,28 +1,43 @@
-[
-  {
-    "id": "q1",
-    "prompt": "Which command lists all clouds known to the local Juju client?",
-    "type": "single-choice",
-    "options": [
-      "juju clouds",
-      "juju show-cloud",
-      "juju list-regions",
-      "juju status --clouds"
-    ],
-    "answer": "juju clouds",
-    "explanation": "The 'juju clouds' command lists all clouds available and configured on the client."
-  },
-  {
-    "id": "q2",
-    "prompt": "What does bootstrapping a Juju controller accomplish?",
-    "type": "single-choice",
-    "options": [
-      "It provisions the controller instance and state database on the chosen cloud substrate",
-      "It installs Python on the client machine",
-      "It deletes all models in the environment",
-      "It builds a charm package from source"
-    ],
-    "answer": "It provisions the controller instance and state database on the chosen cloud substrate",
-    "explanation": "Bootstrapping creates the controller VM/container, sets up the database, and connects the client to the cloud."
-  }
-]
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which command lists all clouds known to the local Juju client?",
+      "type": "single-choice",
+      "options": [
+        "juju clouds",
+        "juju show-cloud",
+        "juju list-regions",
+        "juju status --clouds"
+      ],
+      "answer": "juju clouds",
+      "explanation": "The 'juju clouds' command lists all clouds available and configured on the client."
+    },
+    {
+      "id": "q2",
+      "prompt": "What does bootstrapping a Juju controller accomplish?",
+      "type": "single-choice",
+      "options": [
+        "It provisions the controller instance and state database on the chosen cloud substrate",
+        "It installs Python on the client machine",
+        "It deletes all models in the environment",
+        "It builds a charm package from source"
+      ],
+      "answer": "It provisions the controller instance and state database on the chosen cloud substrate",
+      "explanation": "Bootstrapping creates the controller VM/container, sets up the database, and connects the client to the cloud."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command lists all controllers known to your local client?",
+      "type": "single-choice",
+      "options": [
+        "juju controllers",
+        "juju list-controllers",
+        "juju status --controllers",
+        "juju show-controllers"
+      ],
+      "answer": "juju controllers",
+      "explanation": "'juju controllers' lists all registered controllers, their active model, cloud region, and connection status."
+    }
+  ]
+}
