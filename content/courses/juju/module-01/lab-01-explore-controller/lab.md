@@ -1,9 +1,9 @@
-# Lab 1: Inspect Client, Clouds & Controllers
+# Lab 1: Inspect Client, Define Custom Clouds & Configure Controllers
 
 ## Overview
-In this lab, you will get familiar with the Juju CLI, inspect available clouds, and verify the status of the active Juju controller.
+In this lab, you will get hands-on experience managing Juju cloud definitions, querying controller environments, and configuring model settings on the controller.
 
 ## Objectives
-1. Check Juju client version.
-2. Inspect the list of clouds available on your system.
-3. List registered controllers and check the details of the active controller.
+1. Define and register a custom client cloud definition named `custom-manual`.
+2. Update the `update-status-hook-interval` model configuration on the `controller` model to `10m`.
+3. Inspect and verify the active controller connection details.

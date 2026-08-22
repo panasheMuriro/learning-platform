@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# check.sh — grading script for Lab 1: Inspect Client, Clouds & Controllers
+# check.sh — grading script for Lab 1: Inspect Client, Define Custom Clouds & Configure Controllers
 
 set -euo pipefail
 
@@ -25,34 +25,33 @@ source "$HELPER"
 
 tasks="[]"
 
-# Task 1: Check Juju CLI version
+# Task 1: Register a custom client cloud definition 'custom-manual'
 if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-1" ]; then
-  version=$(juju version 2>/dev/null || true)
-  if [[ -n "$version" ]]; then
+  if juju show-cloud custom-manual --client 2>/dev/null | grep -q "custom-manual"; then
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-1" --arg name "Check Juju CLI version" \
-      --arg msg "Juju CLI version: $version" \
+      --arg id "task-1" --arg name "Register custom client cloud definition" \
+      --arg msg "Client cloud 'custom-manual' is registered." \
       '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
   else
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-1" --arg name "Check Juju CLI version" \
-      --arg msg "Juju CLI command not found or not responding." \
+      --arg id "task-1" --arg name "Register custom client cloud definition" \
+      --arg msg "Custom cloud 'custom-manual' not found on client. Run: juju add-cloud custom-manual <file> --client" \
       '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
 fi
 
-# Task 2: List available clouds
+# Task 2: Configure update-status-hook-interval on controller model to 10m
 if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-2" ]; then
-  clouds=$(juju clouds 2>/dev/null || true)
-  if [[ -n "$clouds" ]]; then
+  interval=$(juju model-config -m controller update-status-hook-interval 2>/dev/null | tr -d '\r\n' || echo "")
+  if [[ "$interval" == "10m" ]]; then
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-2" --arg name "List available clouds" \
-      --arg msg "Available clouds listed successfully." \
+      --arg id "task-2" --arg name "Configure update status interval on controller model" \
+      --arg msg "update-status-hook-interval is set to 10m on the controller model." \
       '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
   else
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-2" --arg name "List available clouds" \
-      --arg msg "Failed to list clouds with 'juju clouds'." \
+      --arg id "task-2" --arg name "Configure update status interval on controller model" \
+      --arg msg "update-status-hook-interval on controller model is '$interval', expected '10m'." \
       '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
 fi
@@ -61,12 +60,12 @@ fi
 if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-3" ]; then
   if juju_controller_exists; then
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-3" --arg name "Inspect controller status" \
+      --arg id "task-3" --arg name "Verify active controller status" \
       --arg msg "Juju controller is reachable." \
       '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
   else
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-3" --arg name "Inspect controller status" \
+      --arg id "task-3" --arg name "Verify active controller status" \
       --arg msg "No reachable Juju controller found." \
       '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
