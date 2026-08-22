@@ -1,60 +1,76 @@
 #!/usr/bin/env bash
-source "$(dirname "$0")/../../shared/check-helper.sh"
+# check.sh — grading script for Lab 1: Inspect Client, Clouds & Controllers
 
-SPECIFIC_TASK="${1:-}"
+set -euo pipefail
 
-check_task_1() {
-  local version
+REQUESTED_TASK="${1:-}"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HELPER=""
+for candidate in \
+  "${SCRIPT_DIR}/../../shared/check-helper.sh" \
+  "${SCRIPT_DIR}/check-helper.sh" \
+  "${SCRIPT_DIR}/../check-helper.sh" \
+  "$(dirname "${SCRIPT_DIR}")/check-helper.sh"; do
+  if [ -f "$candidate" ]; then
+    HELPER="$candidate"
+    break
+  fi
+done
+if [ -z "$HELPER" ]; then
+  echo '{"passed": false, "tasks": [{"id":"default","name":"Lab check","passed":false,"message":"check-helper.sh not found"}]}'
+  exit 1
+fi
+source "$HELPER"
+
+tasks="[]"
+
+# Task 1: Check Juju CLI version
+if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-1" ]; then
   version=$(juju version 2>/dev/null || true)
   if [[ -n "$version" ]]; then
-    task "task-1" "Check Juju CLI version" true "Juju CLI version: $version"
+    tasks=$(jq --argjson arr "$tasks" \
+      --arg id "task-1" --arg name "Check Juju CLI version" \
+      --arg msg "Juju CLI version: $version" \
+      '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
   else
-    task "task-1" "Check Juju CLI version" false "Juju CLI command not found or not responding."
+    tasks=$(jq --argjson arr "$tasks" \
+      --arg id "task-1" --arg name "Check Juju CLI version" \
+      --arg msg "Juju CLI command not found or not responding." \
+      '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
-}
+fi
 
-check_task_2() {
-  local clouds
+# Task 2: List available clouds
+if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-2" ]; then
   clouds=$(juju clouds 2>/dev/null || true)
   if [[ -n "$clouds" ]]; then
-    task "task-2" "List available clouds" true "Available clouds listed successfully."
+    tasks=$(jq --argjson arr "$tasks" \
+      --arg id "task-2" --arg name "List available clouds" \
+      --arg msg "Available clouds listed successfully." \
+      '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
   else
-    task "task-2" "List available clouds" false "Failed to list clouds with 'juju clouds'."
+    tasks=$(jq --argjson arr "$tasks" \
+      --arg id "task-2" --arg name "List available clouds" \
+      --arg msg "Failed to list clouds with 'juju clouds'." \
+      '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
-}
+fi
 
-check_task_3() {
+# Task 3: Inspect controller status
+if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-3" ]; then
   if juju_controller_exists; then
-    task "task-3" "Inspect controller status" true "Juju controller is reachable."
+    tasks=$(jq --argjson arr "$tasks" \
+      --arg id "task-3" --arg name "Inspect controller status" \
+      --arg msg "Juju controller is reachable." \
+      '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
   else
-    task "task-3" "Inspect controller status" false "No reachable Juju controller found."
+    tasks=$(jq --argjson arr "$tasks" \
+      --arg id "task-3" --arg name "Inspect controller status" \
+      --arg msg "No reachable Juju controller found." \
+      '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
-}
-
-if [[ -n "$SPECIFIC_TASK" ]]; then
-  case "$SPECIFIC_TASK" in
-    task-1) t=$(check_task_1) ;;
-    task-2) t=$(check_task_2) ;;
-    task-3) t=$(check_task_3) ;;
-    *) echo "Unknown task: $SPECIFIC_TASK" >&2; exit 1 ;;
-  esac
-  p=$(echo "$t" | jq -r '.passed')
-  emit_result "$p" "[$t]"
-  exit 0
 fi
 
-t1=$(check_task_1)
-t2=$(check_task_2)
-t3=$(check_task_3)
-
-p1=$(echo "$t1" | jq -r '.passed')
-p2=$(echo "$t2" | jq -r '.passed')
-p3=$(echo "$t3" | jq -r '.passed')
-
-if [[ "$p1" == "true" && "$p2" == "true" && "$p3" == "true" ]]; then
-  all_passed=true
-else
-  all_passed=false
-fi
-
-emit_result "$all_passed" "[$t1, $t2, $t3]"
+all_passed=$(echo "$tasks" | jq '[.[].passed] | all')
+emit_result "$all_passed" "$tasks"
