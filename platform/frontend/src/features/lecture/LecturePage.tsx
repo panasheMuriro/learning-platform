@@ -1,4 +1,5 @@
-import { markLectureComplete, useLecture } from "@/api/content";
+import { markLectureComplete, useCourseOutline, useLecture } from "@/api/content";
+import { BottomNav } from "@/components/BottomNav";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
@@ -13,6 +14,7 @@ export function LecturePage() {
     isLoading,
     error,
   } = useLecture(courseId, moduleId, lectureId);
+  const { data: outline } = useCourseOutline(courseId);
 
   // Track which lecture we've already marked complete to avoid duplicate
   // POSTs when the effect re-runs (e.g. after a query cache update).
@@ -51,7 +53,7 @@ export function LecturePage() {
 
   return (
     <div className="course-content">
-      <LectureViewer markdown={lecture.markdown} />{" "}
+      <LectureViewer markdown={lecture.markdown} />
       {lecture.questions && lecture.questions.length > 0 && (
         <LectureQuiz
           courseId={courseId}
@@ -59,7 +61,16 @@ export function LecturePage() {
           lectureId={lectureId}
           questions={lecture.questions}
         />
-      )}{" "}
+      )}
+      {outline && (
+        <BottomNav
+          courseId={courseId}
+          moduleId={moduleId}
+          currentItemType="lecture"
+          currentItemId={lectureId}
+          outline={outline}
+        />
+      )}
     </div>
   );
 }
