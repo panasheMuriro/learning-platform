@@ -1,0 +1,27 @@
+{
+  "title": "Juju Hands-On Course",
+  "modules": [
+    {
+      "id": "module-01",
+      "title": "Architecture, Clouds & Models",
+      "lectures": [
+        { "id": "01-what-is-juju", "title": "What is Juju?" },
+        { "id": "02-clouds-and-controllers", "title": "Clouds & Controllers" },
+        { "id": "03-models-and-workspaces", "title": "Models & Context Switching" }
+      ],
+      "labs": [
+        { "id": "lab-01-explore-controller", "title": "Inspect Client, Clouds & Controllers" },
+        { "id": "lab-02-create-and-switch-models", "title": "Create, Configure & Switch Models" }
+      ],
+      "quiz": { "id": "module-01-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-what-is-juju", "title": "What is Juju?" },
+        { "type": "lecture", "id": "02-clouds-and-controllers", "title": "Clouds & Controllers" },
+        { "type": "lab", "id": "lab-01-explore-controller", "title": "Inspect Client, Clouds & Controllers" },
+        { "type": "lecture", "id": "03-models-and-workspaces", "title": "Models & Context Switching" },
+        { "type": "lab", "id": "lab-02-create-and-switch-models", "title": "Create, Configure & Switch Models" },
+        { "type": "quiz", "id": "module-01-quiz", "title": "Quiz" }
+      ]
+    }
+  ]
+}

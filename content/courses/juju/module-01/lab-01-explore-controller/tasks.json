@@ -1,0 +1,22 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Check Juju CLI version",
+      "instructions": "Run the Juju version command to verify your client installation:\n\n```bash\njuju version\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "List available clouds",
+      "instructions": "Inspect the clouds configured and available to your Juju client:\n\n```bash\njuju clouds\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Inspect controller status",
+      "instructions": "View registered controllers and show details for the active controller:\n\n```bash\njuju controllers\njuju show-controller\n```",
+      "check": "task-3"
+    }
+  ]
+}

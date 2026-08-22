@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the relationship between a Charm and an Application in Juju?",
+      "type": "single-choice",
+      "options": [
+        "A charm is the operational code package; an application is an instantiated deployment of that charm",
+        "A charm is a hardware host; an application is an operating system",
+        "A charm is a user account; an application is a security group",
+        "There is no difference; they are exact synonyms"
+      ],
+      "answer": "A charm is the operational code package; an application is an instantiated deployment of that charm",
+      "explanation": "Charms contain the lifecycle logic from Charmhub. Deploying a charm into a model creates a running Application with one or more units."
+    },
+    {
+      "id": "q2",
+      "prompt": "What does 'juju switch' do when given a controller and model name (e.g. 'pizzeria-controller:dev')?",
+      "type": "single-choice",
+      "options": [
+        "It switches the active client context to target that specific controller and model for subsequent commands",
+        "It migrates all units from the first controller to the second",
+        "It destroys the active model and creates a new one",
+        "It changes the user password on the controller"
+      ],
+      "answer": "It switches the active client context to target that specific controller and model for subsequent commands",
+      "explanation": "Context switching changes where all future CLI commands (like juju deploy or juju status) are executed."
+    },
+    {
+      "id": "q3",
+      "prompt": "Where does the Juju state database reside?",
+      "type": "single-choice",
+      "options": [
+        "Inside the Juju Controller instance",
+        "On the local client machine in ~/.local/share/juju",
+        "Directly inside each deployed charm unit",
+        "In Charmhub cloud servers"
+      ],
+      "answer": "Inside the Juju Controller instance",
+      "explanation": "The Juju controller runs MongoDB to maintain the entire state of models, machines, applications, and relations."
+    }
+  ]
+}
