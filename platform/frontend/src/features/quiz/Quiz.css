@@ -1,22 +1,38 @@
-.quiz__question {
+.quiz h1 {
   margin-bottom: 1.5rem;
+}
+
+.quiz__question {
+  margin-bottom: 1rem;
+  padding: 1rem;
 }
 
 .quiz__prompt {
   font-weight: 600;
-  margin-bottom: 0.75rem;
-}
-
-.quiz__options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  margin: 0 0 0.75rem;
 }
 
 .quiz__explanation {
   margin-top: 0.75rem;
   padding: 0.5rem;
-  background: #f7f7f7;
+  background: var(--color-surface-muted, #f7f7f7);
   border-radius: 4px;
   font-size: 0.875rem;
+}
+
+.quiz__result {
+  padding: 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.quiz__result--pass {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.quiz__result--fail {
+  background: #fbe9e7;
+  color: #c62828;
 }
