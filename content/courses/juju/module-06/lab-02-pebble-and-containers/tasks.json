@@ -1,17 +1,34 @@
-[
-  {
-    "id": "task-1",
-    "title": "Create model lab-k8s-pebble",
-    "description": "Create a model named 'lab-k8s-pebble'."
-  },
-  {
-    "id": "task-2",
-    "title": "Deploy container-app",
-    "description": "Deploy 'ubuntu' application named 'container-app' in model 'lab-k8s-pebble'."
-  },
-  {
-    "id": "task-3",
-    "title": "Execute remote command on unit",
-    "description": "Create marker file /tmp/pebble-sim.ready on container-app/0 using 'juju exec --unit container-app/0 \"touch /tmp/pebble-sim.ready\" -m lab-k8s-pebble'."
-  }
-]
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create model lab-k8s-pebble",
+      "instructions": "Create a new model named `lab-k8s-pebble`:\n\n```bash\njuju add-model lab-k8s-pebble\n```\n\nVerify that `lab-k8s-pebble` is active:\n\n```bash\njuju switch\n```",
+      "hints": [
+        "Run `juju add-model lab-k8s-pebble`."
+      ],
+      "solution": "```bash\njuju add-model lab-k8s-pebble\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Deploy container-app",
+      "instructions": "Deploy the `ubuntu` charm with application name `container-app` into `lab-k8s-pebble`:\n\n```bash\njuju deploy ubuntu container-app --channel latest/stable -m lab-k8s-pebble\n```\n\nVerify application status:\n\n```bash\njuju status -m lab-k8s-pebble\n```",
+      "hints": [
+        "Syntax: `juju deploy ubuntu container-app --channel latest/stable -m lab-k8s-pebble`."
+      ],
+      "solution": "```bash\njuju deploy ubuntu container-app --channel latest/stable -m lab-k8s-pebble\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Execute remote command on unit",
+      "instructions": "Execute a remote command to touch the ready marker file `/tmp/pebble-sim.ready` on `container-app/0`:\n\n```bash\njuju exec -m lab-k8s-pebble --unit container-app/0 \"touch /tmp/pebble-sim.ready\"\n```\n\nVerify that the marker exists on the unit:\n\n```bash\njuju exec -m lab-k8s-pebble --unit container-app/0 \"ls -l /tmp/pebble-sim.ready\"\n```",
+      "hints": [
+        "Use `juju exec -m lab-k8s-pebble --unit container-app/0 'touch /tmp/pebble-sim.ready'`."
+      ],
+      "solution": "```bash\njuju exec -m lab-k8s-pebble --unit container-app/0 \"touch /tmp/pebble-sim.ready\"\n```",
+      "check": "task-3"
+    }
+  ]
+}

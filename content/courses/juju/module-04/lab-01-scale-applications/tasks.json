@@ -1,17 +1,35 @@
-[
-  {
-    "id": "task-1",
-    "title": "Create model and deploy worker application",
-    "description": "Create model 'lab-scale' and deploy 'ubuntu' application named 'worker'."
-  },
-  {
-    "id": "task-2",
-    "title": "Scale worker out",
-    "description": "Add 2 additional units to 'worker' so that it has multiple units."
-  },
-  {
-    "id": "task-3",
-    "title": "Scale worker in",
-    "description": "Remove unit 'worker/2' so that exactly 2 units remain active."
-  }
-]
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create model and deploy worker application",
+      "instructions": "Create a new model named `lab-scale` and deploy the `ubuntu` charm with application name `worker`:\n\n```bash\njuju add-model lab-scale\njuju deploy ubuntu worker --channel latest/stable\n```\n\nVerify that `worker` appears in `juju status`:\n\n```bash\njuju status\n```",
+      "hints": [
+        "Create the model with `juju add-model lab-scale`.",
+        "Deploy the charm with `juju deploy ubuntu worker --channel latest/stable`."
+      ],
+      "solution": "```bash\njuju add-model lab-scale\njuju deploy ubuntu worker --channel latest/stable\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Scale worker out",
+      "instructions": "Scale out the `worker` application horizontally by adding 2 additional units:\n\n```bash\njuju add-unit worker -n 2\n```\n\nVerify that multiple units are provisioning/running:\n\n```bash\njuju status worker\n```",
+      "hints": [
+        "Use `juju add-unit worker -n 2` to add 2 units."
+      ],
+      "solution": "```bash\njuju add-unit worker -n 2\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Scale worker in",
+      "instructions": "Scale down the application by removing unit `worker/2` so that exactly 2 units remain active:\n\n```bash\njuju remove-unit worker/2\n```\n\nVerify that `worker/2` is removed and 2 units remain:\n\n```bash\njuju status worker\n```",
+      "hints": [
+        "Remove the unit with `juju remove-unit worker/2`."
+      ],
+      "solution": "```bash\njuju remove-unit worker/2\n```",
+      "check": "task-3"
+    }
+  ]
+}
