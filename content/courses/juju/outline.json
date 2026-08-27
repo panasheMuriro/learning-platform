@@ -46,6 +46,28 @@
         { "type": "lecture", "id": "04-application-status-and-health", "title": "Application Status & Health" },
         { "type": "quiz", "id": "module-02-quiz", "title": "Quiz" }
       ]
+    },
+    {
+      "id": "module-03",
+      "title": "Relations & Integration Architecture",
+      "lectures": [
+        { "id": "01-understanding-relations", "title": "Understanding Juju Relations" },
+        { "id": "02-relating-applications", "title": "Relating Applications" },
+        { "id": "03-relation-data-and-hooks", "title": "Relation Data & Event Lifecycle" }
+      ],
+      "labs": [
+        { "id": "lab-01-relate-applications", "title": "Relate & Integrate Applications" },
+        { "id": "lab-02-relation-lifecycle", "title": "Manage Relation Lifecycles" }
+      ],
+      "quiz": { "id": "module-03-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-understanding-relations", "title": "Understanding Juju Relations" },
+        { "type": "lecture", "id": "02-relating-applications", "title": "Relating Applications" },
+        { "type": "lab", "id": "lab-01-relate-applications", "title": "Relate & Integrate Applications" },
+        { "type": "lecture", "id": "03-relation-data-and-hooks", "title": "Relation Data & Event Lifecycle" },
+        { "type": "lab", "id": "lab-02-relation-lifecycle", "title": "Manage Relation Lifecycles" },
+        { "type": "quiz", "id": "module-03-quiz", "title": "Quiz" }
+      ]
     }
   ]
 }

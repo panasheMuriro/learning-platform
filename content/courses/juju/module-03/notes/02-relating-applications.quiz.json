@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which command establishes an integration between 'web-app' and 'db'?",
+      "type": "single-choice",
+      "options": [
+        "juju integrate web-app db",
+        "juju connect web-app db",
+        "juju link web-app db",
+        "juju attach web-app db"
+      ],
+      "answer": "juju integrate web-app db",
+      "explanation": "'juju integrate' (or 'juju relate') connects two applications via compatible endpoints."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you sever an existing relation between 'web-app' and 'db'?",
+      "type": "single-choice",
+      "options": [
+        "juju remove-relation web-app db",
+        "juju disconnect web-app db",
+        "juju unlink web-app db",
+        "juju delete-relation web-app db"
+      ],
+      "answer": "juju remove-relation web-app db",
+      "explanation": "'juju remove-relation <app1> <app2>' breaks the integration and fires teardown events."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command displays a table of all active relations in the current model?",
+      "type": "single-choice",
+      "options": [
+        "juju relations",
+        "juju show-links",
+        "juju integrations list",
+        "juju endpoints"
+      ],
+      "answer": "juju relations",
+      "explanation": "'juju relations' lists all active regular, peer, and cross-model relations."
+    }
+  ]
+}

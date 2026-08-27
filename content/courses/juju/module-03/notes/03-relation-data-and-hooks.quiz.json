@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which relation lifecycle event is triggered on a charm unit whenever the remote application updates data in its databag?",
+      "type": "single-choice",
+      "options": [
+        "relation-changed",
+        "relation-joined",
+        "relation-created",
+        "config-changed"
+      ],
+      "answer": "relation-changed",
+      "explanation": "'relation-changed' fires whenever new or updated key-value data is written by the remote relation participant."
+    },
+    {
+      "id": "q2",
+      "prompt": "What are the two scopes of relation databags in Juju?",
+      "type": "single-choice",
+      "options": [
+        "Application databag and Unit databag",
+        "Controller databag and Cloud databag",
+        "Global databag and Local databag",
+        "Session databag and Persistent databag"
+      ],
+      "answer": "Application databag and Unit databag",
+      "explanation": "Relation databags are partitioned into Application-level data and Unit-specific data."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which event fires on all participating units when an integration is completely severed?",
+      "type": "single-choice",
+      "options": [
+        "relation-broken",
+        "relation-departed",
+        "relation-destroyed",
+        "relation-unlinked"
+      ],
+      "answer": "relation-broken",
+      "explanation": "'relation-broken' signals that the relation between the applications no longer exists."
+    }
+  ]
+}

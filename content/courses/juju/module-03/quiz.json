@@ -1,0 +1,138 @@
+{
+  "id": "module-03-quiz",
+  "title": "Module 03 Quiz: Relations & Integration Architecture",
+  "description": "Test your knowledge of Juju relations, endpoints, relation databags, and lifecycle events.",
+  "passingScore": 80,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the primary benefit of relations in Juju over manual configuration?",
+      "type": "single-choice",
+      "options": [
+        "Dynamic automated discovery and real-time exchange of credentials and connection data",
+        "Automatic code recompilation of the Linux kernel",
+        "Merging multiple containers into a single virtual machine",
+        "Disabling all firewall security rules"
+      ],
+      "answer": "Dynamic automated discovery and real-time exchange of credentials and connection data",
+      "explanation": "Relations automate connection discovery, credentials sharing, and dynamic re-configuration."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which endpoint role allows units of the same application to communicate for clustering or leader election?",
+      "type": "single-choice",
+      "options": [
+        "peers",
+        "provides",
+        "requires",
+        "subordinates"
+      ],
+      "answer": "peers",
+      "explanation": "Peer relations allow units of the same charm to form quorums, share state, and elect leaders."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which CLI command connects two applications via compatible relation endpoints?",
+      "type": "single-choice",
+      "options": [
+        "juju integrate",
+        "juju attach",
+        "juju bind",
+        "juju pipe"
+      ],
+      "answer": "juju integrate",
+      "explanation": "'juju integrate' (and its alias 'juju relate') connects two applications."
+    },
+    {
+      "id": "q4",
+      "prompt": "What must two charms have in common in order to be integrated?",
+      "type": "single-choice",
+      "options": [
+        "Compatible interface protocols on their endpoints",
+        "The same author name",
+        "Identical configuration options",
+        "The exact same number of deployed units"
+      ],
+      "answer": "Compatible interface protocols on their endpoints",
+      "explanation": "Endpoints must declare matching interfaces (e.g., http, pgsql, ingress) to relate."
+    },
+    {
+      "id": "q5",
+      "prompt": "Which command removes an existing relation between 'web' and 'database'?",
+      "type": "single-choice",
+      "options": [
+        "juju remove-relation web database",
+        "juju disconnect web database",
+        "juju unlink web database",
+        "juju destroy-relation web database"
+      ],
+      "answer": "juju remove-relation web database",
+      "explanation": "'juju remove-relation <app1> <app2>' severs the connection."
+    },
+    {
+      "id": "q6",
+      "prompt": "Which relation lifecycle event is fired when a new unit joins an existing relation?",
+      "type": "single-choice",
+      "options": [
+        "relation-joined",
+        "relation-created",
+        "relation-departed",
+        "relation-broken"
+      ],
+      "answer": "relation-joined",
+      "explanation": "'relation-joined' fires when a specific unit enters the relation."
+    },
+    {
+      "id": "q7",
+      "prompt": "Which relation event is triggered when remote participating units update keys in their databags?",
+      "type": "single-choice",
+      "options": [
+        "relation-changed",
+        "relation-modified",
+        "config-changed",
+        "leader-elected"
+      ],
+      "answer": "relation-changed",
+      "explanation": "'relation-changed' informs units that relation data has been added or updated."
+    },
+    {
+      "id": "q8",
+      "prompt": "What is the scope of an 'Application databag' in a relation?",
+      "type": "single-choice",
+      "options": [
+        "Shared across all units of that application in the relation",
+        "Scoped strictly to a single individual unit",
+        "Shared across all controllers in the cloud",
+        "Scoped only to the Juju client CLI"
+      ],
+      "answer": "Shared across all units of that application in the relation",
+      "explanation": "Application databags hold application-wide configuration and credentials shared by all units."
+    },
+    {
+      "id": "q9",
+      "prompt": "Which command displays a table of all active relations in the current model?",
+      "type": "single-choice",
+      "options": [
+        "juju relations",
+        "juju show-relations",
+        "juju list-integrations",
+        "juju status --relations-only"
+      ],
+      "answer": "juju relations",
+      "explanation": "'juju relations' lists all active relations in the active model."
+    },
+    {
+      "id": "q10",
+      "prompt": "Which event fires on participating charms when a relation is completely severed?",
+      "type": "single-choice",
+      "options": [
+        "relation-broken",
+        "relation-departed",
+        "stop",
+        "remove"
+      ],
+      "answer": "relation-broken",
+      "explanation": "'relation-broken' signals the total destruction of the relation between the services."
+    }
+  ]
+}
