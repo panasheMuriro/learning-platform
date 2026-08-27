@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What core components comprise the Canonical Observability Stack (COS)?",
+      "type": "single-choice",
+      "options": [
+        "Prometheus, Loki, Grafana, and Alertmanager",
+        "ELK Stack, Nagios, and Zabbix",
+        "Datadog Agent, Splunk forwarder, and CloudWatch",
+        "Syslog-ng, Cacti, and Graphite"
+      ],
+      "answer": "Prometheus, Loki, Grafana, and Alertmanager",
+      "explanation": "COS integrates Prometheus (metrics), Loki (logs), Grafana (visualization), and Alertmanager (alerting) using charms."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do Juju applications provide metrics scraping configurations and Grafana dashboards to COS?",
+      "type": "single-choice",
+      "options": [
+        "Via standard Juju relations (metrics-endpoint and grafana-dashboard)",
+        "By SSHing into the Grafana server and pasting JSON files",
+        "By opening firewall ports and adding scrape configs to /etc/hosts",
+        "By committing YAML files directly into the Prometheus charm repository"
+      ],
+      "answer": "Via standard Juju relations (metrics-endpoint and grafana-dashboard)",
+      "explanation": "Juju relations dynamically transfer metrics endpoints, alert rules, and dashboard templates to COS components."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which relation interface is used to stream application logs to Loki in COS?",
+      "type": "single-choice",
+      "options": [
+        "logging or log-proxy",
+        "syslog-out",
+        "fluentd-stream",
+        "stdout-forwarder"
+      ],
+      "answer": "logging or log-proxy",
+      "explanation": "Charms use the logging/log-proxy relation endpoints to forward log streams directly to Loki."
+    }
+  ]
+}

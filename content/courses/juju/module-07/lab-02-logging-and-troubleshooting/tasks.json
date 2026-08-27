@@ -1,0 +1,34 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create and Switch to Model",
+      "instructions": "Ensure the model `mod7-troubleshoot-lab` exists and is the current target.",
+      "hints": [
+        "Run `juju switch mod7-troubleshoot-lab` or `juju add-model mod7-troubleshoot-lab`."
+      ],
+      "solution": "juju switch mod7-troubleshoot-lab",
+      "check": "juju show-model mod7-troubleshoot-lab >/dev/null 2>&1"
+    },
+    {
+      "id": "task-2",
+      "title": "Deploy Worker Node",
+      "instructions": "Deploy the `ubuntu` charm with application name `worker-node` into `mod7-troubleshoot-lab`.",
+      "hints": [
+        "Run `juju deploy ubuntu worker-node`."
+      ],
+      "solution": "juju deploy ubuntu worker-node",
+      "check": "juju status --model mod7-troubleshoot-lab --format yaml | grep -q 'worker-node:'"
+    },
+    {
+      "id": "task-3",
+      "title": "Run Remote Diagnostic Command",
+      "instructions": "Execute a remote diagnostic check on `worker-node` using `juju exec` to verify the uptime of the unit.",
+      "hints": [
+        "Run `juju exec --unit worker-node/0 'uptime'` or `juju exec --app worker-node 'uptime'`."
+      ],
+      "solution": "juju exec --unit worker-node/0 'uptime'",
+      "check": "juju status --model mod7-troubleshoot-lab --format yaml | grep -q 'worker-node:'"
+    }
+  ]
+}

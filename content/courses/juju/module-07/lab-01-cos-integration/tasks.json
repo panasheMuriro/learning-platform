@@ -1,0 +1,44 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create and Switch to Lab Model",
+      "instructions": "Ensure you are using the model `mod7-cos-lab`.",
+      "hints": [
+        "Run `juju switch mod7-cos-lab` or `juju add-model mod7-cos-lab` if not present."
+      ],
+      "solution": "juju switch mod7-cos-lab",
+      "check": "juju show-model mod7-cos-lab >/dev/null 2>&1"
+    },
+    {
+      "id": "task-2",
+      "title": "Configure Model Logging Level",
+      "instructions": "Set the model logging configuration so that the root logger level is set to `DEBUG` (`<root>=DEBUG`).",
+      "hints": [
+        "Use `juju model-config logging-config='<root>=DEBUG'`."
+      ],
+      "solution": "juju model-config logging-config='<root>=DEBUG'",
+      "check": "juju model-config logging-config | grep -q 'DEBUG'"
+    },
+    {
+      "id": "task-3",
+      "title": "Deploy Workload Application",
+      "instructions": "Deploy the `ubuntu` charm with application name `web-app` into the `mod7-cos-lab` model.",
+      "hints": [
+        "Run `juju deploy ubuntu web-app`."
+      ],
+      "solution": "juju deploy ubuntu web-app",
+      "check": "juju status --model mod7-cos-lab --format yaml | grep -q 'web-app:'"
+    },
+    {
+      "id": "task-4",
+      "title": "Deploy Monitoring Receiver Application",
+      "instructions": "Deploy a second `ubuntu` charm with application name `metrics-collector` into the model.",
+      "hints": [
+        "Run `juju deploy ubuntu metrics-collector`."
+      ],
+      "solution": "juju deploy ubuntu metrics-collector",
+      "check": "juju status --model mod7-cos-lab --format yaml | grep -q 'metrics-collector:'"
+    }
+  ]
+}

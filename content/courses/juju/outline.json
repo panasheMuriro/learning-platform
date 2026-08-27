@@ -134,6 +134,28 @@
         { "type": "lecture", "id": "03-k8s-storage-and-ingress", "title": "Kubernetes Storage, Ingress & Helm Deployments" },
         { "type": "quiz", "id": "module-06-quiz", "title": "Quiz" }
       ]
+    },
+    {
+      "id": "module-07",
+      "title": "Observability & Canonical Observability Stack (COS)",
+      "lectures": [
+        { "id": "01-observability-and-cos", "title": "Observability & Canonical Observability Stack (COS)" },
+        { "id": "02-advanced-logging-and-debug-hooks", "title": "Advanced Juju Logging & Debugging" },
+        { "id": "03-alerting-dashboards-and-telemetry", "title": "Alerting, Dashboards & Telemetry Pipelines" }
+      ],
+      "labs": [
+        { "id": "lab-01-cos-integration", "title": "COS Integration & Telemetry Pipeline" },
+        { "id": "lab-02-logging-and-troubleshooting", "title": "Logging & Troubleshooting Workloads" }
+      ],
+      "quiz": { "id": "module-07-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-observability-and-cos", "title": "Observability & Canonical Observability Stack (COS)" },
+        { "type": "lab", "id": "lab-01-cos-integration", "title": "COS Integration & Telemetry Pipeline" },
+        { "type": "lecture", "id": "02-advanced-logging-and-debug-hooks", "title": "Advanced Juju Logging & Debugging" },
+        { "type": "lab", "id": "lab-02-logging-and-troubleshooting", "title": "Logging & Troubleshooting Workloads" },
+        { "type": "lecture", "id": "03-alerting-dashboards-and-telemetry", "title": "Alerting, Dashboards & Telemetry Pipelines" },
+        { "type": "quiz", "id": "module-07-quiz", "title": "Quiz" }
+      ]
     }
   ]
 }

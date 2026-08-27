@@ -1,0 +1,135 @@
+{
+  "title": "Module 7 Assessment: Observability, COS & Troubleshooting",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What are the four primary telemetry pillars provided by the Canonical Observability Stack (COS)?",
+      "type": "single-choice",
+      "options": [
+        "Metrics (Prometheus), Logs (Loki), Visualization (Grafana), and Traces (Tempo)",
+        "Packets (Wireshark), SNMP (Nagios), Netflow, and RRDTool",
+        "Syslog, Auditd, Journald, and Logrotate",
+        "CloudWatch, Datadog, Sentry, and NewRelic"
+      ],
+      "answer": "Metrics (Prometheus), Logs (Loki), Visualization (Grafana), and Traces (Tempo)",
+      "explanation": "COS standardizes on Prometheus for metrics, Loki for logs, Grafana for unified visualization, and Tempo for distributed traces."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do Juju charms export metrics endpoints to Prometheus?",
+      "type": "single-choice",
+      "options": [
+        "Through the metrics-endpoint relation interface",
+        "By writing endpoints into /etc/prometheus/scrape.yaml on the controller",
+        "By broadcasting UDP telemetry packets across the subnet",
+        "Using HTTP POST calls from the uniter directly to the Prometheus API"
+      ],
+      "answer": "Through the metrics-endpoint relation interface",
+      "explanation": "The metrics-endpoint relation automatically exchanges scrape targets, scrape intervals, and metric paths."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which Juju command streams real-time log entries from unit and controller agents?",
+      "type": "single-choice",
+      "options": [
+        "juju debug-log",
+        "juju logs -f",
+        "juju tail-journal",
+        "juju agent-stream"
+      ],
+      "answer": "juju debug-log",
+      "explanation": "'juju debug-log' tails and streams aggregated logs from Juju agents across units and controllers."
+    },
+    {
+      "id": "q4",
+      "prompt": "How can an operator step interactively through a charm hook execution to debug errors?",
+      "type": "single-choice",
+      "options": [
+        "juju debug-hooks <unit>",
+        "juju pause-hook <unit>",
+        "juju gdb <unit>",
+        "juju attach-process <unit>"
+      ],
+      "answer": "juju debug-hooks <unit>",
+      "explanation": "'juju debug-hooks' intercepts hook runs and opens an interactive tmux session on the unit."
+    },
+    {
+      "id": "q5",
+      "prompt": "Which command tells Juju to retry executing a hook that previously failed?",
+      "type": "single-choice",
+      "options": [
+        "juju resolved <unit> --retry",
+        "juju restart <unit>",
+        "juju retry <unit>",
+        "juju fix <unit>"
+      ],
+      "answer": "juju resolved <unit> --retry",
+      "explanation": "'juju resolved <unit> --retry' instructs Juju to re-run the failed hook."
+    },
+    {
+      "id": "q6",
+      "prompt": "How do charms provide Grafana dashboards to Grafana in COS?",
+      "type": "single-choice",
+      "options": [
+        "By shipping JSON dashboard definitions via the grafana-dashboard relation",
+        "By creating manual Grafana API tokens on every deployment",
+        "By committing dashboard configs to Grafana's local filesystem over SSH",
+        "Through DNS TXT record discovery"
+      ],
+      "answer": "By shipping JSON dashboard definitions via the grafana-dashboard relation",
+      "explanation": "The grafana-dashboard relation transmits packaged JSON dashboard templates directly into Grafana."
+    },
+    {
+      "id": "q7",
+      "prompt": "What relation interface is used to stream application and container logs to Loki?",
+      "type": "single-choice",
+      "options": [
+        "logging or log-proxy",
+        "journal-sync",
+        "syslog-stream",
+        "filebeat"
+      ],
+      "answer": "logging or log-proxy",
+      "explanation": "Charms relate to Loki using the logging / log-proxy interface endpoints."
+    },
+    {
+      "id": "q8",
+      "prompt": "What model configuration key dynamically controls Juju agent log levels?",
+      "type": "single-choice",
+      "options": [
+        "logging-config",
+        "log-level",
+        "agent-verbosity",
+        "debug-verbosity"
+      ],
+      "answer": "logging-config",
+      "explanation": "'juju model-config logging-config=\"<root>=DEBUG\"' adjusts logging levels across components."
+    },
+    {
+      "id": "q9",
+      "prompt": "What is the recommended design pattern to monitor multiple workload models with a single COS deployment?",
+      "type": "single-choice",
+      "options": [
+        "Deploy COS in a central model and integrate workload models using Cross-Model Relations (CMR)",
+        "Duplicate all COS charms inside each individual workload model",
+        "Export metrics to CSV files and email them periodically",
+        "Run Prometheus inside a docker container on the developer's laptop"
+      ],
+      "answer": "Deploy COS in a central model and integrate workload models using Cross-Model Relations (CMR)",
+      "explanation": "Cross-Model Relations allow a central COS model to consume metrics, logs, and dashboards from multiple workload models."
+    },
+    {
+      "id": "q10",
+      "prompt": "Which component in COS manages alert deduplication, grouping, and notification routing (e.g. to Slack or PagerDuty)?",
+      "type": "single-choice",
+      "options": [
+        "Alertmanager",
+        "Prometheus",
+        "Grafana Tempo",
+        "Loki"
+      ],
+      "answer": "Alertmanager",
+      "explanation": "Alertmanager handles alert deduplication, routing, silencing, and notification delivery."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How are Prometheus alert rules delivered from an application charm to Prometheus in COS?",
+      "type": "single-choice",
+      "options": [
+        "Packaged in the charm and transferred dynamically over the metrics-endpoint or alert-rules relation",
+        "Uploaded via FTP directly into /etc/prometheus/rules.d/",
+        "Configured manually by editing the Prometheus charm source code",
+        "Through systemd timers executed by the controller"
+      ],
+      "answer": "Packaged in the charm and transferred dynamically over the metrics-endpoint or alert-rules relation",
+      "explanation": "Modern charms package alert rules inside the charm and communicate them over Juju relations directly to Prometheus."
+    },
+    {
+      "id": "q2",
+      "prompt": "What is the recommended architecture for monitoring multiple Juju workload models with COS?",
+      "type": "single-choice",
+      "options": [
+        "Deploy COS in a central model and connect workload models using Cross-Model Relations (CMR)",
+        "Deploy a separate full COS stack inside every single workload model",
+        "Run Prometheus directly inside the Juju controller database container",
+        "Use cron jobs to rsync logs to a central NFS mount"
+      ],
+      "answer": "Deploy COS in a central model and connect workload models using Cross-Model Relations (CMR)",
+      "explanation": "Hosting COS in a dedicated model (often on K8s) and consuming metrics/logs across workload models via Cross-Model Relations is the canonical architecture."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which component in COS provides distributed request tracing across microservices?",
+      "type": "single-choice",
+      "options": [
+        "Tempo",
+        "Loki",
+        "Prometheus",
+        "Alertmanager"
+      ],
+      "answer": "Tempo",
+      "explanation": "Grafana Tempo provides distributed tracing for OTLP/OpenTelemetry traces."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which command streams real-time operational logs filtered specifically for unit 'db/0'?",
+      "type": "single-choice",
+      "options": [
+        "juju debug-log --include db/0",
+        "juju logs --unit db/0",
+        "juju stream-log db/0",
+        "juju journal -u db/0"
+      ],
+      "answer": "juju debug-log --include db/0",
+      "explanation": "'juju debug-log --include <target>' filters the global model log stream for the requested application or unit."
+    },
+    {
+      "id": "q2",
+      "prompt": "What happens when you run 'juju debug-hooks <unit>' and trigger a hook?",
+      "type": "single-choice",
+      "options": [
+        "Juju pauses the hook execution and drops the operator into an interactive debugging session on the unit",
+        "Juju automatically deletes the unit and redeploys it in debug mode",
+        "Juju ignores errors and forces the charm to report active/idle",
+        "Juju dumps memory core files to the controller storage pool"
+      ],
+      "answer": "Juju pauses the hook execution and drops the operator into an interactive debugging session on the unit",
+      "explanation": "'juju debug-hooks' intercepts hook executions, allowing developers to inspect environment variables and step through hook scripts interactively."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command tells Juju to retry a failed hook after you fix an underlying issue?",
+      "type": "single-choice",
+      "options": [
+        "juju resolved <unit> --retry",
+        "juju retry-hook <unit>",
+        "juju fix-unit <unit>",
+        "juju restart-hook <unit>"
+      ],
+      "answer": "juju resolved <unit> --retry",
+      "explanation": "'juju resolved <unit> --retry' instructs the uniter worker to re-execute the failed hook."
+    }
+  ]
+}
