@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What does a workload status of 'blocked' indicate in Juju?",
+      "type": "single-choice",
+      "options": [
+        "The charm requires operator intervention (such as missing required configuration)",
+        "The host machine ran out of disk space",
+        "The Juju agent crashed and stopped responding",
+        "The application is restarting normally"
+      ],
+      "answer": "The charm requires operator intervention (such as missing required configuration)",
+      "explanation": "A 'blocked' status is set by the charm author when manual operator action (e.g. setting a password or license) is required."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which flag runs 'juju status' in continuous live-updating mode?",
+      "type": "single-choice",
+      "options": [
+        "--watch <interval>",
+        "--live",
+        "--stream",
+        "--tail"
+      ],
+      "answer": "--watch <interval>",
+      "explanation": "The '--watch <interval>' flag (e.g. --watch 2s) continuously updates the status view in terminal."
+    },
+    {
+      "id": "q3",
+      "prompt": "What does an agent status of 'idle' mean?",
+      "type": "single-choice",
+      "options": [
+        "The unit agent has finished executing hooks and is waiting for new events",
+        "The unit is turned off",
+        "The unit agent is busy running a hook script",
+        "The unit agent is unreachable"
+      ],
+      "answer": "The unit agent has finished executing hooks and is waiting for new events",
+      "explanation": "'idle' indicates the agent is healthy, active, and waiting for future events or actions."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the official registry and package repository for Juju charms?",
+      "type": "single-choice",
+      "options": [
+        "Charmhub",
+        "Snap Store",
+        "Docker Hub",
+        "PyPI"
+      ],
+      "answer": "Charmhub",
+      "explanation": "Charmhub (charmhub.io) is the central repository for published Juju charms and bundles."
+    },
+    {
+      "id": "q2",
+      "prompt": "How is a Charmhub release channel formatted in Juju?",
+      "type": "single-choice",
+      "options": [
+        "<track>/<risk-level>",
+        "<version>:<build>",
+        "<author>/<repo>",
+        "<release>-<distro>"
+      ],
+      "answer": "<track>/<risk-level>",
+      "explanation": "Charmhub channels follow the <track>/<risk-level> convention, such as latest/stable or 8.0/edge."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which file in a charm defines user-configurable options and their default values?",
+      "type": "single-choice",
+      "options": [
+        "config.yaml",
+        "metadata.yaml",
+        "actions.yaml",
+        "settings.json"
+      ],
+      "answer": "config.yaml",
+      "explanation": "config.yaml specifies the configuration options, schema types, descriptions, and defaults."
+    }
+  ]
+}

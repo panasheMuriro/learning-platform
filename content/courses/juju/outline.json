@@ -22,6 +22,30 @@
         { "type": "lab", "id": "lab-02-create-and-switch-models", "title": "Create, Configure & Switch Models" },
         { "type": "quiz", "id": "module-01-quiz", "title": "Quiz" }
       ]
+    },
+    {
+      "id": "module-02",
+      "title": "Deploying Charms & Applications",
+      "lectures": [
+        { "id": "01-charms-and-charmhub", "title": "Charms & Charmhub" },
+        { "id": "02-deploying-applications", "title": "Deploying Applications & Placement" },
+        { "id": "03-application-configuration", "title": "Application Configuration & Resources" },
+        { "id": "04-application-status-and-health", "title": "Application Status & Health" }
+      ],
+      "labs": [
+        { "id": "lab-01-deploy-charms", "title": "Deploy Charms from Charmhub" },
+        { "id": "lab-02-app-configuration", "title": "Inspect, Update & Reset Configuration" }
+      ],
+      "quiz": { "id": "module-02-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-charms-and-charmhub", "title": "Charms & Charmhub" },
+        { "type": "lecture", "id": "02-deploying-applications", "title": "Deploying Applications & Placement" },
+        { "type": "lab", "id": "lab-01-deploy-charms", "title": "Deploy Charms from Charmhub" },
+        { "type": "lecture", "id": "03-application-configuration", "title": "Application Configuration & Resources" },
+        { "type": "lab", "id": "lab-02-app-configuration", "title": "Inspect, Update & Reset Configuration" },
+        { "type": "lecture", "id": "04-application-status-and-health", "title": "Application Status & Health" },
+        { "type": "quiz", "id": "module-02-quiz", "title": "Quiz" }
+      ]
     }
   ]
 }
