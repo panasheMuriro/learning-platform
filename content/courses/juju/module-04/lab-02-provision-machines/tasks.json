@@ -1,0 +1,17 @@
+[
+  {
+    "id": "task-1",
+    "title": "Create model lab-machines",
+    "description": "Create a model named 'lab-machines'."
+  },
+  {
+    "id": "task-2",
+    "title": "Provision standalone machine",
+    "description": "Provision at least one standalone machine using 'juju add-machine'."
+  },
+  {
+    "id": "task-3",
+    "title": "Deploy application with placement directive",
+    "description": "Deploy 'ubuntu' application as 'custom-node' targeted to machine 0 (--to 0)."
+  }
+]

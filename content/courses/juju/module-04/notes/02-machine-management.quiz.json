@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which command explicitly provisions a new machine in the active model without deploying an application yet?",
+      "type": "single-choice",
+      "options": [
+        "juju add-machine",
+        "juju create-node",
+        "juju provision-host",
+        "juju new-machine"
+      ],
+      "answer": "juju add-machine",
+      "explanation": "'juju add-machine' allocates a new host instance in the cloud for later placement or manual orchestration."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you securely open an interactive shell session into unit 'web/0'?",
+      "type": "single-choice",
+      "options": [
+        "juju ssh web/0",
+        "juju connect web/0",
+        "juju shell web/0",
+        "juju login web/0"
+      ],
+      "answer": "juju ssh web/0",
+      "explanation": "'juju ssh <target>' uses Juju's managed keys to establish a secure SSH session into a unit or machine."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command removes an empty machine with ID 2 from the model?",
+      "type": "single-choice",
+      "options": [
+        "juju remove-machine 2",
+        "juju delete-machine 2",
+        "juju kill-machine 2",
+        "juju destroy-machine 2"
+      ],
+      "answer": "juju remove-machine 2",
+      "explanation": "'juju remove-machine <id>' decommissions the machine and releases its resources."
+    }
+  ]
+}

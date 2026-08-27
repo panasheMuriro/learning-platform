@@ -1,0 +1,17 @@
+[
+  {
+    "id": "task-1",
+    "title": "Create model and deploy worker application",
+    "description": "Create model 'lab-scale' and deploy 'ubuntu' application named 'worker'."
+  },
+  {
+    "id": "task-2",
+    "title": "Scale worker out",
+    "description": "Add 2 additional units to 'worker' so that it has multiple units."
+  },
+  {
+    "id": "task-3",
+    "title": "Scale worker in",
+    "description": "Remove unit 'worker/2' so that exactly 2 units remain active."
+  }
+]

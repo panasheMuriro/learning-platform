@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which command lists all storage pools configured in your Juju environment?",
+      "type": "single-choice",
+      "options": [
+        "juju storage-pools",
+        "juju list-pools",
+        "juju pools",
+        "juju disks"
+      ],
+      "answer": "juju storage-pools",
+      "explanation": "'juju storage-pools' displays all available storage backend pools."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you specify persistent storage constraints (such as size) when deploying a charm?",
+      "type": "single-choice",
+      "options": [
+        "juju deploy <charm> --storage <tag>=<size>",
+        "juju deploy <charm> --volume <tag>=<size>",
+        "juju deploy <charm> --disk <tag>=<size>",
+        "juju deploy <charm> --mount <tag>=<size>"
+      ],
+      "answer": "juju deploy <charm> --storage <tag>=<size>",
+      "explanation": "The '--storage' parameter binds charm storage tags to storage pool definitions and sizes."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command inspects all active volumes and filesystems provisioned in the current model?",
+      "type": "single-choice",
+      "options": [
+        "juju storage",
+        "juju list-disks",
+        "juju show-volumes",
+        "juju status --storage"
+      ],
+      "answer": "juju storage",
+      "explanation": "'juju storage' lists storage instances, attachments, and status."
+    }
+  ]
+}

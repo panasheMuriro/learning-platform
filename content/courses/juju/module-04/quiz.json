@@ -1,0 +1,134 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How do you scale out an application named 'web' by adding 3 units on a machine cloud?",
+      "type": "single-choice",
+      "options": [
+        "juju add-unit web -n 3",
+        "juju scale-application web 3",
+        "juju grow-app web +3",
+        "juju add-machine -n 3 web"
+      ],
+      "answer": "juju add-unit web -n 3",
+      "explanation": "On machine-based clouds, 'juju add-unit <app> -n <N>' provisions and adds N units to the application."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which command removes a specific unit 'web/2' gracefully?",
+      "type": "single-choice",
+      "options": [
+        "juju remove-unit web/2",
+        "juju delete-unit web/2",
+        "juju kill-unit web/2",
+        "juju destroy-unit web/2"
+      ],
+      "answer": "juju remove-unit web/2",
+      "explanation": "'juju remove-unit <unit-name>' invokes charm stop/relation departed hooks and terminates the unit instance."
+    },
+    {
+      "id": "q3",
+      "prompt": "How can you provision a standalone machine in the active model before deploying any workload to it?",
+      "type": "single-choice",
+      "options": [
+        "juju add-machine",
+        "juju create-machine",
+        "juju provision-node",
+        "juju host-create"
+      ],
+      "answer": "juju add-machine",
+      "explanation": "'juju add-machine' creates an empty machine managed by Juju."
+    },
+    {
+      "id": "q4",
+      "prompt": "What placement directive flag is used to deploy a charm unit directly onto an existing machine ID 4?",
+      "type": "single-choice",
+      "options": [
+        "--to 4",
+        "--machine 4",
+        "--target 4",
+        "--node 4"
+      ],
+      "answer": "--to 4",
+      "explanation": "The '--to <machine-id>' flag specifies placement of newly deployed charms onto specific machines or containers."
+    },
+    {
+      "id": "q5",
+      "prompt": "How do you place a unit into an isolated LXD container on machine 2?",
+      "type": "single-choice",
+      "options": [
+        "--to lxd:2",
+        "--container lxd/2",
+        "--on lxd:2",
+        "--target container@2"
+      ],
+      "answer": "--to lxd:2",
+      "explanation": "Juju supports nested container placement using container type prefixes like '--to lxd:2'."
+    },
+    {
+      "id": "q6",
+      "prompt": "Which command connects you via SSH directly to unit 'db/0' using Juju keys?",
+      "type": "single-choice",
+      "options": [
+        "juju ssh db/0",
+        "juju connect db/0",
+        "ssh db/0.juju",
+        "juju console db/0"
+      ],
+      "answer": "juju ssh db/0",
+      "explanation": "'juju ssh <unit>' manages SSH keys and resolves connection endpoints seamlessly."
+    },
+    {
+      "id": "q7",
+      "prompt": "Which command executes a shell command on multiple machines or units simultaneously across a model?",
+      "type": "single-choice",
+      "options": [
+        "juju exec --unit <target> \"command\"",
+        "juju run --unit <target> \"command\"",
+        "juju cmd --target <target> \"command\"",
+        "juju remote --unit <target> \"command\""
+      ],
+      "answer": "juju exec --unit <target> \"command\"",
+      "explanation": "'juju exec' allows executing arbitrary shell commands across targeted units or machines."
+    },
+    {
+      "id": "q8",
+      "prompt": "Which command displays all storage instances and attachments across the active model?",
+      "type": "single-choice",
+      "options": [
+        "juju storage",
+        "juju show-storage",
+        "juju disks",
+        "juju pool-status"
+      ],
+      "answer": "juju storage",
+      "explanation": "'juju storage' outputs all active storage volumes, file systems, and unit attachments."
+    },
+    {
+      "id": "q9",
+      "prompt": "How do you request 20GB of storage for a charm's declared storage tag 'data' at deploy time?",
+      "type": "single-choice",
+      "options": [
+        "juju deploy <charm> --storage data=20G",
+        "juju deploy <charm> --volume data:20G",
+        "juju deploy <charm> --size data=20G",
+        "juju deploy <charm> --disk data:20G"
+      ],
+      "answer": "juju deploy <charm> --storage data=20G",
+      "explanation": "The '--storage <tag>=<size>' argument attaches requested storage capacity to the deployed charm unit."
+    },
+    {
+      "id": "q10",
+      "prompt": "Which command lists available storage provider pools in the current model or cloud?",
+      "type": "single-choice",
+      "options": [
+        "juju storage-pools",
+        "juju list-storage",
+        "juju pools-list",
+        "juju backends"
+      ],
+      "answer": "juju storage-pools",
+      "explanation": "'juju storage-pools' displays the configured storage backends (e.g. lxd, ebs, ceph)."
+    }
+  ]
+}
