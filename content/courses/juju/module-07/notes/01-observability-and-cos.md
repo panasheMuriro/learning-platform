@@ -8,47 +8,56 @@ In Juju environments, applications do not require manual daemon instrumentation 
 
 ```mermaid
 graph TD
-    subgraph MonitoredApp [Monitored Applications]
-        App1[Web Application]
-        App2[Database Cluster]
+    subgraph K8sWorkloads [Kubernetes Workloads]
+        KApp[K8s Charm] -->|metrics-endpoint| Prom[Prometheus]
+        KApp -->|logging| Loki[Loki]
+        KApp -->|grafana-dashboard| Graf[Grafana]
     end
 
-    subgraph COSStack [Canonical Observability Stack]
-        Prometheus[Prometheus Metrics]
-        Loki[Loki Log Aggregator]
-        Grafana[Grafana Dashboards]
-        Alertmanager[Alertmanager Alerts]
+    subgraph MachineWorkloads [Machine Workloads / LXD / VM]
+        MApp[Machine Charm] -->|cos-agent| GA[Grafana Agent Subordinate]
+        GA -->|CMR: metrics| Prom
+        GA -->|CMR: logs| Loki
     end
 
-    App1 -->|metrics relation| Prometheus
-    App1 -->|log-proxy relation| Loki
-    App2 -->|metrics relation| Prometheus
-    App2 -->|log-proxy relation| Loki
+    Prom --> Graf
+    Loki --> Graf
+    Prom --> Alert[Alertmanager]
+```
 
-    Prometheus --> Grafana
-    Loki --> Grafana
-    Prometheus --> Alertmanager
+## Machine Observability with Grafana Agent
+
+While Kubernetes charms can communicate directly with COS components over HTTP endpoints, machine charms (running on bare metal, LXD, or cloud VMs) typically leverage **`grafana-agent`** deployed as a subordinate charm:
+
+1. **Subordinate Deployment**: `grafana-agent` runs directly on the principal machine unit.
+2. **Local Scraping**: It scrapes `localhost` Prometheus metrics and tails `/var/log/` system and application logs locally.
+3. **Remote Write & Ingestion**: It forwards gathered metrics and logs over Cross-Model Relations (CMR) to a centralized COS model.
+
+```bash
+# Deploy grafana-agent on machines
+juju deploy grafana-agent
+
+# Relate grafana-agent as a subordinate to your workload charm
+juju integrate webapp:cos-agent grafana-agent:cos-agent
 ```
 
 ## How Charms Export Telemetry
 
-Charms use standard interface endpoints in `charmcraft.yaml` or `metadata.yaml`:
+Charms use standardized interface endpoints in `charmcraft.yaml` or `metadata.yaml`:
 - **`metrics-endpoint`**: Scrapes Prometheus metrics endpoints exported by charm units.
-- **`log-proxy` / `logging`**: Streams container and system logs to Loki.
-- **`grafana-dashboard`**: Ships pre-built, version-controlled JSON Grafana dashboards directly into Grafana.
+- **`logging` / `log-proxy`**: Streams container and system logs to Loki.
+- **`grafana-dashboard`**: Ships pre-packaged, version-controlled JSON Grafana dashboards directly into Grafana.
 - **`alert-rules`**: Ships Prometheus alert rules automatically without manually editing server configuration files.
 
 ## Integrating an Application with COS
 
-Connecting an application to COS requires standard Juju integration commands:
+Connecting a workload model to a centralized `cos` model via Cross-Model Relations:
 
 ```bash
-# Relate metrics endpoint to Prometheus
-juju integrate webapp:metrics-endpoint prometheus:metrics-endpoint
+# Offer Prometheus metrics receiver endpoint in the cos model
+juju offer -m cos prometheus:metrics-endpoint
 
-# Relate log stream to Loki
-juju integrate webapp:logging loki:logging
-
-# Provide Grafana dashboard templates
-juju integrate webapp:grafana-dashboard grafana:grafana-dashboard
+# Relate workload application to the offer
+juju integrate -m prod webapp:metrics-endpoint admin/cos.prometheus
 ```
+

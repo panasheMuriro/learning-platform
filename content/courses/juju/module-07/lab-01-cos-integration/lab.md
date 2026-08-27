@@ -1,9 +1,11 @@
-# Lab 1: COS Integration & Telemetry Pipeline
+# Lab 1: COS Machine Telemetry & Subsystem Logging
 
-In this lab, you will configure observability relations between an application charm and monitoring endpoints, verify telemetry integration, and configure model logging.
+In this lab, you will configure fine-grained subsystem logging on a Juju model, deploy workload services with the `grafana-agent` telemetry forwarder, and verify subordinate integration.
 
 ## Objectives
-1. Create a clean working model `mod7-cos-lab`.
-2. Deploy the `ubuntu` workload application and configure logging verbosity.
-3. Deploy a companion service `snmp-notifier` or mock receiver and configure relations.
-4. Verify application integration and inspect real-time log streaming filters.
+1. Create and switch to the model `mod7-cos-lab`.
+2. Configure fine-grained model logging targeting uniter workers (`logging-config="<root>=INFO;unit=DEBUG;juju.worker.uniter=TRACE"`).
+3. Deploy the principal workload application `web-app` (`ubuntu` charm).
+4. Deploy the `grafana-agent` machine subordinate charm.
+5. Integrate `web-app` and `grafana-agent` via the `cos-agent` relation.
+

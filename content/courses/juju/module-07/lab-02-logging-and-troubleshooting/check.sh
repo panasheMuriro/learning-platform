@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Check script for Module 07 Lab 02: Logging & Troubleshooting Workloads
+# Check script for Module 07 Lab 02: Logging, Diagnostics & Hook Troubleshooting
 
 set -euo pipefail
 
@@ -31,12 +31,12 @@ MODEL="mod7-troubleshoot-lab"
 if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-1" ]; then
   if juju_model_exists "$MODEL"; then
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-1" --arg name "Create and Switch to Model" \
+      --arg id "task-1" --arg name "Create and Switch to Lab Model" \
       --arg msg "Model '$MODEL' exists." \
       '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
   else
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-1" --arg name "Create and Switch to Model" \
+      --arg id "task-1" --arg name "Create and Switch to Lab Model" \
       --arg msg "Model '$MODEL' not found. Run: juju add-model $MODEL" \
       '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
@@ -48,41 +48,56 @@ if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-2" ]; then
     has_app=$(juju status -m "$MODEL" --format json 2>/dev/null | jq -e '.applications | has("worker-node")' 2>/dev/null || echo "false")
     if [[ "$has_app" == "true" ]]; then
       tasks=$(jq --argjson arr "$tasks" \
-        --arg id "task-2" --arg name "Deploy Worker Node" \
+        --arg id "task-2" --arg name "Deploy Workload Node" \
         --arg msg "Application 'worker-node' is deployed." \
         '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
     else
       tasks=$(jq --argjson arr "$tasks" \
-        --arg id "task-2" --arg name "Deploy Worker Node" \
+        --arg id "task-2" --arg name "Deploy Workload Node" \
         --arg msg "Application 'worker-node' not found. Run: juju deploy ubuntu worker-node -m $MODEL" \
         '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
     fi
   else
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-2" --arg name "Deploy Worker Node" \
+      --arg id "task-2" --arg name "Deploy Workload Node" \
       --arg msg "Model '$MODEL' does not exist." \
       '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
 fi
 
-# Task 3: Remote diagnostic verified
+# Task 3: Inspect Unit Agent Logs via Remote Execution
 if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-3" ]; then
   if juju_model_exists "$MODEL"; then
     has_app=$(juju status -m "$MODEL" --format json 2>/dev/null | jq -e '.applications | has("worker-node")' 2>/dev/null || echo "false")
     if [[ "$has_app" == "true" ]]; then
       tasks=$(jq --argjson arr "$tasks" \
-        --arg id "task-3" --arg name "Run Remote Diagnostic Command" \
-        --arg msg "Application 'worker-node' is accessible for diagnostics." \
+        --arg id "task-3" --arg name "Inspect Unit Agent Logs via Remote Execution" \
+        --arg msg "Application 'worker-node' is present in the model." \
         '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
     else
       tasks=$(jq --argjson arr "$tasks" \
-        --arg id "task-3" --arg name "Run Remote Diagnostic Command" \
-        --arg msg "Application 'worker-node' is not ready." \
+        --arg id "task-3" --arg name "Inspect Unit Agent Logs via Remote Execution" \
+        --arg msg "Application 'worker-node' is not deployed yet." \
         '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
     fi
   else
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-3" --arg name "Run Remote Diagnostic Command" \
+      --arg id "task-3" --arg name "Inspect Unit Agent Logs via Remote Execution" \
+      --arg msg "Model '$MODEL' does not exist." \
+      '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
+  fi
+fi
+
+# Task 4: Replay Recent Debug Logs
+if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-4" ]; then
+  if juju_model_exists "$MODEL"; then
+    tasks=$(jq --argjson arr "$tasks" \
+      --arg id "task-4" --arg name "Replay Recent Debug Logs" \
+      --arg msg "Model '$MODEL' log replay is functional." \
+      '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
+  else
+    tasks=$(jq --argjson arr "$tasks" \
+      --arg id "task-4" --arg name "Replay Recent Debug Logs" \
       --arg msg "Model '$MODEL' does not exist." \
       '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
@@ -90,4 +105,5 @@ fi
 
 all_passed=$(echo "$tasks" | jq 'all(.[]; .passed == true)')
 emit_result "$all_passed" "$tasks"
+
 

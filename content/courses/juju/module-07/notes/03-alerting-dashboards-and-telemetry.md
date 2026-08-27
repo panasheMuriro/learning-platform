@@ -4,7 +4,21 @@ Reliable observability requires turning raw telemetry into actionable alerting r
 
 ## Automated Alert Rules with COS
 
-Charms encapsulate their own alerting thresholds (such as high memory, connection pool exhaustion, or replication lag) inside the charm codebase.
+Charms encapsulate their own alerting thresholds (such as high memory, connection pool exhaustion, or replication lag) directly inside the charm source code under `src/prometheus_alert_rules/`:
+
+```yaml
+# Example charm alert rule (e.g., high_cpu.rule)
+groups:
+  - name: WorkloadAlerts
+    rules:
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes > 1e9
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance {{ $labels.juju_unit }} is using excessive memory"
+```
 
 ```mermaid
 graph TD
@@ -25,15 +39,15 @@ graph TD
     Alert -->|notification| Slack[Slack / PagerDuty / Webhook]
 ```
 
-When you relate a charm to Prometheus using `metrics-endpoint` or `alert-rules`, Prometheus automatically registers the rules without operator intervention.
+When you relate a charm to Prometheus using `metrics-endpoint` or `alert-rules`, Prometheus automatically evaluates and registers these rules without manual intervention.
 
 ## Grafana Dashboard Provisioning
 
-1. Charms ship JSON dashboard definitions inside a `src/grafana_dashboards/` directory.
+1. Charms ship JSON dashboard definitions inside the charm repository under `src/grafana_dashboards/`.
 2. When the `grafana-dashboard` relation is established:
-   - Grafana receives the dashboard payload via Juju relation data.
+   - Grafana receives the dashboard template payload via Juju relation event handlers.
    - Dashboards are dynamically imported into Grafana folders organized by Juju model and application name.
-   - When charms update or scale, the dashboards automatically reflect current topology.
+   - When charms update or scale, the dashboards automatically adjust metric queries to include newly provisioned units.
 
 ## Distributed Tracing with Tempo
 
@@ -55,3 +69,4 @@ graph LR
 - **Cross-Model COS**: Deploy COS in a dedicated `cos` model or Kubernetes cluster and monitor multiple workload models using Cross-Model Relations (CMR).
 - **Log Rate Limiting**: Configure rate limits on Loki relations to avoid storage exhaustion during high-traffic incidents.
 - **Alert Routing**: Group Alertmanager receivers by workload tier (e.g. database alerts to DBA rotation, ingress alerts to SRE).
+

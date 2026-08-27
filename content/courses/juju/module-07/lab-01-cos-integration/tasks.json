@@ -12,18 +12,18 @@
     },
     {
       "id": "task-2",
-      "title": "Configure Model Logging Level",
-      "instructions": "Set the model logging configuration so that the root logger level is set to `DEBUG` (`<root>=DEBUG`).",
+      "title": "Configure Subsystem Model Logging",
+      "instructions": "Configure the model `logging-config` to enable detailed tracing on uniter workers and debug on units: `<root>=INFO;unit=DEBUG;juju.worker.uniter=TRACE`.",
       "hints": [
-        "Use `juju model-config logging-config='<root>=DEBUG'`."
+        "Run `juju model-config logging-config='<root>=INFO;unit=DEBUG;juju.worker.uniter=TRACE'`."
       ],
-      "solution": "juju model-config logging-config='<root>=DEBUG'",
-      "check": "juju model-config logging-config | grep -q 'DEBUG'"
+      "solution": "juju model-config logging-config='<root>=INFO;unit=DEBUG;juju.worker.uniter=TRACE'",
+      "check": "juju model-config logging-config | grep -q 'juju.worker.uniter=TRACE'"
     },
     {
       "id": "task-3",
       "title": "Deploy Workload Application",
-      "instructions": "Deploy the `ubuntu` charm with application name `web-app` into the `mod7-cos-lab` model.",
+      "instructions": "Deploy the `ubuntu` charm with application name `web-app` into `mod7-cos-lab`.",
       "hints": [
         "Run `juju deploy ubuntu web-app`."
       ],
@@ -32,13 +32,23 @@
     },
     {
       "id": "task-4",
-      "title": "Deploy Monitoring Receiver Application",
-      "instructions": "Deploy a second `ubuntu` charm with application name `metrics-collector` into the model.",
+      "title": "Deploy Grafana Agent Subordinate",
+      "instructions": "Deploy the `grafana-agent` charm into the `mod7-cos-lab` model.",
       "hints": [
-        "Run `juju deploy ubuntu metrics-collector`."
+        "Run `juju deploy grafana-agent`."
       ],
-      "solution": "juju deploy ubuntu metrics-collector",
-      "check": "juju status --model mod7-cos-lab --format yaml | grep -q 'metrics-collector:'"
+      "solution": "juju deploy grafana-agent",
+      "check": "juju status --model mod7-cos-lab --format yaml | grep -q 'grafana-agent:'"
+    },
+    {
+      "id": "task-5",
+      "title": "Integrate Workload with Grafana Agent",
+      "instructions": "Establish a relation between `web-app` and `grafana-agent` via the `cos-agent` interface endpoint.",
+      "hints": [
+        "Run `juju integrate web-app:cos-agent grafana-agent:cos-agent` or `juju integrate web-app grafana-agent`."
+      ],
+      "solution": "juju integrate web-app:cos-agent grafana-agent:cos-agent",
+      "check": "juju status --model mod7-cos-lab --format json | jq -e '.relations // {} | to_entries[] | select(.value.endpoints[]?.name == \"cos-agent\")' >/dev/null 2>&1"
     }
   ]
 }

@@ -2,16 +2,16 @@
   "questions": [
     {
       "id": "q1",
-      "prompt": "How are Prometheus alert rules delivered from an application charm to Prometheus in COS?",
+      "prompt": "Where do modern charms package their Prometheus alert rules for automatic COS integration?",
       "type": "single-choice",
       "options": [
-        "Packaged in the charm and transferred dynamically over the metrics-endpoint or alert-rules relation",
-        "Uploaded via FTP directly into /etc/prometheus/rules.d/",
-        "Configured manually by editing the Prometheus charm source code",
-        "Through systemd timers executed by the controller"
+        "Inside the charm directory under src/prometheus_alert_rules/ and transferred via relation data",
+        "Uploaded via FTP directly into /etc/prometheus/rules.d/ on the controller machine",
+        "Configured manually by editing the Prometheus charm source code on GitHub",
+        "Through systemd timers executed by the uniter worker"
       ],
-      "answer": "Packaged in the charm and transferred dynamically over the metrics-endpoint or alert-rules relation",
-      "explanation": "Modern charms package alert rules inside the charm and communicate them over Juju relations directly to Prometheus."
+      "answer": "Inside the charm directory under src/prometheus_alert_rules/ and transferred via relation data",
+      "explanation": "Charms store alert rule definitions under src/prometheus_alert_rules/ and transmit them dynamically over Juju relation endpoints."
     },
     {
       "id": "q2",

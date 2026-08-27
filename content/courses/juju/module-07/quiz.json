@@ -3,29 +3,29 @@
   "questions": [
     {
       "id": "q1",
-      "prompt": "What are the four primary telemetry pillars provided by the Canonical Observability Stack (COS)?",
+      "prompt": "What are the core telemetry pillars provided by the Canonical Observability Stack (COS)?",
       "type": "single-choice",
       "options": [
-        "Metrics (Prometheus), Logs (Loki), Visualization (Grafana), and Traces (Tempo)",
+        "Metrics (Prometheus), Logs (Loki), Visualization (Grafana), Alerts (Alertmanager), and Traces (Tempo)",
         "Packets (Wireshark), SNMP (Nagios), Netflow, and RRDTool",
         "Syslog, Auditd, Journald, and Logrotate",
         "CloudWatch, Datadog, Sentry, and NewRelic"
       ],
-      "answer": "Metrics (Prometheus), Logs (Loki), Visualization (Grafana), and Traces (Tempo)",
-      "explanation": "COS standardizes on Prometheus for metrics, Loki for logs, Grafana for unified visualization, and Tempo for distributed traces."
+      "answer": "Metrics (Prometheus), Logs (Loki), Visualization (Grafana), Alerts (Alertmanager), and Traces (Tempo)",
+      "explanation": "COS standardizes on Prometheus for metrics, Loki for logs, Grafana for visualization, Alertmanager for routing, and Tempo for distributed traces."
     },
     {
       "id": "q2",
-      "prompt": "How do Juju charms export metrics endpoints to Prometheus?",
+      "prompt": "How do machine charms (running on bare metal or LXD) integrate telemetry into COS?",
       "type": "single-choice",
       "options": [
-        "Through the metrics-endpoint relation interface",
-        "By writing endpoints into /etc/prometheus/scrape.yaml on the controller",
-        "By broadcasting UDP telemetry packets across the subnet",
-        "Using HTTP POST calls from the uniter directly to the Prometheus API"
+        "By deploying the grafana-agent subordinate charm and relating it via the cos-agent endpoint",
+        "By manually copying log files over SCP with cron jobs",
+        "By writing endpoints directly into /etc/prometheus/scrape.yaml on the controller",
+        "By opening port 9090 on the machine firewall for external scraping"
       ],
-      "answer": "Through the metrics-endpoint relation interface",
-      "explanation": "The metrics-endpoint relation automatically exchanges scrape targets, scrape intervals, and metric paths."
+      "answer": "By deploying the grafana-agent subordinate charm and relating it via the cos-agent endpoint",
+      "explanation": "grafana-agent runs as a subordinate charm on machine units, collecting metrics and logs locally before forwarding them to COS."
     },
     {
       "id": "q3",

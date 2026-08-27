@@ -2,8 +2,8 @@
   "tasks": [
     {
       "id": "task-1",
-      "title": "Create and Switch to Model",
-      "instructions": "Ensure the model `mod7-troubleshoot-lab` exists and is the current target.",
+      "title": "Create and Switch to Lab Model",
+      "instructions": "Ensure the model `mod7-troubleshoot-lab` exists and is the active target.",
       "hints": [
         "Run `juju switch mod7-troubleshoot-lab` or `juju add-model mod7-troubleshoot-lab`."
       ],
@@ -12,7 +12,7 @@
     },
     {
       "id": "task-2",
-      "title": "Deploy Worker Node",
+      "title": "Deploy Workload Node",
       "instructions": "Deploy the `ubuntu` charm with application name `worker-node` into `mod7-troubleshoot-lab`.",
       "hints": [
         "Run `juju deploy ubuntu worker-node`."
@@ -22,13 +22,23 @@
     },
     {
       "id": "task-3",
-      "title": "Run Remote Diagnostic Command",
-      "instructions": "Execute a remote diagnostic check on `worker-node` using `juju exec` to verify the uptime of the unit.",
+      "title": "Inspect Unit Agent Logs via Remote Execution",
+      "instructions": "Execute a remote check on `worker-node/0` to verify that the unit agent log file `/var/log/juju/unit-worker-node-0.log` exists and is readable.",
       "hints": [
-        "Run `juju exec --unit worker-node/0 'uptime'` or `juju exec --app worker-node 'uptime'`."
+        "Run `juju exec --unit worker-node/0 'ls -la /var/log/juju/unit-*.log'`."
       ],
-      "solution": "juju exec --unit worker-node/0 'uptime'",
-      "check": "juju status --model mod7-troubleshoot-lab --format yaml | grep -q 'worker-node:'"
+      "solution": "juju exec --unit worker-node/0 'ls -la /var/log/juju/unit-*.log'",
+      "check": "juju exec -m mod7-troubleshoot-lab --unit worker-node/0 'ls /var/log/juju/unit-*.log' >/dev/null 2>&1"
+    },
+    {
+      "id": "task-4",
+      "title": "Replay Recent Debug Logs",
+      "instructions": "Practice reading past debug logs without blocking by executing a replay command on the active model.",
+      "hints": [
+        "Run `juju debug-log --replay --no-tail -n 20`."
+      ],
+      "solution": "juju debug-log --replay --no-tail -n 20",
+      "check": "juju status --model mod7-troubleshoot-lab >/dev/null 2>&1"
     }
   ]
 }

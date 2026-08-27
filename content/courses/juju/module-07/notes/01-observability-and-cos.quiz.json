@@ -5,26 +5,26 @@
       "prompt": "What core components comprise the Canonical Observability Stack (COS)?",
       "type": "single-choice",
       "options": [
-        "Prometheus, Loki, Grafana, and Alertmanager",
+        "Prometheus, Loki, Grafana, Alertmanager, and Tempo",
         "ELK Stack, Nagios, and Zabbix",
         "Datadog Agent, Splunk forwarder, and CloudWatch",
         "Syslog-ng, Cacti, and Graphite"
       ],
-      "answer": "Prometheus, Loki, Grafana, and Alertmanager",
-      "explanation": "COS integrates Prometheus (metrics), Loki (logs), Grafana (visualization), and Alertmanager (alerting) using charms."
+      "answer": "Prometheus, Loki, Grafana, Alertmanager, and Tempo",
+      "explanation": "COS integrates Prometheus (metrics), Loki (logs), Grafana (dashboards), Alertmanager (alerts), and Tempo (traces) using charms."
     },
     {
       "id": "q2",
-      "prompt": "How do Juju applications provide metrics scraping configurations and Grafana dashboards to COS?",
+      "prompt": "How do machine charms (on bare metal / LXD / VMs) typically forward metrics and system logs to COS?",
       "type": "single-choice",
       "options": [
-        "Via standard Juju relations (metrics-endpoint and grafana-dashboard)",
-        "By SSHing into the Grafana server and pasting JSON files",
-        "By opening firewall ports and adding scrape configs to /etc/hosts",
-        "By committing YAML files directly into the Prometheus charm repository"
+        "Using the grafana-agent subordinate charm via the cos-agent relation",
+        "By manually copying log files over SCP using cron jobs",
+        "By opening port 9090 on the machine firewall for external scraping",
+        "By recompiling the Juju uniter agent with custom C++ extensions"
       ],
-      "answer": "Via standard Juju relations (metrics-endpoint and grafana-dashboard)",
-      "explanation": "Juju relations dynamically transfer metrics endpoints, alert rules, and dashboard templates to COS components."
+      "answer": "Using the grafana-agent subordinate charm via the cos-agent relation",
+      "explanation": "grafana-agent runs as a subordinate charm on the principal machine, scraping local endpoints and forwarding telemetry to COS."
     },
     {
       "id": "q3",
