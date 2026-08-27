@@ -6,10 +6,10 @@ In enterprise deployments, applications often reside in separate models or even 
 
 ```mermaid
 graph LR
-    subgraph Model: shared-services
-        DB[MySQL Application] -->|Offers 'db' endpoint| Offer["Offer: shared-services.db"]
+    subgraph SharedServices [Model: shared-services]
+        DB[MySQL Application] -->|Offers db endpoint| Offer["Offer: shared-services.db"]
     end
-    subgraph Model: web-app-prod
+    subgraph WebAppProd [Model: web-app-prod]
         Web[Wordpress Application] -->|Consumes offer & Integrates| Offer
     end
 ```

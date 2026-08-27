@@ -4,7 +4,7 @@ To deploy applications with Juju, the Juju client connects to a **cloud** and bo
 
 ```mermaid
 graph TD
-    subgraph "Juju Ecosystem"
+    subgraph JujuEcosystem [Juju Ecosystem]
         Client["juju CLI"] --> Controller["Juju Controller (pizzeria-controller)"]
         Controller --> M1["Model A (airbyte-model)"]
         Controller --> M2["Model B (production)"]

@@ -6,11 +6,11 @@ While Juju excels at bare-metal and machine orchestration, it provides first-cla
 
 ```mermaid
 graph TD
-    subgraph Machine Model [LXD / Cloud Machine Model]
+    subgraph MachineModel [LXD / Cloud Machine Model]
         M[Machine / VM] --> U1[Unit / Agent]
         M --> W1[Workload Process]
     end
-    subgraph K8s Model [Kubernetes Model / Namespace]
+    subgraph K8sModel [Kubernetes Model / Namespace]
         Pod[Pod: StatefulSet]
         Pod --> C1[juju-sidecar Container]
         Pod --> C2[workload Container]

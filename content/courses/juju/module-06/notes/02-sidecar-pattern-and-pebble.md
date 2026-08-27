@@ -6,11 +6,11 @@ In Kubernetes environments, modern charms use the **Sidecar Pattern**. Rather th
 
 ```mermaid
 graph LR
-    subgraph K8s Pod
-        subgraph Charm Container
+    subgraph K8sPod [K8s Pod]
+        subgraph CharmContainer [Charm Container]
             JujuAgent[Juju Unit Agent] --> CharmCode[Operator Framework Python Code]
         end
-        subgraph Workload Container
+        subgraph WorkloadContainer [Workload Container]
             CharmCode -->|HTTP REST / Unix Socket| Pebble[Pebble API Daemon]
             Pebble -->|Spawns & Monitors| Workload[App Server Process]
             Pebble -->|Manages| Files[Config Files & Logs]

@@ -20,7 +20,7 @@ juju integrate web-app postgresql
 
 ```mermaid
 graph LR
-    App[Web Application<br/>Requires: db] <-->|Relation Hook Events & Data| DB[Database Cluster<br/>Provides: db]
+    App["Web Application (Requires: db)"] ---|Relation Hook Events & Data| DB["Database Cluster (Provides: db)"]
 ```
 
 ## Endpoints, Roles & Interfaces
