@@ -1,0 +1,134 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "In a Kubernetes Juju deployment, what does each Juju model represent?",
+      "type": "single-choice",
+      "options": [
+        "A Kubernetes Namespace",
+        "A Kubernetes Cluster",
+        "A Helm Release",
+        "A Docker Network"
+      ],
+      "answer": "A Kubernetes Namespace",
+      "explanation": "Juju models map directly to isolated Kubernetes namespaces on K8s clouds."
+    },
+    {
+      "id": "q2",
+      "prompt": "What process manager does Juju run inside workload containers to control services in sidecar charms?",
+      "type": "single-choice",
+      "options": [
+        "Pebble",
+        "Systemd",
+        "Supervisord",
+        "Initd"
+      ],
+      "answer": "Pebble",
+      "explanation": "Pebble is Canonical's container-native API-driven process supervisor used in sidecar charms."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command scales a Kubernetes-deployed application 'frontend' to 6 replicas?",
+      "type": "single-choice",
+      "options": [
+        "juju scale-application frontend 6",
+        "juju add-unit frontend -n 6",
+        "juju replicas frontend 6",
+        "juju grow frontend 6"
+      ],
+      "answer": "juju scale-application frontend 6",
+      "explanation": "On Kubernetes clouds, 'scale-application' sets the replica count of the underlying Pod StatefulSet/Deployment."
+    },
+    {
+      "id": "q4",
+      "prompt": "Which command opens an interactive shell session into a specific container named 'server' on unit 'app/0'?",
+      "type": "single-choice",
+      "options": [
+        "juju ssh app/0 --container server",
+        "juju exec app/0 bash --container server",
+        "juju connect app/0:server",
+        "juju pod app/0 --target server"
+      ],
+      "answer": "juju ssh app/0 --container server",
+      "explanation": "The '--container' flag directs the Juju SSH session into the specified container inside the unit's Pod."
+    },
+    {
+      "id": "q5",
+      "prompt": "How are Kubernetes storage volumes allocated to charm storage tags?",
+      "type": "single-choice",
+      "options": [
+        "Through dynamic PersistentVolumeClaims mapped from StorageClasses",
+        "By copying raw qcow2 files to the host",
+        "Through direct NFS hostpath bindings only",
+        "By formatting local RAM disks"
+      ],
+      "answer": "Through dynamic PersistentVolumeClaims mapped from StorageClasses",
+      "explanation": "Juju creates dynamic PVCs bound to the cluster's default or specified StorageClass."
+    },
+    {
+      "id": "q6",
+      "prompt": "How do K8s charms integrate with Ingress Controllers like Traefik in Juju?",
+      "type": "single-choice",
+      "options": [
+        "Via standard Juju relations where ingress routing data is exchanged automatically",
+        "By writing manual nginx.conf files onto the controller node",
+        "By hardcoding external IP addresses in charm configuration",
+        "By opening host ports with juju expose on bare metal"
+      ],
+      "answer": "Via standard Juju relations where ingress routing data is exchanged automatically",
+      "explanation": "Charms use relations (like `ingress` endpoint) to provide routing rules and receive external URLs."
+    },
+    {
+      "id": "q7",
+      "prompt": "Which command overrides or supplies a custom container image to a charm OCI resource?",
+      "type": "single-choice",
+      "options": [
+        "juju attach-resource <app> <resource>=<image-ref>",
+        "juju upload-oci <app> <image-ref>",
+        "juju docker-pull <app> <image-ref>",
+        "juju config-image <app> <image-ref>"
+      ],
+      "answer": "juju attach-resource <app> <resource>=<image-ref>",
+      "explanation": "'juju attach-resource' binds custom OCI images or binary payloads to declared charm resources."
+    },
+    {
+      "id": "q8",
+      "prompt": "Which command registers a MicroK8s cluster to Juju's client cloud list?",
+      "type": "single-choice",
+      "options": [
+        "microk8s config | juju add-k8s <cloud-name> --client",
+        "juju import-microk8s <cloud-name>",
+        "juju k8s-register --snap microk8s",
+        "juju create-cluster <cloud-name>"
+      ],
+      "answer": "microk8s config | juju add-k8s <cloud-name> --client",
+      "explanation": "'juju add-k8s' reads kubeconfig definitions to register Kubernetes clouds."
+    },
+    {
+      "id": "q9",
+      "prompt": "What format is used by Pebble to define services, startup parameters, and environment variables?",
+      "type": "single-choice",
+      "options": [
+        "Pebble Layer (YAML)",
+        "Systemd Unit Files (INI)",
+        "Dockerfile",
+        "Crontab format"
+      ],
+      "answer": "Pebble Layer (YAML)",
+      "explanation": "Pebble uses layered YAML plans containing services, commands, startup conditions, and environment variables."
+    },
+    {
+      "id": "q10",
+      "prompt": "What Juju command checks the current status of services managed by Pebble in a workload container?",
+      "type": "single-choice",
+      "options": [
+        "juju exec --unit <unit> --container <container> \"pebble services\"",
+        "juju pebble list-services <unit>",
+        "juju status --pebble",
+        "juju inspect-services <unit>"
+      ],
+      "answer": "juju exec --unit <unit> --container <container> \"pebble services\"",
+      "explanation": "'pebble services' executed inside the workload container lists all managed service states."
+    }
+  ]
+}

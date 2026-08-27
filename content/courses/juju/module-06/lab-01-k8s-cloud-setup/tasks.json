@@ -1,0 +1,17 @@
+[
+  {
+    "id": "task-1",
+    "title": "Create model lab-k8s-cloud",
+    "description": "Create a model named 'lab-k8s-cloud'."
+  },
+  {
+    "id": "task-2",
+    "title": "Deploy workload application",
+    "description": "Deploy 'ubuntu' application named 'k8s-sim' in model 'lab-k8s-cloud'."
+  },
+  {
+    "id": "task-3",
+    "title": "Configure model logging level",
+    "description": "Set logging-config in model 'lab-k8s-cloud' to include DEBUG: 'juju model-config -m lab-k8s-cloud logging-config=<root>=DEBUG'."
+  }
+]

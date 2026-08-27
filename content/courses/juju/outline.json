@@ -112,6 +112,28 @@
         { "type": "lab", "id": "lab-02-cross-model-offers", "title": "Cross-Model Relations & Offers" },
         { "type": "quiz", "id": "module-05-quiz", "title": "Quiz" }
       ]
+    },
+    {
+      "id": "module-06",
+      "title": "Kubernetes & Cloud-Native Operations",
+      "lectures": [
+        { "id": "01-k8s-and-microk8s", "title": "Juju on Kubernetes & MicroK8s" },
+        { "id": "02-sidecar-pattern-and-pebble", "title": "Sidecar Charms & Pebble" },
+        { "id": "03-k8s-storage-and-ingress", "title": "Kubernetes Storage, Ingress & Helm Deployments" }
+      ],
+      "labs": [
+        { "id": "lab-01-k8s-cloud-setup", "title": "Cloud Registration & Model Provisioning" },
+        { "id": "lab-02-pebble-and-containers", "title": "Pebble Inspection & Container Workload Simulation" }
+      ],
+      "quiz": { "id": "module-06-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-k8s-and-microk8s", "title": "Juju on Kubernetes & MicroK8s" },
+        { "type": "lab", "id": "lab-01-k8s-cloud-setup", "title": "Cloud Registration & Model Provisioning" },
+        { "type": "lecture", "id": "02-sidecar-pattern-and-pebble", "title": "Sidecar Charms & Pebble" },
+        { "type": "lab", "id": "lab-02-pebble-and-containers", "title": "Pebble Inspection & Container Workload Simulation" },
+        { "type": "lecture", "id": "03-k8s-storage-and-ingress", "title": "Kubernetes Storage, Ingress & Helm Deployments" },
+        { "type": "quiz", "id": "module-06-quiz", "title": "Quiz" }
+      ]
     }
   ]
 }

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "task-1",
+    "title": "Create model lab-k8s-pebble",
+    "description": "Create a model named 'lab-k8s-pebble'."
+  },
+  {
+    "id": "task-2",
+    "title": "Deploy container-app",
+    "description": "Deploy 'ubuntu' application named 'container-app' in model 'lab-k8s-pebble'."
+  },
+  {
+    "id": "task-3",
+    "title": "Execute remote command on unit",
+    "description": "Create marker file /tmp/pebble-sim.ready on container-app/0 using 'juju exec --unit container-app/0 \"touch /tmp/pebble-sim.ready\" -m lab-k8s-pebble'."
+  }
+]

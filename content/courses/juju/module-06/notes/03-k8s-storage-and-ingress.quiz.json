@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What does a Juju storage pool map to in a Kubernetes model?",
+      "type": "single-choice",
+      "options": [
+        "A Kubernetes StorageClass",
+        "A Docker volume plugin",
+        "An NFS export mount",
+        "An S3 bucket endpoint"
+      ],
+      "answer": "A Kubernetes StorageClass",
+      "explanation": "In Kubernetes models, Juju maps storage pools to available StorageClass resources to dynamically allocate PersistentVolumeClaims."
+    },
+    {
+      "id": "q2",
+      "prompt": "How is external web ingress typically provided to workloads in a Juju K8s model?",
+      "type": "single-choice",
+      "options": [
+        "By relating the application to an ingress charm such as traefik-k8s or nginx-ingress-integrator",
+        "By manually configuring iptables on host nodes",
+        "By running juju expose on the Kubernetes controller",
+        "By creating manual DNS A-records in /etc/hosts"
+      ],
+      "answer": "By relating the application to an ingress charm such as traefik-k8s or nginx-ingress-integrator",
+      "explanation": "Juju models ingress via relations, where charms exchange routing metadata with an ingress operator."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command allows operators to supply a custom OCI image to a charm resource?",
+      "type": "single-choice",
+      "options": [
+        "juju attach-resource <app> <resource>=<image-ref>",
+        "juju upload-image <app> <resource>=<image-ref>",
+        "juju set-image <app> <image-ref>",
+        "juju container-image <app> <image-ref>"
+      ],
+      "answer": "juju attach-resource <app> <resource>=<image-ref>",
+      "explanation": "'juju attach-resource' binds local files or OCI image references to declared charm resources."
+    }
+  ]
+}
