@@ -1,0 +1,17 @@
+[
+  {
+    "id": "task-1",
+    "title": "Create model and deploy web-service",
+    "description": "Create model 'lab-secrets' and deploy 'ubuntu' charm as 'web-service'."
+  },
+  {
+    "id": "task-2",
+    "title": "Create managed secret",
+    "description": "Create a secret named 'app-token' with key 'token=supersecret123'."
+  },
+  {
+    "id": "task-3",
+    "title": "Grant secret to web-service",
+    "description": "Grant access to secret 'app-token' for application 'web-service'."
+  }
+]

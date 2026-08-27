@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which command discovers all custom actions supported by an application named 'db'?",
+      "type": "single-choice",
+      "options": [
+        "juju actions db",
+        "juju list-actions db",
+        "juju show-actions db",
+        "juju describe-actions db"
+      ],
+      "answer": "juju actions db",
+      "explanation": "'juju actions <application>' lists all actions defined by the charm and available to run."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you run the 'backup' action on unit 'db/0' in Juju 3.x?",
+      "type": "single-choice",
+      "options": [
+        "juju run db/0 backup",
+        "juju run-action db/0 backup",
+        "juju execute db/0 backup",
+        "juju action-run db/0 backup"
+      ],
+      "answer": "juju run db/0 backup",
+      "explanation": "In Juju 3.x+, 'juju run <target> <action-name>' executes defined charm actions."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command executes an ad-hoc shell command (e.g. 'uptime') across all units of application 'worker'?",
+      "type": "single-choice",
+      "options": [
+        "juju exec --application worker \"uptime\"",
+        "juju run-shell --app worker \"uptime\"",
+        "juju ssh-all worker \"uptime\"",
+        "juju bash --all worker \"uptime\""
+      ],
+      "answer": "juju exec --application worker \"uptime\"",
+      "explanation": "'juju exec --application <name>' executes raw shell commands on all units belonging to that application."
+    }
+  ]
+}

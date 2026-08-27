@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which command creates an offer for the 'db' endpoint of an application named 'postgres'?",
+      "type": "single-choice",
+      "options": [
+        "juju offer postgres:db",
+        "juju share postgres:db",
+        "juju export-endpoint postgres:db",
+        "juju expose postgres:db"
+      ],
+      "answer": "juju offer postgres:db",
+      "explanation": "'juju offer <app>:<endpoint>' publishes an application endpoint so it can be consumed across models."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you consume an offer created in model 'infra' named 'db-offer' into your current model?",
+      "type": "single-choice",
+      "options": [
+        "juju consume infra.db-offer",
+        "juju import-offer infra.db-offer",
+        "juju attach infra.db-offer",
+        "juju link infra.db-offer"
+      ],
+      "answer": "juju consume infra.db-offer",
+      "explanation": "'juju consume <model>.<offer-name>' adds the remote offer as a local proxy in the consumer model."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command lists all active offers available in the current controller/model?",
+      "type": "single-choice",
+      "options": [
+        "juju list-offers",
+        "juju show-cmr",
+        "juju show-offers-all",
+        "juju get-offers"
+      ],
+      "answer": "juju list-offers",
+      "explanation": "'juju list-offers' (or 'juju offers') lists all published application offers."
+    }
+  ]
+}

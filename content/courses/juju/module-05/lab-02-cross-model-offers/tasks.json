@@ -1,0 +1,17 @@
+[
+  {
+    "id": "task-1",
+    "title": "Create provider and consumer models",
+    "description": "Create models 'lab-cmr-provider' and 'lab-cmr-consumer'."
+  },
+  {
+    "id": "task-2",
+    "title": "Deploy provider application and create offer",
+    "description": "Deploy 'haproxy' as 'provider-app' in 'lab-cmr-provider' and offer 'provider-app:reverseproxy' as 'proxy-offer'."
+  },
+  {
+    "id": "task-3",
+    "title": "Deploy consumer and integrate cross-model offer",
+    "description": "Deploy 'haproxy' as 'consumer-app' in 'lab-cmr-consumer' and integrate 'consumer-app:website' with 'lab-cmr-provider.proxy-offer'."
+  }
+]

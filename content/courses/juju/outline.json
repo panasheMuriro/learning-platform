@@ -90,6 +90,28 @@
         { "type": "lecture", "id": "03-storage-in-juju", "title": "Storage Management & Storage Pools" },
         { "type": "quiz", "id": "module-04-quiz", "title": "Quiz" }
       ]
+    },
+    {
+      "id": "module-05",
+      "title": "Day-2 Operations: Actions, Secrets & Cross-Model Relations",
+      "lectures": [
+        { "id": "01-day2-actions-and-execution", "title": "Day-2 Operations: Actions & Remote Execution" },
+        { "id": "02-secrets-management", "title": "Secrets Management in Juju 3.x+" },
+        { "id": "03-cross-model-relations", "title": "Cross-Model Relations (CMR) & Offers" }
+      ],
+      "labs": [
+        { "id": "lab-01-managed-secrets", "title": "Managed Secrets Lifecycle" },
+        { "id": "lab-02-cross-model-offers", "title": "Cross-Model Relations & Offers" }
+      ],
+      "quiz": { "id": "module-05-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-day2-actions-and-execution", "title": "Day-2 Operations: Actions & Remote Execution" },
+        { "type": "lecture", "id": "02-secrets-management", "title": "Secrets Management in Juju 3.x+" },
+        { "type": "lab", "id": "lab-01-managed-secrets", "title": "Managed Secrets Lifecycle" },
+        { "type": "lecture", "id": "03-cross-model-relations", "title": "Cross-Model Relations (CMR) & Offers" },
+        { "type": "lab", "id": "lab-02-cross-model-offers", "title": "Cross-Model Relations & Offers" },
+        { "type": "quiz", "id": "module-05-quiz", "title": "Quiz" }
+      ]
     }
   ]
 }

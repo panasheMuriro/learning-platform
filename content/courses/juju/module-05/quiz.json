@@ -1,0 +1,134 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the primary difference between a charm event hook and a charm action?",
+      "type": "single-choice",
+      "options": [
+        "Actions are triggered on-demand by human operators or automation, while hooks are triggered by lifecycle/topology events",
+        "Actions run with root privileges while hooks do not",
+        "Actions are written in Go while hooks are written in Python",
+        "Actions only execute during charm compilation"
+      ],
+      "answer": "Actions are triggered on-demand by human operators or automation, while hooks are triggered by lifecycle/topology events",
+      "explanation": "Event hooks respond automatically to state changes, whereas actions provide an explicit interface for day-2 operational commands."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which command executes a charm action named 'snapshot' on unit 'vault/0' in Juju 3.x?",
+      "type": "single-choice",
+      "options": [
+        "juju run vault/0 snapshot",
+        "juju action-do vault/0 snapshot",
+        "juju execute-action vault/0 snapshot",
+        "juju trigger vault/0 snapshot"
+      ],
+      "answer": "juju run vault/0 snapshot",
+      "explanation": "In Juju 3.x+, 'juju run' is the standard command to trigger charm actions on units or applications."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you run an ad-hoc bash command 'cat /etc/os-release' directly on all units of application 'worker'?",
+      "type": "single-choice",
+      "options": [
+        "juju exec --application worker \"cat /etc/os-release\"",
+        "juju run --unit worker \"cat /etc/os-release\"",
+        "juju ssh worker \"cat /etc/os-release\"",
+        "juju run-command --app worker \"cat /etc/os-release\""
+      ],
+      "answer": "juju exec --application worker \"cat /etc/os-release\"",
+      "explanation": "'juju exec' allows executing arbitrary shell commands across targeted applications, units, or machines."
+    },
+    {
+      "id": "q4",
+      "prompt": "Why is the Juju Secrets engine preferred over standard charm configuration for passwords and private keys?",
+      "type": "single-choice",
+      "options": [
+        "Secrets are encrypted at rest, access is strictly granted per-application, and values are not leaked into plain text status or logs",
+        "Secrets bypass the controller completely",
+        "Secrets can only be read once and are immediately deleted",
+        "Secrets store values directly in DNS records"
+      ],
+      "answer": "Secrets are encrypted at rest, access is strictly granted per-application, and values are not leaked into plain text status or logs",
+      "explanation": "Juju Secrets provide secure storage, granular role-based grants, revision tracking, and automated rotation notifications."
+    },
+    {
+      "id": "q5",
+      "prompt": "Which command creates a secret named 'oauth-key' with client secret parameter 'secret=12345'?",
+      "type": "single-choice",
+      "options": [
+        "juju add-secret oauth-key secret=12345",
+        "juju create-secret oauth-key secret=12345",
+        "juju set-secret oauth-key secret=12345",
+        "juju secret:add oauth-key secret=12345"
+      ],
+      "answer": "juju add-secret oauth-key secret=12345",
+      "explanation": "'juju add-secret <name> <key>=<value>' registers a new secret in the model."
+    },
+    {
+      "id": "q6",
+      "prompt": "Which command grants an application named 'frontend' permission to read secret 'oauth-key'?",
+      "type": "single-choice",
+      "options": [
+        "juju grant-secret oauth-key frontend",
+        "juju permit-secret oauth-key frontend",
+        "juju secrets-grant oauth-key frontend",
+        "juju authorize frontend oauth-key"
+      ],
+      "answer": "juju grant-secret oauth-key frontend",
+      "explanation": "'juju grant-secret <secret> <app>' gives the charm authorization to fetch the secret values."
+    },
+    {
+      "id": "q7",
+      "prompt": "What happens when an operator updates a secret revision with 'juju update-secret'?",
+      "type": "single-choice",
+      "options": [
+        "Juju fires a 'secret-changed' event on all charms granted access, allowing them to reload configuration",
+        "All applications using the secret are automatically uninstalled",
+        "The controller immediately restarts the host machines",
+        "The secret is permanently locked"
+      ],
+      "answer": "Juju fires a 'secret-changed' event on all charms granted access, allowing them to reload configuration",
+      "explanation": "Updating a secret creates a new revision and emits `secret-changed` hook events to authorized charms."
+    },
+    {
+      "id": "q8",
+      "prompt": "What feature allows Juju charms in different models or controllers to integrate and share relations?",
+      "type": "single-choice",
+      "options": [
+        "Cross-Model Relations (CMR) using Application Offers",
+        "Cloud Bridging Protocol",
+        "VPC Peering Automations",
+        "Subordinate Unit Binding"
+      ],
+      "answer": "Cross-Model Relations (CMR) using Application Offers",
+      "explanation": "Cross-Model Relations enable cross-boundary integrations through published and consumed application offers."
+    },
+    {
+      "id": "q9",
+      "prompt": "Which command publishes the 'db' endpoint of 'postgres' as an offer named 'db-shared'?",
+      "type": "single-choice",
+      "options": [
+        "juju offer postgres:db db-shared",
+        "juju publish-offer postgres:db db-shared",
+        "juju export-endpoint postgres:db db-shared",
+        "juju make-offer postgres:db db-shared"
+      ],
+      "answer": "juju offer postgres:db db-shared",
+      "explanation": "'juju offer <app>:<endpoint> <offer-name>' creates a named offer for cross-model consumption."
+    },
+    {
+      "id": "q10",
+      "prompt": "How do you integrate local application 'wiki' with an offer 'shared.db-shared' in a single command?",
+      "type": "single-choice",
+      "options": [
+        "juju integrate wiki shared.db-shared",
+        "juju connect wiki shared.db-shared",
+        "juju link wiki:db shared:db-shared",
+        "juju consume-and-relate wiki shared.db-shared"
+      ],
+      "answer": "juju integrate wiki shared.db-shared",
+      "explanation": "'juju integrate <local-app> <model.offer>' automatically consumes and establishes the cross-model relation."
+    }
+  ]
+}
