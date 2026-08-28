@@ -159,23 +159,23 @@
     },
     {
       "id": "module-08",
-      "title": "Bundles, Terraform & Production Topologies",
+      "title": "Production Operations, Upgrades & Lifecycle",
       "lectures": [
-        { "id": "01-juju-bundles-and-overlays", "title": "Juju Bundles & Declarative Overlays" },
-        { "id": "02-terraform-and-juju-provider", "title": "Managing Juju with Terraform & OpenTofu" },
-        { "id": "03-production-topologies-and-best-practices", "title": "Production Topologies, CI/CD & Best Practices" }
+        { "id": "01-upgrades-and-charm-evolution", "title": "Upgrades & Charm Evolution" },
+        { "id": "02-backup-restore-and-migration", "title": "Backup, Restore & Migration" },
+        { "id": "03-monitoring-telemetry-and-lifecycle", "title": "Monitoring & Telemetry" }
       ],
       "labs": [
-        { "id": "lab-01-declarative-bundles", "title": "Declarative Juju Bundles & Overlays" },
-        { "id": "lab-02-terraform-juju-provider", "title": "Terraform Juju Provider IaC Workflow" }
+        { "id": "lab-01-charm-refresh-and-migration", "title": "Perform Live Application Refresh & Model Migration" },
+        { "id": "lab-02-backup-and-recovery", "title": "Create Controller Backup Archives & Verify Recovery" }
       ],
       "quiz": { "id": "module-08-quiz" },
       "items": [
-        { "type": "lecture", "id": "01-juju-bundles-and-overlays", "title": "Juju Bundles & Declarative Overlays" },
-        { "type": "lab", "id": "lab-01-declarative-bundles", "title": "Declarative Juju Bundles & Overlays" },
-        { "type": "lecture", "id": "02-terraform-and-juju-provider", "title": "Managing Juju with Terraform & OpenTofu" },
-        { "type": "lab", "id": "lab-02-terraform-juju-provider", "title": "Terraform Juju Provider IaC Workflow" },
-        { "type": "lecture", "id": "03-production-topologies-and-best-practices", "title": "Production Topologies, CI/CD & Best Practices" },
+        { "type": "lecture", "id": "01-upgrades-and-charm-evolution", "title": "Upgrades & Charm Evolution" },
+        { "type": "lab", "id": "lab-01-charm-refresh-and-migration", "title": "Perform Live Application Refresh & Model Migration" },
+        { "type": "lecture", "id": "02-backup-restore-and-migration", "title": "Backup, Restore & Migration" },
+        { "type": "lab", "id": "lab-02-backup-and-recovery", "title": "Create Controller Backup Archives & Verify Recovery" },
+        { "type": "lecture", "id": "03-monitoring-telemetry-and-lifecycle", "title": "Monitoring & Telemetry" },
         { "type": "quiz", "id": "module-08-quiz", "title": "Quiz" }
       ]
     }

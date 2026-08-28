@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which command creates a full disaster-recovery backup of the Juju controller state and database?",
+      "type": "single-choice",
+      "options": [
+        "juju create-backup",
+        "juju dump-controller",
+        "juju save-state",
+        "juju snapshot"
+      ],
+      "answer": "juju create-backup",
+      "explanation": "'juju create-backup' archives the controller database, certificates, and configuration into a .tar.gz backup."
+    },
+    {
+      "id": "q2",
+      "prompt": "What does 'juju migrate <model> <target-controller>' accomplish?",
+      "type": "single-choice",
+      "options": [
+        "Transfers an active running model from one controller to another without tearing down workloads",
+        "Converts an LXD model into a Kubernetes pod manifest",
+        "Upgrades all charms in a model to the latest edge revision",
+        "Migrates machine storage volumes to AWS EBS"
+      ],
+      "answer": "Transfers an active running model from one controller to another without tearing down workloads",
+      "explanation": "'juju migrate' moves a model's management and agent connections to a target controller without interrupting running workloads."
+    },
+    {
+      "id": "q3",
+      "prompt": "How can an operator download a stored backup from the controller to their local workstation?",
+      "type": "single-choice",
+      "options": [
+        "juju download-backup <backup-id> --filename <path>",
+        "juju scp controller:backup.tar.gz .",
+        "juju fetch-backup <backup-id>",
+        "juju export-backup <backup-id>"
+      ],
+      "answer": "juju download-backup <backup-id> --filename <path>",
+      "explanation": "'juju download-backup' retrieves a controller-stored backup file and saves it locally."
+    }
+  ]
+}

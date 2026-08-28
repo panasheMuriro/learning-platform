@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which Juju command updates a deployed application to a new charm channel or revision?",
+      "type": "single-choice",
+      "options": [
+        "juju refresh <app>",
+        "juju update <app>",
+        "juju upgrade-app <app>",
+        "juju pull-charm <app>"
+      ],
+      "answer": "juju refresh <app>",
+      "explanation": "'juju refresh <app>' updates an application's charm code, revision, or channel."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which lifecycle hook is triggered first on a unit when its charm is refreshed?",
+      "type": "single-choice",
+      "options": [
+        "upgrade-charm",
+        "install",
+        "leader-elected",
+        "start"
+      ],
+      "answer": "upgrade-charm",
+      "explanation": "The 'upgrade-charm' hook is executed immediately after new charm code is unpacked on the unit."
+    },
+    {
+      "id": "q3",
+      "prompt": "What is the correct 3-step sequence for upgrading an operating system series on a Juju machine?",
+      "type": "single-choice",
+      "options": [
+        "1. juju upgrade-machine <id> prepare <series>, 2. Run OS upgrade on host, 3. juju upgrade-machine <id> complete",
+        "1. juju destroy-machine, 2. install new OS, 3. juju add-machine",
+        "1. juju upgrade-series --force, 2. juju reboot-machine",
+        "1. juju refresh machine --os=jammy"
+      ],
+      "answer": "1. juju upgrade-machine <id> prepare <series>, 2. Run OS upgrade on host, 3. juju upgrade-machine <id> complete",
+      "explanation": "'juju upgrade-machine prepare' pauses workloads and sets up hooks, followed by manual OS upgrade and 'juju upgrade-machine complete'."
+    }
+  ]
+}

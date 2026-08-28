@@ -1,135 +1,135 @@
 {
-  "title": "Module 8 Assessment: Bundles, Terraform & Production Topologies",
+  "title": "Module 8 Assessment: Production Operations, Upgrades & Lifecycle",
   "questions": [
     {
       "id": "q1",
-      "prompt": "What is the primary role of a Juju Bundle manifest (`bundle.yaml`)?",
+      "prompt": "Which Juju command updates a deployed application to a newer charm revision or different channel track?",
       "type": "single-choice",
       "options": [
-        "A declarative YAML file defining applications, charm channels, configurations, scale, and relations",
-        "A binary archive containing compiled C++ uniter workers",
-        "A proprietary database format used by MongoDB on controllers",
-        "A bash script executed by cloud-init on instance boot"
+        "juju refresh <application>",
+        "juju update <application>",
+        "juju upgrade <application>",
+        "juju pull <application>"
       ],
-      "answer": "A declarative YAML file defining applications, charm channels, configurations, scale, and relations",
-      "explanation": "Juju bundles represent full topologies and configurations declaratively in YAML."
+      "answer": "juju refresh <application>",
+      "explanation": "'juju refresh <application>' downloads and applies the new charm revision or channel."
     },
     {
       "id": "q2",
-      "prompt": "How do bundle overlays assist in multi-environment deployments (e.g. dev vs production)?",
+      "prompt": "Which lifecycle hook is dispatched first when a charm revision is refreshed on a unit?",
       "type": "single-choice",
       "options": [
-        "They override base bundle settings (like scale and options) without duplicating the base topology",
-        "They compile charms into distinct machine architectures",
-        "They replace the Juju controller with an in-memory mock",
-        "They enforce SSH password authentication on units"
+        "upgrade-charm",
+        "config-changed",
+        "install",
+        "start"
       ],
-      "answer": "They override base bundle settings (like scale and options) without duplicating the base topology",
-      "explanation": "Overlays allow environment-specific overrides (scale, config) on top of a shared base bundle."
+      "answer": "upgrade-charm",
+      "explanation": "The 'upgrade-charm' hook runs immediately upon unpacking the new charm code."
     },
     {
       "id": "q3",
-      "prompt": "Which command captures the running configuration, scale, and relations of a model into a bundle file?",
+      "prompt": "How do coordinated production charms perform zero-downtime upgrades across clustered units?",
       "type": "single-choice",
       "options": [
-        "juju export-bundle --filename <file>.yaml",
-        "juju dump-state --file <file>.yaml",
-        "juju save-topology <file>.yaml",
-        "juju backup-model <file>.yaml"
+        "By orchestrating rolling upgrades across peer relations and failing over primary leadership sequentially",
+        "By terminating all units simultaneously and restarting the entire cluster",
+        "By deploying duplicate controllers in round-robin fashion",
+        "By pausing all network traffic at the Linux kernel firewall"
       ],
-      "answer": "juju export-bundle --filename <file>.yaml",
-      "explanation": "'juju export-bundle' exports the active model topology into a bundle YAML document."
+      "answer": "By orchestrating rolling upgrades across peer relations and failing over primary leadership sequentially",
+      "explanation": "Production charms use peer relations and leader coordination to upgrade secondary units before switching leadership."
     },
     {
       "id": "q4",
-      "prompt": "What is the official Terraform provider source for managing Juju infrastructure as code?",
+      "prompt": "What command prepares a machine for an operating system series upgrade (e.g. Ubuntu 20.04 to 22.04)?",
       "type": "single-choice",
       "options": [
-        "juju/juju",
-        "canonical/juju-terraform",
-        "hashicorp/juju",
-        "terraform-providers/juju"
+        "juju upgrade-machine <id> prepare <series>",
+        "juju do-release-upgrade <id>",
+        "juju set-series <id> <series>",
+        "juju migrate-machine <id>"
       ],
-      "answer": "juju/juju",
-      "explanation": "The official Juju Terraform provider is published under the 'juju/juju' namespace."
+      "answer": "juju upgrade-machine <id> prepare <series>",
+      "explanation": "'juju upgrade-machine prepare' instructs charms to prepare state before the host OS upgrade runs."
     },
     {
       "id": "q5",
-      "prompt": "Which Terraform resource deploys and manages charms from Charmhub in HCL?",
+      "prompt": "Which Juju command archives the controller's internal database, credentials, and state for disaster recovery?",
       "type": "single-choice",
       "options": [
-        "juju_application",
-        "juju_service",
-        "juju_deployment",
-        "juju_charm"
+        "juju create-backup",
+        "juju dump-controller",
+        "juju snapshot-state",
+        "juju export-database"
       ],
-      "answer": "juju_application",
-      "explanation": "The 'juju_application' resource deploys charms, manages scale, channel, and config."
+      "answer": "juju create-backup",
+      "explanation": "'juju create-backup' creates a full disaster-recovery archive (.tar.gz) of the controller state."
     },
     {
       "id": "q6",
-      "prompt": "How are relations between charms declared when using the Terraform Juju Provider?",
+      "prompt": "What is the primary benefit of 'juju migrate <model> <target-controller>'?",
       "type": "single-choice",
       "options": [
-        "juju_integration",
-        "juju_relation",
-        "juju_link",
-        "juju_bind"
+        "It transfers live running workloads and agent connections to a new controller without downtime",
+        "It converts machine charms to Kubernetes sidecar charms",
+        "It compresses all log files on the target machine into gzip archives",
+        "It deletes all persistent volumes attached to units"
       ],
-      "answer": "juju_integration",
-      "explanation": "'juju_integration' declares relationships between application endpoints in Terraform HCL."
+      "answer": "It transfers live running workloads and agent connections to a new controller without downtime",
+      "explanation": "'juju migrate' re-homes unit and machine agents to a target controller while workloads remain running."
     },
     {
       "id": "q7",
-      "prompt": "Why is model isolation (e.g. separate data, app, ingress, cos models) recommended in production?",
+      "prompt": "Which command exports the live topology, scale, and relations of a model into a reusable YAML bundle?",
       "type": "single-choice",
       "options": [
-        "It limits blast radius and separates administrative access while enabling cross-tier integration via CMR",
-        "Because a Juju model can only contain a single machine unit",
-        "To reduce CPU consumption on the Juju controller",
-        "Because charms in the same model cannot communicate"
+        "juju export-bundle --filename <path>",
+        "juju dump-model --yaml",
+        "juju save-bundle <path>",
+        "juju bundle export"
       ],
-      "answer": "It limits blast radius and separates administrative access while enabling cross-tier integration via CMR",
-      "explanation": "Model isolation segregates failure domains and role permissions while allowing communication over Cross-Model Relations."
+      "answer": "juju export-bundle --filename <path>",
+      "explanation": "'juju export-bundle' generates a declarative bundle YAML file from the active model."
     },
     {
       "id": "q8",
-      "prompt": "What is the recommended practice for charm channels in production manifests?",
+      "prompt": "How does the Canonical Observability Stack (COS) collect metrics and system logs from machine workloads?",
       "type": "single-choice",
       "options": [
-        "Pin specific tracks and risk tiers (e.g., '14/stable' or '8.0/stable')",
-        "Always use the 'edge' channel to get continuous updates",
-        "Leave the channel blank to let Juju pick automatically",
-        "Hardcode git commit hashes from local forks"
+        "Via the grafana-agent subordinate charm related with the cos-agent interface",
+        "By running continuous SSH scrapers from the controller",
+        "By broadcasting syslog packets over UDP port 514",
+        "Through daily cron jobs that rsync /var/log to NFS"
       ],
-      "answer": "Pin specific tracks and risk tiers (e.g., '14/stable' or '8.0/stable')",
-      "explanation": "Pinning tracks and risk tiers ensures predictable lifecycle upgrades."
+      "answer": "Via the grafana-agent subordinate charm related with the cos-agent interface",
+      "explanation": "The 'grafana-agent' subordinate charm scrapes metrics and logs locally and ships them to COS via CMR."
     },
     {
       "id": "q9",
-      "prompt": "Which Terraform resource allows offering an integration endpoint across models or controllers?",
+      "prompt": "What model configuration key dynamically controls logging verbosity across Juju subsystems?",
       "type": "single-choice",
       "options": [
-        "juju_offer",
-        "juju_export",
-        "juju_share",
-        "juju_cmr_endpoint"
+        "logging-config",
+        "log-level",
+        "agent-verbosity",
+        "debug-flags"
       ],
-      "answer": "juju_offer",
-      "explanation": "The 'juju_offer' resource registers endpoints that can be integrated from other models via CMR."
+      "answer": "logging-config",
+      "explanation": "'juju model-config logging-config=\"...\"' allows tuning root, unit, and uniter log verbosity dynamically."
     },
     {
       "id": "q10",
-      "prompt": "How can CI/CD pipelines automate pre-deployment verification for charm bundles?",
+      "prompt": "Which command is used to retry a failed charm hook after fixing an environmental error?",
       "type": "single-choice",
       "options": [
-        "By bootstrapping ephemeral LXD or MicroK8s controllers in GitHub Actions / GitLab CI and executing test deployments",
-        "By testing only in the production controller during business hours",
-        "By relying entirely on syntax linters without running charms",
-        "By running manual commands on staging servers over SSH"
+        "juju resolved <unit> --retry",
+        "juju restart-hook <unit>",
+        "juju recover-unit <unit>",
+        "juju retry-hook <unit>"
       ],
-      "answer": "By bootstrapping ephemeral LXD or MicroK8s controllers in GitHub Actions / GitLab CI and executing test deployments",
-      "explanation": "Ephemeral controllers running in CI/CD validate deployment bundles and integrations automatically before production release."
+      "answer": "juju resolved <unit> --retry",
+      "explanation": "'juju resolved <unit> --retry' instructs Juju to re-dispatch the failed hook."
     }
   ]
 }

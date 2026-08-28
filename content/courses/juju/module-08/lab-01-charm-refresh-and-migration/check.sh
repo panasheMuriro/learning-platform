@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Check script for Module 08 Lab 01: Declarative Juju Bundles & Overlays
+# Check script for Module 08 Lab 01: Charm Refresh, Lifecycle & Migration Preparation
 
 set -euo pipefail
 
@@ -25,7 +25,7 @@ fi
 
 REQUESTED_TASK="${1:-}"
 tasks="[]"
-MODEL="mod8-bundle-lab"
+MODEL="mod8-refresh-lab"
 
 # Task 1: Model exists
 if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-1" ]; then
@@ -42,56 +42,63 @@ if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-1" ]; then
   fi
 fi
 
-# Task 2: bundle.yaml created with web-app and db-service
+# Task 2: service-node deployed
 if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-2" ]; then
-  if [ -f "bundle.yaml" ] && grep -q "web-app:" bundle.yaml && grep -q "db-service:" bundle.yaml; then
-    tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-2" --arg name "Create Declarative Bundle Manifest" \
-      --arg msg "File 'bundle.yaml' correctly defines web-app and db-service." \
-      '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
-  else
-    tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-2" --arg name "Create Declarative Bundle Manifest" \
-      --arg msg "File 'bundle.yaml' missing or does not contain required application definitions." \
-      '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
-  fi
-fi
-
-# Task 3: Both apps deployed in model
-if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-3" ]; then
   if juju_model_exists "$MODEL"; then
-    has_web=$(juju status -m "$MODEL" --format json 2>/dev/null | jq -e '.applications | has("web-app")' 2>/dev/null || echo "false")
-    has_db=$(juju status -m "$MODEL" --format json 2>/dev/null | jq -e '.applications | has("db-service")' 2>/dev/null || echo "false")
-    if [[ "$has_web" == "true" && "$has_db" == "true" ]]; then
+    has_app=$(juju status -m "$MODEL" --format json 2>/dev/null | jq -e '.applications | has("service-node")' 2>/dev/null || echo "false")
+    if [[ "$has_app" == "true" ]]; then
       tasks=$(jq --argjson arr "$tasks" \
-        --arg id "task-3" --arg name "Deploy the Bundle Manifest" \
-        --arg msg "Applications 'web-app' and 'db-service' are deployed in $MODEL." \
+        --arg id "task-2" --arg name "Deploy Workload Application" \
+        --arg msg "Application 'service-node' is deployed." \
         '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
     else
       tasks=$(jq --argjson arr "$tasks" \
-        --arg id "task-3" --arg name "Deploy the Bundle Manifest" \
-        --arg msg "Applications not fully deployed. Run: juju deploy ./bundle.yaml -m $MODEL" \
+        --arg id "task-2" --arg name "Deploy Workload Application" \
+        --arg msg "Application 'service-node' not found. Run: juju deploy ubuntu service-node -m $MODEL" \
         '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
     fi
   else
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-3" --arg name "Deploy the Bundle Manifest" \
+      --arg id "task-2" --arg name "Deploy Workload Application" \
       --arg msg "Model '$MODEL' does not exist." \
       '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
 fi
 
-# Task 4: exported-bundle.yaml exists
-if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-4" ]; then
-  if [ -f "exported-bundle.yaml" ] && grep -q "applications:" exported-bundle.yaml; then
+# Task 3: Perform Charm Refresh verified
+if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-3" ]; then
+  if juju_model_exists "$MODEL"; then
+    has_app=$(juju status -m "$MODEL" --format json 2>/dev/null | jq -e '.applications | has("service-node")' 2>/dev/null || echo "false")
+    if [[ "$has_app" == "true" ]]; then
+      tasks=$(jq --argjson arr "$tasks" \
+        --arg id "task-3" --arg name "Perform Charm Refresh" \
+        --arg msg "Application 'service-node' is ready and refreshed." \
+        '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
+    else
+      tasks=$(jq --argjson arr "$tasks" \
+        --arg id "task-3" --arg name "Perform Charm Refresh" \
+        --arg msg "Application 'service-node' not found in model '$MODEL'." \
+        '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
+    fi
+  else
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-4" --arg name "Export Live Model Topology" \
-      --arg msg "File 'exported-bundle.yaml' contains valid exported model bundle." \
+      --arg id "task-3" --arg name "Perform Charm Refresh" \
+      --arg msg "Model '$MODEL' does not exist." \
+      '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
+  fi
+fi
+
+# Task 4: Export Live Model Topology Bundle
+if [ -z "$REQUESTED_TASK" ] || [ "$REQUESTED_TASK" = "task-4" ]; then
+  if [ -f "live-topology.yaml" ] && grep -q "service-node:" live-topology.yaml; then
+    tasks=$(jq --argjson arr "$tasks" \
+      --arg id "task-4" --arg name "Export Live Model Topology Bundle" \
+      --arg msg "File 'live-topology.yaml' contains exported bundle topology." \
       '$arr + [{"id":$id,"name":$name,"passed":true,"message":$msg}]' <<< "$tasks")
   else
     tasks=$(jq --argjson arr "$tasks" \
-      --arg id "task-4" --arg name "Export Live Model Topology" \
-      --arg msg "File 'exported-bundle.yaml' not found or empty. Run: juju export-bundle --filename exported-bundle.yaml" \
+      --arg id "task-4" --arg name "Export Live Model Topology Bundle" \
+      --arg msg "File 'live-topology.yaml' not found or does not contain service-node. Run: juju export-bundle --filename live-topology.yaml" \
       '$arr + [{"id":$id,"name":$name,"passed":false,"message":$msg}]' <<< "$tasks")
   fi
 fi
