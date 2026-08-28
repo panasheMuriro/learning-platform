@@ -1,0 +1,135 @@
+{
+  "title": "Module 8 Assessment: Bundles, Terraform & Production Topologies",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the primary role of a Juju Bundle manifest (`bundle.yaml`)?",
+      "type": "single-choice",
+      "options": [
+        "A declarative YAML file defining applications, charm channels, configurations, scale, and relations",
+        "A binary archive containing compiled C++ uniter workers",
+        "A proprietary database format used by MongoDB on controllers",
+        "A bash script executed by cloud-init on instance boot"
+      ],
+      "answer": "A declarative YAML file defining applications, charm channels, configurations, scale, and relations",
+      "explanation": "Juju bundles represent full topologies and configurations declaratively in YAML."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do bundle overlays assist in multi-environment deployments (e.g. dev vs production)?",
+      "type": "single-choice",
+      "options": [
+        "They override base bundle settings (like scale and options) without duplicating the base topology",
+        "They compile charms into distinct machine architectures",
+        "They replace the Juju controller with an in-memory mock",
+        "They enforce SSH password authentication on units"
+      ],
+      "answer": "They override base bundle settings (like scale and options) without duplicating the base topology",
+      "explanation": "Overlays allow environment-specific overrides (scale, config) on top of a shared base bundle."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command captures the running configuration, scale, and relations of a model into a bundle file?",
+      "type": "single-choice",
+      "options": [
+        "juju export-bundle --filename <file>.yaml",
+        "juju dump-state --file <file>.yaml",
+        "juju save-topology <file>.yaml",
+        "juju backup-model <file>.yaml"
+      ],
+      "answer": "juju export-bundle --filename <file>.yaml",
+      "explanation": "'juju export-bundle' exports the active model topology into a bundle YAML document."
+    },
+    {
+      "id": "q4",
+      "prompt": "What is the official Terraform provider source for managing Juju infrastructure as code?",
+      "type": "single-choice",
+      "options": [
+        "juju/juju",
+        "canonical/juju-terraform",
+        "hashicorp/juju",
+        "terraform-providers/juju"
+      ],
+      "answer": "juju/juju",
+      "explanation": "The official Juju Terraform provider is published under the 'juju/juju' namespace."
+    },
+    {
+      "id": "q5",
+      "prompt": "Which Terraform resource deploys and manages charms from Charmhub in HCL?",
+      "type": "single-choice",
+      "options": [
+        "juju_application",
+        "juju_service",
+        "juju_deployment",
+        "juju_charm"
+      ],
+      "answer": "juju_application",
+      "explanation": "The 'juju_application' resource deploys charms, manages scale, channel, and config."
+    },
+    {
+      "id": "q6",
+      "prompt": "How are relations between charms declared when using the Terraform Juju Provider?",
+      "type": "single-choice",
+      "options": [
+        "juju_integration",
+        "juju_relation",
+        "juju_link",
+        "juju_bind"
+      ],
+      "answer": "juju_integration",
+      "explanation": "'juju_integration' declares relationships between application endpoints in Terraform HCL."
+    },
+    {
+      "id": "q7",
+      "prompt": "Why is model isolation (e.g. separate data, app, ingress, cos models) recommended in production?",
+      "type": "single-choice",
+      "options": [
+        "It limits blast radius and separates administrative access while enabling cross-tier integration via CMR",
+        "Because a Juju model can only contain a single machine unit",
+        "To reduce CPU consumption on the Juju controller",
+        "Because charms in the same model cannot communicate"
+      ],
+      "answer": "It limits blast radius and separates administrative access while enabling cross-tier integration via CMR",
+      "explanation": "Model isolation segregates failure domains and role permissions while allowing communication over Cross-Model Relations."
+    },
+    {
+      "id": "q8",
+      "prompt": "What is the recommended practice for charm channels in production manifests?",
+      "type": "single-choice",
+      "options": [
+        "Pin specific tracks and risk tiers (e.g., '14/stable' or '8.0/stable')",
+        "Always use the 'edge' channel to get continuous updates",
+        "Leave the channel blank to let Juju pick automatically",
+        "Hardcode git commit hashes from local forks"
+      ],
+      "answer": "Pin specific tracks and risk tiers (e.g., '14/stable' or '8.0/stable')",
+      "explanation": "Pinning tracks and risk tiers ensures predictable lifecycle upgrades."
+    },
+    {
+      "id": "q9",
+      "prompt": "Which Terraform resource allows offering an integration endpoint across models or controllers?",
+      "type": "single-choice",
+      "options": [
+        "juju_offer",
+        "juju_export",
+        "juju_share",
+        "juju_cmr_endpoint"
+      ],
+      "answer": "juju_offer",
+      "explanation": "The 'juju_offer' resource registers endpoints that can be integrated from other models via CMR."
+    },
+    {
+      "id": "q10",
+      "prompt": "How can CI/CD pipelines automate pre-deployment verification for charm bundles?",
+      "type": "single-choice",
+      "options": [
+        "By bootstrapping ephemeral LXD or MicroK8s controllers in GitHub Actions / GitLab CI and executing test deployments",
+        "By testing only in the production controller during business hours",
+        "By relying entirely on syntax linters without running charms",
+        "By running manual commands on staging servers over SSH"
+      ],
+      "answer": "By bootstrapping ephemeral LXD or MicroK8s controllers in GitHub Actions / GitLab CI and executing test deployments",
+      "explanation": "Ephemeral controllers running in CI/CD validate deployment bundles and integrations automatically before production release."
+    }
+  ]
+}

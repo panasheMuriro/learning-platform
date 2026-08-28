@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the primary role of a Juju Bundle (`bundle.yaml`)?",
+      "type": "single-choice",
+      "options": [
+        "A declarative YAML document specifying applications, configurations, scale, and relations for an entire deployment",
+        "A zip archive containing compiled Go binaries for the Juju controller",
+        "A systemd unit file used to start the uniter daemon on boot",
+        "A Dockerfile recipe for building base Ubuntu rootfs images"
+      ],
+      "answer": "A declarative YAML document specifying applications, configurations, scale, and relations for an entire deployment",
+      "explanation": "Juju bundles define full application topologies, configurations, scale, and relations in a single declarative YAML manifest."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you apply an environment-specific overlay file on top of a base bundle during deployment?",
+      "type": "single-choice",
+      "options": [
+        "juju deploy ./bundle.yaml --overlay ./prod-overlay.yaml",
+        "juju apply --override ./prod-overlay.yaml bundle.yaml",
+        "juju merge ./bundle.yaml ./prod-overlay.yaml",
+        "juju bundle-install ./bundle.yaml -f ./prod-overlay.yaml"
+      ],
+      "answer": "juju deploy ./bundle.yaml --overlay ./prod-overlay.yaml",
+      "explanation": "The `--overlay` flag merges overlay YAML definitions onto the base bundle during deployment."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command exports the live topology, scale, and relations of the current model into a reusable bundle YAML file?",
+      "type": "single-choice",
+      "options": [
+        "juju export-bundle --filename my-deployment.yaml",
+        "juju dump-model --yaml my-deployment.yaml",
+        "juju bundle save my-deployment.yaml",
+        "juju extract-topology > my-deployment.yaml"
+      ],
+      "answer": "juju export-bundle --filename my-deployment.yaml",
+      "explanation": "'juju export-bundle' inspects the active model and generates a declarative bundle manifest."
+    }
+  ]
+}

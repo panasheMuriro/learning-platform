@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the official Terraform provider source for managing Juju resources?",
+      "type": "single-choice",
+      "options": [
+        "juju/juju",
+        "hashicorp/juju",
+        "canonical/terraform-juju-cli",
+        "cloud-native/juju-provider"
+      ],
+      "answer": "juju/juju",
+      "explanation": "The official provider maintained by Canonical on the Terraform Registry is 'juju/juju'."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which Terraform resource type is used to deploy charms and configure scale in HCL?",
+      "type": "single-choice",
+      "options": [
+        "juju_application",
+        "juju_charm_deploy",
+        "juju_workload_pod",
+        "juju_instance"
+      ],
+      "answer": "juju_application",
+      "explanation": "The 'juju_application' resource deploys charms, manages revision/channel, sets unit count, and applies config maps."
+    },
+    {
+      "id": "q3",
+      "prompt": "How are relations between charms declared when using the Terraform Juju Provider?",
+      "type": "single-choice",
+      "options": [
+        "Using the juju_integration resource specifying the model and endpoints",
+        "By defining foreign keys inside the juju_model configuration",
+        "Using the terraform_relation lifecycle block",
+        "By adding tags to the juju_application resource"
+      ],
+      "answer": "Using the juju_integration resource specifying the model and endpoints",
+      "explanation": "Relations between charm endpoints are managed declaratively using 'juju_integration' resources."
+    }
+  ]
+}

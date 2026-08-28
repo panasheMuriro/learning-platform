@@ -1,0 +1,44 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create and Switch to Model",
+      "instructions": "Ensure the model `mod8-bundle-lab` exists and is the active target.",
+      "hints": [
+        "Run `juju switch mod8-bundle-lab` or `juju add-model mod8-bundle-lab`."
+      ],
+      "solution": "juju switch mod8-bundle-lab",
+      "check": "juju show-model mod8-bundle-lab >/dev/null 2>&1"
+    },
+    {
+      "id": "task-2",
+      "title": "Create Declarative Bundle Manifest",
+      "instructions": "Create a bundle file named `bundle.yaml` in the current working directory declaring two applications: `web-app` (using the `ubuntu` charm, scale: 1) and `db-service` (using the `ubuntu` charm, scale: 1).",
+      "hints": [
+        "Create `bundle.yaml` with:\napplications:\n  web-app:\n    charm: ubuntu\n    scale: 1\n  db-service:\n    charm: ubuntu\n    scale: 1"
+      ],
+      "solution": "cat << 'EOF' > bundle.yaml\napplications:\n  web-app:\n    charm: ubuntu\n    scale: 1\n  db-service:\n    charm: ubuntu\n    scale: 1\nEOF",
+      "check": "test -f bundle.yaml && grep -q 'web-app:' bundle.yaml && grep -q 'db-service:' bundle.yaml"
+    },
+    {
+      "id": "task-3",
+      "title": "Deploy the Bundle Manifest",
+      "instructions": "Deploy the declarative bundle into the `mod8-bundle-lab` model using `juju deploy ./bundle.yaml`.",
+      "hints": [
+        "Run `juju deploy ./bundle.yaml -m mod8-bundle-lab`."
+      ],
+      "solution": "juju deploy ./bundle.yaml -m mod8-bundle-lab",
+      "check": "juju status -m mod8-bundle-lab --format yaml | grep -q 'web-app:' && juju status -m mod8-bundle-lab --format yaml | grep -q 'db-service:'"
+    },
+    {
+      "id": "task-4",
+      "title": "Export Live Model Topology",
+      "instructions": "Export the running model topology into a bundle YAML file named `exported-bundle.yaml`.",
+      "hints": [
+        "Run `juju export-bundle --filename exported-bundle.yaml` or `juju export-bundle > exported-bundle.yaml`."
+      ],
+      "solution": "juju export-bundle --filename exported-bundle.yaml",
+      "check": "test -f exported-bundle.yaml && grep -q 'applications:' exported-bundle.yaml"
+    }
+  ]
+}
