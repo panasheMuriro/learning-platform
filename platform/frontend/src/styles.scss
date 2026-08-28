@@ -1,162 +1,315 @@
-// Vanilla Framework SCSS entry point.
-//
-// This imports the full Vanilla Framework and includes all patterns.
-// To customize, override Sass variables BEFORE the @include:
-//
-//   $color-accent: #772953;
-//   @import "vanilla-framework";
-//   @include vanilla;
-//
+// Canonical Vanilla Framework & LXD UI Style Alignment for Juju Learning Platform
 
+@import "sass/settings";
 @import "vanilla-framework";
 @include vanilla;
 
-// Include additional Vanilla icons used by the course platform beyond the core set.
+// Include additional Vanilla icons used by the platform (mirroring LXD UI's pattern_icon & DS)
 @include vf-p-icon-applications;
 @include vf-p-icon-arrow-left;
 @include vf-p-icon-arrow-right;
+@include vf-p-icon-begin-downloading;
 @include vf-p-icon-book;
+@include vf-p-icon-canvas;
+@include vf-p-icon-certificate;
+@include vf-p-icon-change-version;
+@include vf-p-icon-close;
+@include vf-p-icon-cluster-host;
+@include vf-p-icon-connected;
+@include vf-p-icon-containers;
+@include vf-p-icon-copy-to-clipboard;
+@include vf-p-icon-edit;
+@include vf-p-icon-export;
+@include vf-p-icon-file-blank;
+@include vf-p-icon-filter;
+@include vf-p-icon-folder;
+@include vf-p-icon-fullscreen;
+@include vf-p-icon-get-link;
+@include vf-p-icon-import;
 @include vf-p-icon-keyboard;
 @include vf-p-icon-lock-locked;
 @include vf-p-icon-lock-unlock;
+@include vf-p-icon-machines;
 @include vf-p-icon-open-terminal;
 @include vf-p-icon-play;
+@include vf-p-icon-search;
+@include vf-p-icon-settings;
 @include vf-p-icon-topic;
 
-// Course-specific styles
 :root {
-  --course-content-max-width: 960px;
+  --course-content-max-width: 1040px;
+  --canonical-aubergine: #77216f;
+  --canonical-dark-aubergine: #5e2750;
+  --canonical-mid-aubergine: #772953;
+  --canonical-warm-grey: #aea79f;
+  --canonical-cool-grey: #333333;
+  --canonical-text-dark: #111111;
+  --canonical-text-muted: #666666;
+  --canonical-surface-light: #f7f7f7;
+  --canonical-surface-border: #d9d9d9;
+  --canonical-success-green: #0e8420;
+  --canonical-focus-blue: #0066cc;
 }
 
 body {
   margin: 0;
-  background: #fff;
+  background-color: #f7f7f7;
+  color: var(--canonical-text-dark);
+  font-family: "Ubuntu", -apple-system, "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-// Content wrapper for lecture/quiz pages
+// Canonical Page Container
 .course-content {
   max-width: var(--course-content-max-width);
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 2rem 2rem 4rem;
 }
 
-// Lecture viewer — react-markdown renders raw HTML, so we style the container
-// with plain CSS (not @extend, which requires the target selector to exist)
+// Global Card enhancements following LXD UI standard
+.p-card {
+  border-radius: 4px;
+  border: 1px solid var(--canonical-surface-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  background-color: #fff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+// Page Header inspired by LXD UI PageHeader
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--canonical-surface-border);
+  padding: 1rem 1.5rem;
+  background-color: #fff;
+  margin-bottom: 1.5rem;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin: 0;
+    color: var(--canonical-text-dark);
+  }
+
+  &__subtitle {
+    font-size: 0.875rem;
+    color: var(--canonical-text-muted);
+    margin: 0;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+// Canonical status chips / badges
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 3px;
+  line-height: 1;
+
+  &--success {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+    border: 1px solid #c8e6c9;
+  }
+
+  &--info {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    border: 1px solid #bbdefb;
+  }
+
+  &--warning {
+    background-color: #fff8e1;
+    color: #f57f17;
+    border: 1px solid #ffe082;
+  }
+
+  &--error {
+    background-color: #ffebee;
+    color: #b71c1c;
+    border: 1px solid #ffcdd2;
+  }
+}
+
+// Lecture Viewer typography & Canonical markdown rendering
 .lecture-viewer {
+  background-color: #fff;
+  padding: 2.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--canonical-surface-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+
   h1 {
-    font-size: 1.75rem;
-    margin: 0 0 1rem;
-    font-weight: 400;
+    font-size: 2rem;
+    margin: 0 0 1.25rem;
+    font-weight: 300;
+    color: var(--canonical-text-dark);
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.75rem;
   }
 
   h2 {
-    font-size: 1.25rem;
-    margin: 1.5rem 0 0.75rem;
+    font-size: 1.4rem;
+    margin: 2rem 0 0.85rem;
     font-weight: 400;
+    color: var(--canonical-text-dark);
   }
 
   h3 {
-    font-size: 1.0625rem;
-    margin: 1.25rem 0 0.5rem;
-    font-weight: 400;
+    font-size: 1.15rem;
+    margin: 1.5rem 0 0.6rem;
+    font-weight: 500;
+    color: #222;
   }
 
   p {
-    margin: 0 0 1rem;
-    line-height: 1.6;
+    margin: 0 0 1.15rem;
+    line-height: 1.65;
+    font-size: 1rem;
+    color: #222;
   }
 
   ul, ol {
-    margin: 0 0 1rem;
-    padding-left: 1.5rem;
+    margin: 0 0 1.25rem;
+    padding-left: 1.75rem;
 
     li {
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.4rem;
+      line-height: 1.55;
     }
   }
 
   code {
-    background: #f7f7f7;
-    padding: 0.125rem 0.375rem;
+    background-color: #f0f0f0;
+    color: #111;
+    padding: 0.15rem 0.45rem;
     border-radius: 3px;
-    font-size: 0.875em;
-    font-family: "Fira Code", "Cascadia Code", monospace;
+    font-size: 0.9em;
+    font-family: "Ubuntu Mono", "Ubuntu Mono variable", "Cascadia Code", monospace;
   }
 
   pre {
-    background: #1e1e1e;
-    color: #d4d4d4;
-    padding: 1rem;
-    border-radius: 0.25rem;
+    background-color: #1e1e1e;
+    color: #e6e6e6;
+    padding: 1.25rem;
+    border-radius: 4px;
     overflow-x: auto;
-    margin: 0 0 1rem;
+    margin: 1.25rem 0 1.5rem;
+    border: 1px solid #333;
 
     code {
       background: transparent;
       padding: 0;
       color: inherit;
+      font-size: 0.875rem;
+      line-height: 1.45;
     }
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 0 0 1rem;
-    font-size: 0.875rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
 
     th, td {
-      border: 1px solid #cdcdcd;
-      padding: 0.5rem 0.75rem;
+      border: 1px solid #d9d9d9;
+      padding: 0.65rem 0.9rem;
       text-align: left;
     }
 
     th {
-      background: #f7f7f7;
+      background-color: #f7f7f7;
       font-weight: 600;
+      color: #333;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #fafafa;
+    }
+  }
+
+  blockquote {
+    margin: 1.5rem 0;
+    padding: 0.75rem 1.25rem;
+    border-left: 4px solid var(--canonical-aubergine);
+    background-color: #fdf5fc;
+    color: #444;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  details {
+    margin: 1rem 0 1.5rem;
+    border: 1px solid var(--canonical-surface-border);
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #fff;
+
+    summary {
+      padding: 0.65rem 1rem;
+      background-color: #f7f7f7;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    &[open] summary {
+      border-bottom: 1px solid var(--canonical-surface-border);
+    }
+
+    > :not(summary) {
+      padding: 0.75rem 1rem;
     }
   }
 
   a {
-    color: #06c;
-  }
+    color: var(--canonical-focus-blue);
+    text-decoration: underline;
 
-  details {
-    margin: 0.5rem 0 1rem;
-    border: 1px solid #cdcdcd;
-    border-radius: 0.25rem;
-    overflow: hidden;
-
-    summary {
-      padding: 0.5rem 0.75rem;
-      background: #f7f7f7;
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 0.875rem;
-    }
-
-    &[open] summary {
-      border-bottom: 1px solid #cdcdcd;
-    }
-
-    > :not(summary) {
-      padding: 0 0.75rem;
+    &:hover {
+      color: var(--canonical-aubergine);
     }
   }
 }
 
-// Lab instructions panel (smaller text)
+// Lab instructions panel
 .lab-instructions {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   line-height: 1.6;
 
   h1 {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     margin: 0 0 1rem;
+    font-weight: 400;
   }
 
   h2 {
-    font-size: 1.0625rem;
+    font-size: 1.15rem;
     margin: 1.25rem 0 0.5rem;
+    font-weight: 500;
   }
 
   p {
@@ -169,21 +322,21 @@ body {
   }
 
   code {
-    background: #f7f7f7;
-    padding: 0.125rem 0.25rem;
-    border-radius: 0.125rem;
-    font-size: 0.8125em;
-    font-family: "Fira Code", monospace;
+    background-color: #f0f0f0;
+    padding: 0.125rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.85em;
+    font-family: "Ubuntu Mono", monospace;
   }
 
   pre {
-    background: #1e1e1e;
+    background-color: #1e1e1e;
     color: #d4d4d4;
-    padding: 0.75rem;
-    border-radius: 0.25rem;
+    padding: 0.85rem;
+    border-radius: 4px;
     overflow-x: auto;
-    margin-bottom: 0.75rem;
-    font-size: 0.8125rem;
+    margin-bottom: 0.85rem;
+    font-size: 0.85rem;
 
     code {
       background: transparent;
@@ -192,32 +345,33 @@ body {
   }
 
   details {
-    margin: 0.5rem 0;
-    border: 1px solid #cdcdcd;
-    border-radius: 0.25rem;
+    margin: 0.6rem 0;
+    border: 1px solid var(--canonical-surface-border);
+    border-radius: 4px;
     overflow: hidden;
 
     summary {
-      padding: 0.375rem 0.625rem;
+      padding: 0.45rem 0.75rem;
       background: #f7f7f7;
       cursor: pointer;
-      font-size: 0.8125rem;
+      font-size: 0.85rem;
+      font-weight: 500;
     }
 
     &[open] summary {
-      border-bottom: 1px solid #cdcdcd;
+      border-bottom: 1px solid var(--canonical-surface-border);
     }
 
     > :not(summary) {
-      padding: 0 0.625rem;
+      padding: 0.65rem 0.75rem;
     }
   }
 
   blockquote {
     border-left: 3px solid #ff9800;
-    margin: 0.5rem 0;
-    padding: 0.25rem 0.75rem;
-    background: #fff8e1;
-    font-size: 0.8125rem;
+    margin: 0.65rem 0;
+    padding: 0.4rem 0.85rem;
+    background-color: #fff8e1;
+    font-size: 0.85rem;
   }
 }

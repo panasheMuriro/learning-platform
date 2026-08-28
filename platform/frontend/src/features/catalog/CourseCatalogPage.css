@@ -1,75 +1,171 @@
 .catalog {
-  max-width: 960px;
+  max-width: 1040px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2.5rem 1.5rem 4rem;
 }
 
 .catalog__hero {
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #77216f 0%, #5e2750 100%);
+  color: #fff;
+  padding: 3rem 2.5rem;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(94, 39, 80, 0.15);
 }
 
-.catalog__hero h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+.catalog__badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 0.25rem 0.65rem;
+  border-radius: 3px;
+  margin-bottom: 1rem;
+}
+
+.catalog__title {
+  font-size: 2.25rem;
+  font-weight: 300;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.01em;
+  color: #fff;
 }
 
 .catalog__subtitle {
-  color: var(--color-mid-text, #666);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 1.1rem;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 680px;
+}
+
+.catalog__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #d9d9d9;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.catalog__section-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+  color: #111;
+}
+
+.catalog__count {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
 }
 
 .catalog__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
 }
 
 .catalog__card-link {
   text-decoration: none;
   color: inherit;
+  display: block;
 }
 
 .catalog__card {
-  padding: 1.5rem;
+  padding: 1.75rem;
   height: 100%;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .catalog__card-link:hover .catalog__card {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-color: #77216f;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   transform: translateY(-2px);
 }
 
-.catalog__card-icon {
-  font-size: 2.5rem;
-  display: block;
-  margin-bottom: 0.75rem;
+.catalog__card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.catalog__card-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  background-color: #f7f7f7;
+  color: #77216f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e5e5e5;
+}
+
+.catalog__card-version {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #555;
+  background: #f0f0f0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
 }
 
 .catalog__card-title {
   font-size: 1.25rem;
-  margin-bottom: 0.5rem;
+  font-weight: 500;
+  margin: 0 0 0.6rem;
+  color: #111;
 }
 
 .catalog__card-summary {
-  color: var(--color-mid-text, #666);
+  color: #555;
   font-size: 0.95rem;
-  line-height: 1.4;
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+  flex: 1;
 }
 
-.catalog__card-version {
-  display: inline-block;
-  margin-top: 0.75rem;
-  font-size: 0.8rem;
-  color: var(--color-mid-text, #999);
-  background: var(--color-surface, #f0f0f0);
-  padding: 0.15rem 0.5rem;
-  border-radius: 4px;
+.catalog__card-footer {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
+.catalog__card-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0066cc;
+  transition: gap 0.15s ease;
+}
+
+.catalog__card-link:hover .catalog__card-action {
+  color: #77216f;
+  gap: 0.6rem;
+}
+
+.catalog__loading,
 .catalog__empty {
-  grid-column: 1 / -1;
-  text-align: center;
-  color: var(--color-mid-text, #666);
-  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: #666;
+  gap: 1rem;
 }

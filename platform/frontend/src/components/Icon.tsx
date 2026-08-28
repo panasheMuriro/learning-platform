@@ -19,6 +19,8 @@ export type IconName =
   | "keyboard"
   | "lightbulb"
   | "lock-open"
+  | "spinner"
+  | "terminal"
   | "warning";
 
 type VanillaIconName =
@@ -109,6 +111,8 @@ const ALIAS_MAP: Record<
   grid: "applications",
   lightbulb: "help",
   "lock-open": "lock-unlock",
+  spinner: "help",
+  terminal: "open-terminal",
 };
 
 function resolveName(name: IconName): VanillaIconName {
