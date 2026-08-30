@@ -3,38 +3,34 @@
 ## Overview
 
 The Juju Hands-On Course is a **fully-local, in-browser** learning platform.
-Everything runs on the learner's machine — no cloud, no remote hosting. The
-Workshop SDK bundles the frontend, backend, and lab environment as services
-that auto-start inside a Workshop container.
+Everything runs on the learner's machine — no cloud, no remote hosting.
 
 ```
-Learner machine (Ubuntu + LXD + Workshop snap)
-  workshop launch -> LXD system container (the Workshop)
+Learner machine (Ubuntu + LXD)
     |
-    |-- Service: Frontend (React SPA, Canonical Vanilla Framework + react-components)
+    |-- Frontend (React 19 SPA, Canonical Vanilla Framework + @canonical/react-components)
     |     Course catalog / module navigation (ApplicationLayout, SideNavigation)
     |     Lecture viewer (Markdown rendering)
     |     Quiz component (form primitives, instant grading, explanations)
     |     Lab workspace: Instructions panel + in-browser terminal + Task checkers
     |     Progress dashboard
-    |     Served at localhost:<frontend-port>
+    |     Served at localhost:3000 (dev) / localhost:9090 (prod)
     |
-    |-- Service: Backend (Go API) - no auth
+    |-- Backend (Go API) - no auth
     |     Content service (serves notes/quiz/lab metadata + Markdown from content/)
     |     Quiz scoring service
     |     File API (list/read/write files in lab working directory)
     |     PTY service (spawns real shell via creack/pty, streams over WebSocket)
     |     Grading endpoint (runs check.sh / JSON checkers, returns task status)
     |     Progress tracker (local database, persistent profile)
-    |     Served at localhost:<backend-port>
+    |     Served at localhost:9090
     |
-    |-- Lab env (inside the SAME Workshop container)
+    |-- Local Environment
     |     LXD (native) + Juju snap
-    |     /home/student/<lab>/  starter files + check.sh
-    |     Backend PTY service execs a shell directly here
+    |     Backend PTY service execs an interactive shell on the host
     |
     v
-  Browser (learner opens localhost:<frontend-port>)
+  Browser (learner opens localhost:3000 or localhost:9090)
 ```
 
 ## Why fully local + in-browser works

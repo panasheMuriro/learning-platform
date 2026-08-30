@@ -13,24 +13,57 @@ A comprehensive, hands-on enterprise training curriculum for Juju 3.x+ where lea
 
 Everything runs **locally on the learner's machine** — no cloud, no remote hosting. The Workshop environment bundles the frontend, backend, and lab environment (Juju + LXD) as services that auto-start seamlessly.
 
-## Quick start (learner)
+## Screenshots
 
-> Requires Ubuntu 22.04+ with LXD. Mac/Windows users: see [docs/learner-setup.md](docs/learner-setup.md) for the Multipass VM path.
+### Course Overview & Progress Dashboard
+![Course Overview & Module Dashboard](docs/images/course-overview.png)
+
+### In-Depth Interactive Lectures
+![Interactive Lecture Viewer](docs/images/lecture-view.png)
+
+### Split-Pane Hands-On Lab Workspace
+![In-Browser Terminal & Real-Time Task Verification](docs/images/lab-workspace.png)
+
+### Knowledge Check Quizzes with Instant Grading
+![Module Assessment Quiz](docs/images/quiz-assessment.png)
+
+## Quick start
+
+### Running with Taskfile (Recommended)
+
+Requires Ubuntu 22.04+ (or any Linux/Mac environment with Go, Node/Bun, and LXD).
 
 ```bash
-# Install Workshop
-sudo snap install --classic workshop
+# Clone the repository
+git clone https://github.com/panasheMuriro/learning-platform.git
+cd learning-platform
 
-# Launch the course environment (bundles frontend + backend + Juju + LXD)
-workshop launch
+# Install task runner (once)
+sudo snap install task --classic
 
-# Open the course in your browser
-# -> http://localhost:<port>  (port printed by `workshop launch`)
+# Install dependencies (Go modules + frontend dependencies)
+task install
+
+# Run the platform (Vite dev server on :3000, Go backend on :9090)
+task dev
 ```
+
+Open your browser at `http://localhost:3000`.
 
 From there: read notes, take quizzes, open a lab, execute commands in the in-browser terminal, click **Check** to verify each task — all without leaving the browser.
 
-## Quick start (developer)
+### Production mode
+
+```bash
+# Build and run single-port server (:9090 serves frontend + API)
+task prod
+```
+
+### Canonical Workshop SDK (Experimental / In Development)
+
+Packaging the platform as a self-contained [Canonical Workshop](https://github.com/canonical/workshop) SDK (`workshop launch`) is currently experimental and under active development. For the best experience right now, use `task dev` or `task prod` as shown above.
+
+## Development & Testing
 
 All build/run commands are wrapped in a [Taskfile](https://taskfile.dev) — see [Taskfile.yml](Taskfile.yml) for the full list (`task --list-all`).
 

@@ -38,36 +38,32 @@ Verify:
 lxc list  # should return an empty list, no errors
 ```
 
-## Step 2: Install Workshop
+## Step 2: Install Task Runner
 
 ```bash
-sudo snap install --classic workshop
+sudo snap install --classic task
 ```
 
-Verify:
-```bash
-workshop --version
-```
-
-## Step 3: Launch the course
+## Step 3: Run the course
 
 ```bash
-# Clone the course repository (or use the published SDK)
+# Clone the course repository
 git clone https://github.com/panasheMuriro/learning-platform.git
 cd learning-platform
 
-# Launch the Workshop — this bundles:
-#   - Frontend (React app)
-#   - Backend (Go API)
-#   - Juju + LXD
-workshop launch
+# Install dependencies
+task install
+
+# Start the course in dev mode (Vite UI on :3000, API on :9090)
+task dev
 ```
 
-Workshop will print the port for the frontend. Open it in your browser:
+Open your browser at:
+```
+http://localhost:3000
+```
 
-```
-http://localhost:<port>
-```
+*(Note: Workshop SDK packaging via `workshop launch` is planned as a future distribution method and is currently experimental).*
 
 ## Step 4: Take the course
 

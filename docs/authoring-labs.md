@@ -56,10 +56,10 @@ Ensure the lab is declared in `content/courses/juju/outline.json` under the appr
 }
 ```
 
-## 6. Test your lab
+## 4. Test your lab
 
-1. Start the Workshop: `workshop launch`
-2. Open the browser, navigate to your lab
+1. Start the course: `task dev`
+2. Open the browser at `http://localhost:3000`, navigate to your lab
 3. Follow your own instructions to complete the lab
 4. Click **Check** — verify it passes with a correct solution
 5. Break your solution — verify **Check** fails with helpful messages
@@ -69,6 +69,4 @@ Ensure the lab is declared in `content/courses/juju/outline.json` under the appr
 - **One concept per task** — don't combine too many things in one step
 - **Progressive complexity** — start easy, build up
 - **Reference earlier labs** — "This is similar to Task 3 in Lab 1…"
-- **State literacy** — have learners inspect `terraform.tfstate` and `juju status`
-- **Error-driven learning** — present broken configs and ask learners to fix them
-- **Real tooling** — `check.sh` runs actual `terraform`/`juju`, not static checks
+- **Real tooling** — checkers run actual `juju` commands, not static checks
