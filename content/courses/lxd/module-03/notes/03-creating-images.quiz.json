@@ -1,0 +1,50 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How do you create an image from a running container?",
+      "type": "single-choice",
+      "options": [
+        "lxc publish web --alias my-image",
+        "lxc image create web --alias my-image",
+        "lxc snapshot web --as-image my-image",
+        "lxc export web my-image"
+      ],
+      "answer": "lxc publish web --alias my-image",
+      "explanation": "lxc publish <instance> --alias <name> creates a new image from the instance's current state."
+    },
+    {
+      "id": "q2",
+      "prompt": "What must you do before publishing a container as an image?",
+      "type": "single-choice",
+      "options": [
+        "Stop the container (for containers, not VMs)",
+        "Take a snapshot first",
+        "Export the container",
+        "Nothing — it can be running"
+      ],
+      "answer": "Stop the container (for containers, not VMs)",
+      "explanation": "Containers must be stopped before publishing. VMs can sometimes be published while running."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you create an image from a snapshot instead of the live instance?",
+      "type": "single-choice",
+      "options": [
+        "lxc publish web/clean --alias clean-image",
+        "lxc publish --snapshot web/clean --alias clean-image",
+        "lxc image from-snapshot web/clean --alias clean-image",
+        "lxc snapshot publish web clean --alias clean-image"
+      ],
+      "answer": "lxc publish web/clean --alias clean-image",
+      "explanation": "Use the instance/snapshot syntax: lxc publish web/clean --alias clean-image creates an image from the snapshot."
+    },
+    {
+      "id": "q4",
+      "prompt": "How do you launch a new instance from a custom image alias 'my-web-image'?",
+      "type": "text-answer",
+      "answer": "lxc launch my-web-image",
+      "explanation": "lxc launch <alias> <name> creates a new instance from a local image alias."
+    }
+  ]
+}

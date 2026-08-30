@@ -1,0 +1,37 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Open an interactive shell",
+      "instructions": "Open an interactive shell inside the `web` container:\n\n```bash\nlxc shell web\n```\n\nInside the container, run:\n```bash\nfree -m\nnproc\n```\n\nYou should see 256 MiB of memory and 1 CPU (the limits set in the previous lab). Type `exit` to leave the shell.",
+      "hints": [
+        "Your prompt will change to indicate you're inside the container.",
+        "Type 'exit' to return to your host terminal."
+      ],
+      "solution": "```bash\nlxc shell web\n# Inside:\nfree -m\nnproc\nexit\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Run a single command with exec",
+      "instructions": "Use `lxc exec` to run a command inside the `web` container without opening a shell:\n\n```bash\nlxc exec web -- cat /etc/os-release\n```\n\nThis shows the OS version running inside the container.",
+      "hints": [
+        "The -- separator prevents lxc from interpreting command flags.",
+        "lxc exec runs one command and returns the output to your host terminal."
+      ],
+      "solution": "```bash\nlxc exec web -- cat /etc/os-release\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Install a package inside the container",
+      "instructions": "Use `lxc exec` to install a package inside the `web` container:\n\n```bash\nlxc exec web -- apt update\nlxc exec web -- apt install -y nginx\n```\n\nThen verify nginx is installed:\n```bash\nlxc exec web -- nginx -v\n```",
+      "hints": [
+        "apt update refreshes the package list. apt install -y installs without prompting.",
+        "nginx -v prints the version number."
+      ],
+      "solution": "```bash\nlxc exec web -- apt update\nlxc exec web -- apt install -y nginx\nlxc exec web -- nginx -v\n```",
+      "check": "task-3"
+    }
+  ]
+}

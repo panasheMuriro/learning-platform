@@ -1,0 +1,46 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is LXD?",
+      "type": "single-choice",
+      "options": [
+        "A system container and virtual machine manager",
+        "A Docker container runtime",
+        "A Kubernetes distribution",
+        "A configuration management tool"
+      ],
+      "answer": "A system container and virtual machine manager",
+      "explanation": "LXD is a system container and virtual machine manager that provides a unified experience for running full Linux systems."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which command do you use for day-to-day instance management (create, start, stop)?",
+      "type": "single-choice",
+      "options": ["lxd", "lxc", "lxdctl", "docker"],
+      "answer": "lxc",
+      "explanation": "lxc is the client CLI. lxd is the daemon — you use lxd init for setup but lxc for everything else."
+    },
+    {
+      "id": "q3",
+      "prompt": "What is the key difference between a LXD system container and a LXD virtual machine?",
+      "type": "single-choice",
+      "options": [
+        "Containers use Docker images; VMs use QCOW2",
+        "Containers share the host kernel; VMs have their own kernel",
+        "Containers are for development; VMs are for production",
+        "Containers can only run Ubuntu; VMs can run any OS"
+      ],
+      "answer": "Containers share the host kernel; VMs have their own kernel",
+      "explanation": "System containers share the host kernel (lighter, faster), while VMs boot their own kernel via KVM (stronger isolation)."
+    },
+    {
+      "id": "q4",
+      "prompt": "Select all that are LXD concepts:",
+      "type": "multi-choice",
+      "options": ["Instance", "Image", "Profile", "Pod", "Storage pool", "Deployment"],
+      "answer": ["Instance", "Image", "Profile", "Storage pool"],
+      "explanation": "Instance, Image, Profile, and Storage pool are all core LXD concepts. Pod and Deployment are Kubernetes concepts."
+    }
+  ]
+}

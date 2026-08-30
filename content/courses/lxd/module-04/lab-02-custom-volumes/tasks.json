@@ -1,0 +1,30 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create a custom volume",
+      "instructions": "Create a custom storage volume named `shared-data` in the `default` pool. Custom volumes are independent of instances — they persist even after instances are deleted, making them ideal for data that must survive instance lifecycle changes:\n\n```bash\nlxc storage volume create default shared-data size=1GiB\n```\n\nVerify it was created:\n```bash\nlxc storage volume list default\n```\n\nYou should see `shared-data` listed with type `custom`.",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Attach the volume to a container",
+      "instructions": "Launch a container and attach the custom volume to it. The volume will appear as a mounted disk inside the container at the path you specify:\n\n```bash\nlxc launch ubuntu:24.04 data-app\nlxc storage volume attach default shared-data data-app /mnt/data\n```\n\nNow `/mnt/data` inside the `data-app` container is backed by the custom volume. Write a test file to verify:\n```bash\nlxc exec data-app -- bash -c 'echo \"hello from shared volume\" > /mnt/data/test.txt'\nlxc exec data-app -- cat /mnt/data/test.txt\n```",
+      "hints": [
+        "The mount point (/mnt/data) is where the volume appears inside the container.",
+        "Files written to /mnt/data are stored on the custom volume, not the container's root disk."
+      ],
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Verify data persists across instance deletion",
+      "instructions": "This is the key benefit of custom volumes — data survives instance deletion. Let's prove it:\n\n1. Delete the container:\n```bash\nlxc delete data-app --force\n```\n\n2. The custom volume still exists:\n```bash\nlxc storage volume list default\n```\n\n3. Launch a new container and attach the same volume:\n```bash\nlxc launch ubuntu:24.04 data-app-2\nlxc storage volume attach default shared-data data-app-2 /mnt/data\n```\n\n4. The file from the previous container is still there:\n```bash\nlxc exec data-app-2 -- cat /mnt/data/test.txt\n```\n\nYou should see `hello from shared volume` — the data survived the instance deletion because it lived on the custom volume, not the container's root disk.",
+      "hints": [
+        "The custom volume is independent of any instance. Deleting an instance doesn't touch attached custom volumes.",
+        "When you attach the volume to a new instance, all previous data is immediately available."
+      ],
+      "check": "task-3"
+    }
+  ]
+}

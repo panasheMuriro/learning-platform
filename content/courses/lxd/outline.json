@@ -1,0 +1,117 @@
+{
+  "title": "LXD Hands-On Course",
+  "modules": [
+    {
+      "id": "module-01",
+      "title": "Getting Started with LXD",
+      "lectures": [
+        { "id": "01-what-is-lxd", "title": "What is LXD?" },
+        { "id": "02-install-and-init", "title": "Installing & Initializing LXD" },
+        { "id": "03-first-instance", "title": "Your First Instance" }
+      ],
+      "labs": [
+        { "id": "lab-01-install-and-init", "title": "Install & Initialize" },
+        { "id": "lab-02-launch-first-container", "title": "Launch Your First Container" }
+      ],
+      "quiz": { "id": "module-01-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-what-is-lxd", "title": "What is LXD?" },
+        { "type": "lecture", "id": "02-install-and-init", "title": "Installing & Initializing LXD" },
+        { "type": "lab", "id": "lab-01-install-and-init", "title": "Install & Initialize" },
+        { "type": "lecture", "id": "03-first-instance", "title": "Your First Instance" },
+        { "type": "lab", "id": "lab-02-launch-first-container", "title": "Launch Your First Container" },
+        { "type": "quiz", "id": "module-01-quiz", "title": "Quiz" }
+      ]
+    },
+    {
+      "id": "module-02",
+      "title": "Managing Instances",
+      "lectures": [
+        { "id": "01-creating-instances", "title": "Creating Containers & VMs" },
+        { "id": "02-configuring-instances", "title": "Configuring Instances" },
+        { "id": "03-shell-and-exec", "title": "Shell Access & Running Commands" },
+        { "id": "04-files-and-snapshots", "title": "Files & Snapshots" }
+      ],
+      "labs": [
+        { "id": "lab-01-create-and-configure", "title": "Create & Configure" },
+        { "id": "lab-02-shell-and-exec", "title": "Shell & Exec" },
+        { "id": "lab-03-files-and-snapshots", "title": "Files & Snapshots" }
+      ],
+      "quiz": { "id": "module-02-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-creating-instances", "title": "Creating Containers & VMs" },
+        { "type": "lecture", "id": "02-configuring-instances", "title": "Configuring Instances" },
+        { "type": "lab", "id": "lab-01-create-and-configure", "title": "Create & Configure" },
+        { "type": "lecture", "id": "03-shell-and-exec", "title": "Shell Access & Running Commands" },
+        { "type": "lab", "id": "lab-02-shell-and-exec", "title": "Shell & Exec" },
+        { "type": "lecture", "id": "04-files-and-snapshots", "title": "Files & Snapshots" },
+        { "type": "lab", "id": "lab-03-files-and-snapshots", "title": "Files & Snapshots" },
+        { "type": "quiz", "id": "module-02-quiz", "title": "Quiz" }
+      ]
+    },
+    {
+      "id": "module-03",
+      "title": "Images",
+      "lectures": [
+        { "id": "01-remote-images", "title": "Remote Image Servers" },
+        { "id": "02-managing-local-images", "title": "Managing Local Images" },
+        { "id": "03-creating-images", "title": "Creating Images" }
+      ],
+      "labs": [
+        { "id": "lab-01-explore-remote-images", "title": "Explore Remote Images" },
+        { "id": "lab-02-manage-local-images", "title": "Manage Local Images" },
+        { "id": "lab-03-publish-custom-image", "title": "Publish a Custom Image" }
+      ],
+      "quiz": { "id": "module-03-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-remote-images", "title": "Remote Image Servers" },
+        { "type": "lab", "id": "lab-01-explore-remote-images", "title": "Explore Remote Images" },
+        { "type": "lecture", "id": "02-managing-local-images", "title": "Managing Local Images" },
+        { "type": "lab", "id": "lab-02-manage-local-images", "title": "Manage Local Images" },
+        { "type": "lecture", "id": "03-creating-images", "title": "Creating Images" },
+        { "type": "lab", "id": "lab-03-publish-custom-image", "title": "Publish a Custom Image" },
+        { "type": "quiz", "id": "module-03-quiz", "title": "Quiz" }
+      ]
+    },
+    {
+      "id": "module-04",
+      "title": "Storage",
+      "lectures": [
+        { "id": "01-storage-pools", "title": "Storage Pools & Drivers" },
+        { "id": "02-storage-volumes", "title": "Storage Volumes" }
+      ],
+      "labs": [
+        { "id": "lab-01-explore-storage", "title": "Explore Storage Pools" },
+        { "id": "lab-02-custom-volumes", "title": "Custom Volumes" }
+      ],
+      "quiz": { "id": "module-04-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-storage-pools", "title": "Storage Pools & Drivers" },
+        { "type": "lab", "id": "lab-01-explore-storage", "title": "Explore Storage Pools" },
+        { "type": "lecture", "id": "02-storage-volumes", "title": "Storage Volumes" },
+        { "type": "lab", "id": "lab-02-custom-volumes", "title": "Custom Volumes" },
+        { "type": "quiz", "id": "module-04-quiz", "title": "Quiz" }
+      ]
+    },
+    {
+      "id": "module-05",
+      "title": "Networking",
+      "lectures": [
+        { "id": "01-bridge-networks", "title": "Networks in LXD" },
+        { "id": "02-instance-networking", "title": "Instance Networking" }
+      ],
+      "labs": [
+        { "id": "lab-01-bridge-networks", "title": "Bridge Networks" },
+        { "id": "lab-02-instance-networking", "title": "Instance Networking" }
+      ],
+      "quiz": { "id": "module-05-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-bridge-networks", "title": "Networks in LXD" },
+        { "type": "lab", "id": "lab-01-bridge-networks", "title": "Bridge Networks" },
+        { "type": "lecture", "id": "02-instance-networking", "title": "Instance Networking" },
+        { "type": "lab", "id": "lab-02-instance-networking", "title": "Instance Networking" },
+        { "type": "quiz", "id": "module-05-quiz", "title": "Quiz" }
+      ]
+    }
+  ]
+}

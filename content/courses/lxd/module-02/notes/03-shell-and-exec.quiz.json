@@ -1,0 +1,50 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What does `lxc shell first` do?",
+      "type": "single-choice",
+      "options": [
+        "Opens an interactive shell as root inside the 'first' container",
+        "Runs a shell script on the host",
+        "Creates a new shell instance",
+        "Displays the shell configuration of 'first'"
+      ],
+      "answer": "Opens an interactive shell as root inside the 'first' container",
+      "explanation": "lxc shell opens an interactive bash session as root inside the specified instance."
+    },
+    {
+      "id": "q2",
+      "prompt": "What is the purpose of the `--` separator in `lxc exec first -- ls -la`?",
+      "type": "single-choice",
+      "options": [
+        "It's optional syntax that does nothing",
+        "It separates lxc arguments from the command to run inside the instance",
+        "It tells lxc to run as a daemon",
+        "It enables verbose output"
+      ],
+      "answer": "It separates lxc arguments from the command to run inside the instance",
+      "explanation": "The -- prevents flags like -la from being interpreted by lxc instead of the inner command."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command runs `free -m` inside the 'first' container and returns the output?",
+      "type": "single-choice",
+      "options": [
+        "lxc exec first -- free -m",
+        "lxc shell first -- free -m",
+        "lxc run first free -m",
+        "lxc exec first free -m --"
+      ],
+      "answer": "lxc exec first -- free -m",
+      "explanation": "lxc exec <name> -- <command> runs a single command inside the instance."
+    },
+    {
+      "id": "q4",
+      "prompt": "How do you exit an interactive shell opened with `lxc shell`?",
+      "type": "text-answer",
+      "answer": "exit",
+      "explanation": "Type 'exit' to leave the interactive shell and return to your host terminal."
+    }
+  ]
+}

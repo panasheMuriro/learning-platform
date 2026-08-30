@@ -1,0 +1,11 @@
+{
+  "id": "lxd",
+  "slug": "lxd",
+  "title": "LXD Hands-On Course",
+  "summary": "Learn LXD — a modern, secure and powerful system container and virtual machine manager. From installation and first instances to images, configuration, snapshots, and more. Hands-on labs with an in-browser terminal and auto-grading.",
+  "icon": "containers",
+  "version": "1.0.0",
+  "requiredTools": ["lxd"],
+  "workspace": "terminal",
+  "license": "CC-BY-SA-4.0"
+}

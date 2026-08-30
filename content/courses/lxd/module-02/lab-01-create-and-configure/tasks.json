@@ -1,0 +1,36 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Launch a container",
+      "instructions": "Launch an Ubuntu 24.04 container named `web`:\n\n```bash\nlxc launch ubuntu:24.04 web\n```\n\nVerify it's running:\n\n```bash\nlxc list\n```",
+      "hints": [
+        "If the image isn't cached yet, the first launch will download it — be patient."
+      ],
+      "solution": "```bash\nlxc launch ubuntu:24.04 web\nlxc list\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Set resource limits",
+      "instructions": "Configure the `web` container with resource limits:\n\n```bash\nlxc config set web limits.cpu=1 limits.memory=256MiB\n```\n\nVerify the limits were set:\n\n```bash\nlxc config get web limits.cpu\nlxc config get web limits.memory\n```",
+      "hints": [
+        "You can set multiple config values in a single lxc config set command.",
+        "lxc config get <name> <key> retrieves a single value."
+      ],
+      "solution": "```bash\nlxc config set web limits.cpu=1 limits.memory=256MiB\nlxc config get web limits.cpu\nlxc config get web limits.memory\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Verify limits inside the container",
+      "instructions": "Run commands inside the `web` container to verify the limits are in effect:\n\n```bash\nlxc exec web -- free -m\nlxc exec web -- nproc\n```\n\nYou should see approximately 256 MiB of memory and 1 CPU.",
+      "hints": [
+        "free -m shows memory in megabytes — it should be close to 256.",
+        "nproc returns the number of available CPUs — it should be 1."
+      ],
+      "solution": "```bash\nlxc exec web -- free -m\nlxc exec web -- nproc\n```",
+      "check": "task-3"
+    }
+  ]
+}

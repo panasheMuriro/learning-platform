@@ -1,0 +1,46 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is a storage pool in LXD?",
+      "type": "single-choice",
+      "options": [
+        "A named storage area managed by LXD that backs instance disks and custom volumes",
+        "A Docker volume mount",
+        "A network bridge for storage traffic",
+        "A type of LXD profile"
+      ],
+      "answer": "A named storage area managed by LXD that backs instance disks and custom volumes",
+      "explanation": "A storage pool is a backing store (ZFS, Btrfs, LVM, dir, etc.) that LXD manages. Instance root disks and custom volumes live inside pools."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which storage driver is the recommended default for most LXD setups?",
+      "type": "single-choice",
+      "options": ["dir", "ZFS", "LVM", "Ceph RBD"],
+      "answer": "ZFS",
+      "explanation": "ZFS is the recommended default — it supports snapshots, compression, and copy-on-write out of the box."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you list all storage pools on your LXD server?",
+      "type": "single-choice",
+      "options": ["lxc storage list", "lxc pool list", "lxc list storage", "lxc storage show"],
+      "answer": "lxc storage list",
+      "explanation": "lxc storage list shows all pools, their driver, and usage information."
+    },
+    {
+      "id": "q4",
+      "prompt": "How do you create an instance on a specific storage pool?",
+      "type": "single-choice",
+      "options": [
+        "lxc launch ubuntu:24.04 db --storage my-zfs",
+        "lxc launch ubuntu:24.04 db --pool my-zfs",
+        "lxc launch ubuntu:24.04 db --disk my-zfs",
+        "lxc launch ubuntu:24.04 db --set storage=my-zfs"
+      ],
+      "answer": "lxc launch ubuntu:24.04 db --storage my-zfs",
+      "explanation": "The --storage flag specifies which storage pool to use for the instance's root disk."
+    }
+  ]
+}

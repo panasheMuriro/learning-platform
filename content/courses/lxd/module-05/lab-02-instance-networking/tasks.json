@@ -1,0 +1,26 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "View instance network devices",
+      "instructions": "Launch a container and inspect its network configuration. Understanding what network devices an instance has is essential for troubleshooting connectivity:\n\n```bash\nlxc launch ubuntu:24.04 net-app\nlxc config device show net-app\n```\n\nThe output shows the `eth0` device connected to a network (usually `lxdbr0`). This is the default NIC that every instance gets.\n\nCheck the instance's IP address:\n```bash\nlxc list net-app\n```\n\nNote the IP in the IPV4 column — it's on the bridge subnet (typically 10.x.x.x).",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Add a second NIC",
+      "instructions": "Add a second network interface to the instance. Multi-homed instances (connected to multiple networks) are useful for network appliances, proxies, or isolating traffic:\n\n```bash\nlxc config device add net-app eth1 nic network=lxdbr0\n```\n\nRestart the instance so the new NIC is detected:\n```bash\nlxc restart net-app\n```\n\nVerify both interfaces exist inside the container:\n```bash\nlxc exec net-app -- ip addr show\n```\n\nYou should see both `eth0` and `eth1` with IP addresses.",
+      "hints": [
+        "The instance must be restarted for the new device to appear inside it.",
+        "ip addr show lists all network interfaces inside the container."
+      ],
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Test connectivity",
+      "instructions": "Verify the instance can reach the internet through its network. This confirms the bridge's NAT is working and the instance has proper routing:\n\n```bash\nlxc exec net-app -- ping -c 3 8.8.8.8\n```\n\nYou should see 3 successful replies. The `-c 3` flag limits ping to 3 packets so it doesn't run forever.\n\nAlso verify DNS resolution works (the instance can resolve hostnames):\n```bash\nlxc exec net-app -- ping -c 3 ubuntu.com\n```\n\nIf both work, the instance has full network connectivity through the bridge's NAT.",
+      "check": "task-3"
+    }
+  ]
+}

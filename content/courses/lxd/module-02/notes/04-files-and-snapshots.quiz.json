@@ -1,0 +1,63 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How do you push a file from the host into an instance?",
+      "type": "single-choice",
+      "options": [
+        "lxc file push helloworld.txt first/root/helloworld.txt",
+        "lxc push helloworld.txt first:/root/",
+        "lxc cp helloworld.txt first/root/",
+        "lxc file copy helloworld.txt first/root/helloworld.txt"
+      ],
+      "answer": "lxc file push helloworld.txt first/root/helloworld.txt",
+      "explanation": "lxc file push <source> <instance>/<path> copies a file from the host into an instance."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you create a snapshot of an instance?",
+      "type": "single-choice",
+      "options": [
+        "lxc snapshot first clean",
+        "lxc backup first clean",
+        "lxc save first clean",
+        "lxc image snapshot first clean"
+      ],
+      "answer": "lxc snapshot first clean",
+      "explanation": "lxc snapshot <instance> <snapshot-name> creates a point-in-time snapshot."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you restore an instance to a previous snapshot?",
+      "type": "single-choice",
+      "options": [
+        "lxc restore first clean",
+        "lxc rollback first clean",
+        "lxc snapshot restore first clean",
+        "lxc revert first clean"
+      ],
+      "answer": "lxc restore first clean",
+      "explanation": "lxc restore <instance> <snapshot-name> reverts the instance to the snapshot's state."
+    },
+    {
+      "id": "q4",
+      "prompt": "How do you delete a snapshot named 'clean' from instance 'first'?",
+      "type": "single-choice",
+      "options": [
+        "lxc delete first/clean",
+        "lxc snapshot delete first clean",
+        "lxc remove first clean",
+        "lxc delete --snapshot first clean"
+      ],
+      "answer": "lxc delete first/clean",
+      "explanation": "Snapshots are deleted with lxc delete <instance>/<snapshot-name>."
+    },
+    {
+      "id": "q5",
+      "prompt": "What command pulls a file from an instance to the host?",
+      "type": "text-answer",
+      "answer": "lxc file pull",
+      "explanation": "lxc file pull <instance>/<path> <destination> copies a file from the instance to the host."
+    }
+  ]
+}

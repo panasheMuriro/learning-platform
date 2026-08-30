@@ -1,0 +1,58 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What does `lxc launch ubuntu:24.04 first` do?",
+      "type": "single-choice",
+      "options": [
+        "Creates a container named 'first' and starts it",
+        "Creates a container named 'first' but does not start it",
+        "Downloads an image but does not create a container",
+        "Starts an existing container named 'first'"
+      ],
+      "answer": "Creates a container named 'first' and starts it",
+      "explanation": "lxc launch creates an instance from the specified image and immediately starts it."
+    },
+    {
+      "id": "q2",
+      "prompt": "What is the difference between `lxc launch` and `lxc init`?",
+      "type": "single-choice",
+      "options": [
+        "lxc launch starts the instance; lxc init does not",
+        "lxc init starts the instance; lxc launch does not",
+        "They are identical",
+        "lxc launch only works with VMs"
+      ],
+      "answer": "lxc launch starts the instance; lxc init does not",
+      "explanation": "lxc launch creates and starts. lxc init creates but leaves the instance stopped."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you create a virtual machine instead of a container?",
+      "type": "single-choice",
+      "options": [
+        "lxc launch ubuntu:24.04 myvm --vm",
+        "lxc launch ubuntu:24.04 myvm --container",
+        "lxc vm create ubuntu:24.04 myvm",
+        "lxc launch --type vm ubuntu:24.04 myvm"
+      ],
+      "answer": "lxc launch ubuntu:24.04 myvm --vm",
+      "explanation": "The --vm flag tells LXD to create a virtual machine instead of a container."
+    },
+    {
+      "id": "q4",
+      "prompt": "What command shows detailed information about an instance including CPU and memory usage?",
+      "type": "single-choice",
+      "options": ["lxc list", "lxc info", "lxc show", "lxc inspect"],
+      "answer": "lxc info",
+      "explanation": "lxc info <name> shows detailed information about an instance including architecture, PID, resource usage, and snapshots."
+    },
+    {
+      "id": "q5",
+      "prompt": "What must you do before deleting a running instance (without --force)?",
+      "type": "text-answer",
+      "answer": "lxc stop",
+      "explanation": "You must stop the instance first with lxc stop, or use lxc delete --force to delete it while running."
+    }
+  ]
+}

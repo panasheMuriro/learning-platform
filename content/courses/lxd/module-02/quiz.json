@@ -1,0 +1,67 @@
+{
+  "moduleId": "module-02",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What flag creates a VM instead of a container with lxc launch?",
+      "type": "single-choice",
+      "options": ["--vm", "--virtual", "--type vm", "--hv"],
+      "answer": "--vm",
+      "explanation": "The --vm flag tells LXD to create a virtual machine with its own kernel."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you set limits.cpu=1 and limits.memory=192MiB on an existing instance?",
+      "type": "single-choice",
+      "options": [
+        "lxc config set first limits.cpu=1 limits.memory=192MiB",
+        "lxc set first --cpu 1 --memory 192MiB",
+        "lxc config first limits.cpu 1 limits.memory 192MiB",
+        "lxc edit first --limits"
+      ],
+      "answer": "lxc config set first limits.cpu=1 limits.memory=192MiB",
+      "explanation": "lxc config set can set multiple key=value pairs in a single command."
+    },
+    {
+      "id": "q3",
+      "prompt": "What is the difference between lxc shell and lxc exec?",
+      "type": "single-choice",
+      "options": [
+        "lxc shell opens an interactive session; lxc exec runs a single command",
+        "lxc exec opens an interactive session; lxc shell runs a single command",
+        "They are identical",
+        "lxc shell only works with VMs"
+      ],
+      "answer": "lxc shell opens an interactive session; lxc exec runs a single command",
+      "explanation": "lxc shell gives you an interactive bash session. lxc exec runs one command and returns."
+    },
+    {
+      "id": "q4",
+      "prompt": "Select all valid lxc file subcommands:",
+      "type": "multi-choice",
+      "options": ["push", "pull", "edit", "copy", "delete", "mount"],
+      "answer": ["push", "pull", "edit"],
+      "explanation": "lxc file supports push, pull, and edit. There is no file copy, delete, or mount subcommand."
+    },
+    {
+      "id": "q5",
+      "prompt": "What command restores instance 'first' to snapshot 'clean'?",
+      "type": "text-answer",
+      "answer": "lxc restore first clean",
+      "explanation": "lxc restore <instance> <snapshot> reverts the instance to the snapshot's state."
+    },
+    {
+      "id": "q6",
+      "prompt": "By default, what resources does a container see?",
+      "type": "single-choice",
+      "options": [
+        "1 CPU and 256MB RAM",
+        "All host resources",
+        "No resources until configured",
+        "Resources defined in the default profile"
+      ],
+      "answer": "All host resources",
+      "explanation": "Without limits, containers inherit all host resources. nproc and free -m inside a container match the host."
+    }
+  ]
+}

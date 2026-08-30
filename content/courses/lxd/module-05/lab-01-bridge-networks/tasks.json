@@ -1,0 +1,26 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "List and inspect networks",
+      "instructions": "List the networks on your LXD server to see what's configured:\n\n```bash\nlxc network list\n```\n\nYou should see at least `lxdbr0` — the default bridge created during `lxd init`. Now inspect its configuration to understand how it's set up:\n\n```bash\nlxc network show lxdbr0\n```\n\nThe output shows the IPv4/IPv6 address range, whether NAT is enabled, and the DHCP settings. This is the network your instances connect to by default — understanding it helps when troubleshooting connectivity issues.",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Create a new bridge network",
+      "instructions": "Create a second bridge network with a different subnet. Separate networks are useful for isolating environments — for example, putting test instances on a different network from production ones:\n\n```bash\nlxc network create test-bridge \\\n  --type=bridge \\\n  ipv4.address=10.20.20.1/24 \\\n  ipv4.nat=true\n```\n\nVerify it was created:\n```bash\nlxc network list\n```\n\nYou should see both `lxdbr0` and `test-bridge`. The new bridge has its own subnet (10.20.20.x) with NAT enabled, so instances on it can reach the internet.",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Launch an instance on the new network",
+      "instructions": "Launch a container connected to the new `test-bridge` network instead of the default. This demonstrates how to place instances on specific networks:\n\n```bash\nlxc launch ubuntu:24.04 net-test\n```\n\nThen move its network interface to the new bridge:\n```bash\nlxc config device set net-test eth0 network=test-bridge\n```\n\nRestart the instance so the new network takes effect:\n```bash\nlxc restart net-test\n```\n\nVerify the instance got an IP on the new subnet:\n```bash\nlxc list net-test\n```\n\nThe IPV4 column should show an address in the 10.20.20.x range.",
+      "hints": [
+        "The instance needs to be restarted for the network change to take effect.",
+        "lxc list net-test shows the IP assigned to the instance — it should be on 10.20.20.x."
+      ],
+      "check": "task-3"
+    }
+  ]
+}
