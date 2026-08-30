@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How do you deploy a charm named 'ubuntu' under the custom application alias 'worker-app'?",
+      "type": "single-choice",
+      "options": [
+        "juju deploy ubuntu worker-app",
+        "juju deploy --alias worker-app ubuntu",
+        "juju install ubuntu as worker-app",
+        "juju launch worker-app:ubuntu"
+      ],
+      "answer": "juju deploy ubuntu worker-app",
+      "explanation": "The second positional argument to 'juju deploy' specifies the custom application alias."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which flag is used to deploy a unit directly onto an existing machine ID (e.g., machine 0)?",
+      "type": "single-choice",
+      "options": [
+        "--to 0",
+        "--machine 0",
+        "--target 0",
+        "--host 0"
+      ],
+      "answer": "--to 0",
+      "explanation": "The '--to <target>' flag instructs Juju to place the unit onto an existing machine or container."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which flag allows deploying an application with 3 initial units at deploy time?",
+      "type": "single-choice",
+      "options": [
+        "-n 3",
+        "--count 3",
+        "--scale 3",
+        "-u 3"
+      ],
+      "answer": "-n 3",
+      "explanation": "'-n' or '--num-units' sets the initial unit count for the deployment."
+    }
+  ]
+}

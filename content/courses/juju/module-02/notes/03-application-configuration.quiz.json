@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which command is used to change a configuration option on an application named 'web'?",
+      "type": "single-choice",
+      "options": [
+        "juju config web port=8080",
+        "juju set web port=8080",
+        "juju set-config web port 8080",
+        "juju params web --port 8080"
+      ],
+      "answer": "juju config web port=8080",
+      "explanation": "'juju config <app> <key>=<val>' is the standard command for setting application configuration."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do you revert a custom configuration setting back to the charm default?",
+      "type": "single-choice",
+      "options": [
+        "juju config web --reset <key>",
+        "juju config web --default <key>",
+        "juju reset web <key>",
+        "juju config web <key>=default"
+      ],
+      "answer": "juju config web --reset <key>",
+      "explanation": "Passing '--reset <key>' removes user overrides and restores the default value from the charm."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command allows applying multiple configuration values from a YAML file?",
+      "type": "single-choice",
+      "options": [
+        "juju config <app> --file <config.yaml>",
+        "juju apply-config <app> <config.yaml>",
+        "juju config-import <app> <config.yaml>",
+        "juju config <app> -c <config.yaml>"
+      ],
+      "answer": "juju config <app> --file <config.yaml>",
+      "explanation": "The '--file' flag allows loading key/value pairs from a local YAML file."
+    }
+  ]
+}

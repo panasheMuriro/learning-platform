@@ -1,0 +1,34 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create model lab-machines",
+      "instructions": "Create a new model named `lab-machines`:\n\n```bash\njuju add-model lab-machines\n```\n\nVerify that `lab-machines` is the active model:\n\n```bash\njuju switch\n```",
+      "hints": [
+        "Run `juju add-model lab-machines`."
+      ],
+      "solution": "```bash\njuju add-model lab-machines\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Provision standalone machine",
+      "instructions": "Provision a standalone machine in the model without deploying an application yet:\n\n```bash\njuju add-machine\n```\n\nVerify that machine `0` exists:\n\n```bash\njuju machines\n```",
+      "hints": [
+        "Use `juju add-machine` to allocate a new machine in the model."
+      ],
+      "solution": "```bash\njuju add-machine\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Deploy application with placement directive",
+      "instructions": "Deploy the `ubuntu` charm with alias `custom-node` placed explicitly on machine `0`:\n\n```bash\njuju deploy ubuntu custom-node --to 0 --channel latest/stable\n```\n\nVerify in `juju status` that `custom-node/0` is placed on machine `0`:\n\n```bash\njuju status\n```",
+      "hints": [
+        "Use the `--to 0` flag to target machine 0."
+      ],
+      "solution": "```bash\njuju deploy ubuntu custom-node --to 0 --channel latest/stable\n```",
+      "check": "task-3"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the primary purpose of relations (integrations) in Juju?",
+      "type": "single-choice",
+      "options": [
+        "To allow charms to automatically discover connection data, credentials, and configuration between services",
+        "To merge multiple source code repositories into a single Git branch",
+        "To encrypt physical network cables between data center racks",
+        "To bundle multiple OS images into a single ISO"
+      ],
+      "answer": "To allow charms to automatically discover connection data, credentials, and configuration between services",
+      "explanation": "Relations establish communication channels where charms share credentials, endpoints, and status dynamically."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which endpoint role is used for communication between units of the same application (e.g. cluster clustering/replication)?",
+      "type": "single-choice",
+      "options": [
+        "peers",
+        "provides",
+        "requires",
+        "subordinates"
+      ],
+      "answer": "peers",
+      "explanation": "'peers' endpoints allow units of the same application to discover each other and form clusters."
+    },
+    {
+      "id": "q3",
+      "prompt": "What allows two distinct charms to be integrated together?",
+      "type": "single-choice",
+      "options": [
+        "They must implement compatible relation interfaces",
+        "They must be installed in the same Linux directory",
+        "They must be written in the same programming language",
+        "They must use the same application name"
+      ],
+      "answer": "They must implement compatible relation interfaces",
+      "explanation": "Relations require compatible interface definitions (e.g. pgsql, mysql, ingress) defined in their metadata."
+    }
+  ]
+}

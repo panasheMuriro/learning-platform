@@ -1,0 +1,44 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create and Switch to Model",
+      "instructions": "Ensure the model `mod8-refresh-lab` exists and is the active target.",
+      "hints": [
+        "Run `juju switch mod8-refresh-lab` or `juju add-model mod8-refresh-lab`."
+      ],
+      "solution": "juju switch mod8-refresh-lab",
+      "check": "juju show-model mod8-refresh-lab >/dev/null 2>&1"
+    },
+    {
+      "id": "task-2",
+      "title": "Deploy Workload Application",
+      "instructions": "Deploy the `ubuntu` charm with application name `service-node` into `mod8-refresh-lab`.",
+      "hints": [
+        "Run `juju deploy ubuntu service-node -m mod8-refresh-lab`."
+      ],
+      "solution": "juju deploy ubuntu service-node -m mod8-refresh-lab",
+      "check": "juju status -m mod8-refresh-lab --format yaml | grep -q 'service-node:'"
+    },
+    {
+      "id": "task-3",
+      "title": "Perform Charm Refresh",
+      "instructions": "Perform a charm refresh on `service-node` using `juju refresh service-node`.",
+      "hints": [
+        "Run `juju refresh service-node -m mod8-refresh-lab`."
+      ],
+      "solution": "juju refresh service-node -m mod8-refresh-lab",
+      "check": "juju status -m mod8-refresh-lab --format yaml | grep -q 'service-node:'"
+    },
+    {
+      "id": "task-4",
+      "title": "Export Live Model Topology Bundle",
+      "instructions": "Export the model topology to a bundle YAML file named `live-topology.yaml`.",
+      "hints": [
+        "Run `juju export-bundle --filename live-topology.yaml`."
+      ],
+      "solution": "juju export-bundle --filename live-topology.yaml",
+      "check": "test -f live-topology.yaml && grep -q 'service-node:' live-topology.yaml"
+    }
+  ]
+}

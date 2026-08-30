@@ -19,7 +19,7 @@
 #   - Backend binary: platform/backend/server (run `go build ./cmd/server` first)
 #   - Frontend build: platform/frontend/dist/ (run `bun run build` first)
 #   - code-server: running on port 8081 (Docker or installed locally)
-#   - Juju + Terraform + LXD installed (for labs to actually work)
+#   - Juju + LXD installed (for labs to actually work)
 
 set -euo pipefail
 
@@ -47,7 +47,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo "============================================"
-echo "  Juju + Terraform Course — Production Mode"
+echo "  Juju Hands-On Course — Production Mode"
 echo "============================================"
 echo ""
 echo "  Backend:     http://localhost:${BACKEND_PORT}"

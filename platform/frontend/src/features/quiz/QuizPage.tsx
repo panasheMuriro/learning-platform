@@ -1,4 +1,5 @@
-import { submitQuiz, useQuiz } from "@/api/content";
+import { submitQuiz, useCourseOutline, useQuiz } from "@/api/content";
+import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
 import { QuizQuestionInput } from "@/components/QuizQuestionInput";
 import { Button, Card } from "@canonical/react-components";
@@ -11,6 +12,7 @@ export function QuizPage() {
   const { courseId = "", moduleId = "" } = useParams();
   const queryClient = useQueryClient();
   const { data: quiz, isLoading, error } = useQuiz(courseId, moduleId);
+  const { data: outline } = useCourseOutline(courseId);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [result, setResult] = useState<{
     score: number;
@@ -74,6 +76,15 @@ export function QuizPage() {
           {submitting ? "Submitting…" : "Submit Quiz"}
         </Button>
       </form>
+      {outline && (
+        <BottomNav
+          courseId={courseId}
+          moduleId={moduleId}
+          currentItemType="quiz"
+          currentItemId={quiz.moduleId ? `${quiz.moduleId}-quiz` : "quiz"}
+          outline={outline}
+        />
+      )}
     </div>
   );
 }

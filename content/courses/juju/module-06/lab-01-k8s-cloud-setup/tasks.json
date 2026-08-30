@@ -1,0 +1,34 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create model lab-k8s-cloud",
+      "instructions": "Create a new model named `lab-k8s-cloud`:\n\n```bash\njuju add-model lab-k8s-cloud\n```\n\nVerify that `lab-k8s-cloud` exists:\n\n```bash\njuju models\n```",
+      "hints": [
+        "Run `juju add-model lab-k8s-cloud`."
+      ],
+      "solution": "```bash\njuju add-model lab-k8s-cloud\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Deploy workload application",
+      "instructions": "Deploy the `ubuntu` charm with application name `k8s-sim` into `lab-k8s-cloud`:\n\n```bash\njuju deploy ubuntu k8s-sim --channel latest/stable -m lab-k8s-cloud\n```\n\nVerify application status:\n\n```bash\njuju status -m lab-k8s-cloud\n```",
+      "hints": [
+        "Syntax: `juju deploy ubuntu k8s-sim --channel latest/stable -m lab-k8s-cloud`."
+      ],
+      "solution": "```bash\njuju deploy ubuntu k8s-sim --channel latest/stable -m lab-k8s-cloud\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Configure model logging level",
+      "instructions": "Set the model `logging-config` to include DEBUG logs:\n\n```bash\njuju model-config -m lab-k8s-cloud logging-config='<root>=DEBUG'\n```\n\nVerify that the configuration is applied:\n\n```bash\njuju model-config -m lab-k8s-cloud logging-config\n```",
+      "hints": [
+        "Run `juju model-config -m lab-k8s-cloud logging-config='<root>=DEBUG'`."
+      ],
+      "solution": "```bash\njuju model-config -m lab-k8s-cloud logging-config='<root>=DEBUG'\n```",
+      "check": "task-3"
+    }
+  ]
+}

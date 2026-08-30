@@ -28,6 +28,7 @@ function loadMermaid(): Promise<MermaidAPI> {
       startOnLoad: false,
       theme: "default",
       securityLevel: "loose",
+      suppressErrorRendering: true,
     });
     return mermaid;
   });
@@ -42,12 +43,22 @@ function MermaidDiagram({ source }: { source: string }) {
 
   useEffect(() => {
     let cancelled = false;
+    // Clean up any potential leftover mermaid error elements in body
     loadMermaid()
       .then(async (mermaid) => {
         try {
           const { svg } = await mermaid.render(containerId, source);
-          if (!cancelled) setSvg(svg);
+          if (!cancelled) {
+            setSvg(svg);
+            setError(null);
+          }
         } catch (err) {
+          // Remove any stray error svg that mermaid might append to DOM
+          const errorEl = document.getElementById(containerId);
+          if (errorEl) errorEl.remove();
+          const dErrorEl = document.getElementById(`d${containerId}`);
+          if (dErrorEl) dErrorEl.remove();
+
           if (!cancelled) setError(String(err));
         }
       })

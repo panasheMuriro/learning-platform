@@ -1,0 +1,34 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create model 'lab-deploy'",
+      "instructions": "Create a new Juju model named `lab-deploy`:\n\n```bash\njuju add-model lab-deploy\n```\n\nVerify that the active model is `lab-deploy`:\n\n```bash\njuju switch\n```",
+      "hints": [
+        "Use `juju add-model lab-deploy`."
+      ],
+      "solution": "```bash\njuju add-model lab-deploy\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Deploy 'ubuntu' charm as application 'app-server'",
+      "instructions": "Deploy the `ubuntu` charm from the `latest/stable` channel with application alias `app-server`:\n\n```bash\njuju deploy ubuntu app-server --channel latest/stable\n```\n\nVerify that the application appears in `juju status`:\n\n```bash\njuju status\n```",
+      "hints": [
+        "Syntax: `juju deploy ubuntu app-server --channel latest/stable`."
+      ],
+      "solution": "```bash\njuju deploy ubuntu app-server --channel latest/stable\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Deploy a second instance as 'worker-node'",
+      "instructions": "Deploy a second application from the `ubuntu` charm named `worker-node` on channel `latest/stable`:\n\n```bash\njuju deploy ubuntu worker-node --channel latest/stable\n```\n\nVerify that both applications (`app-server` and `worker-node`) exist in the model:\n\n```bash\njuju status\n```",
+      "hints": [
+        "Syntax: `juju deploy ubuntu worker-node --channel latest/stable`."
+      ],
+      "solution": "```bash\njuju deploy ubuntu worker-node --channel latest/stable\n```",
+      "check": "task-3"
+    }
+  ]
+}

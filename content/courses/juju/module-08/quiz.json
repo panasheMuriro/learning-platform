@@ -1,0 +1,135 @@
+{
+  "title": "Module 8 Assessment: Production Operations, Upgrades & Lifecycle",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which Juju command updates a deployed application to a newer charm revision or different channel track?",
+      "type": "single-choice",
+      "options": [
+        "juju refresh <application>",
+        "juju update <application>",
+        "juju upgrade <application>",
+        "juju pull <application>"
+      ],
+      "answer": "juju refresh <application>",
+      "explanation": "'juju refresh <application>' downloads and applies the new charm revision or channel."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which lifecycle hook is dispatched first when a charm revision is refreshed on a unit?",
+      "type": "single-choice",
+      "options": [
+        "upgrade-charm",
+        "config-changed",
+        "install",
+        "start"
+      ],
+      "answer": "upgrade-charm",
+      "explanation": "The 'upgrade-charm' hook runs immediately upon unpacking the new charm code."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do coordinated production charms perform zero-downtime upgrades across clustered units?",
+      "type": "single-choice",
+      "options": [
+        "By orchestrating rolling upgrades across peer relations and failing over primary leadership sequentially",
+        "By terminating all units simultaneously and restarting the entire cluster",
+        "By deploying duplicate controllers in round-robin fashion",
+        "By pausing all network traffic at the Linux kernel firewall"
+      ],
+      "answer": "By orchestrating rolling upgrades across peer relations and failing over primary leadership sequentially",
+      "explanation": "Production charms use peer relations and leader coordination to upgrade secondary units before switching leadership."
+    },
+    {
+      "id": "q4",
+      "prompt": "What command prepares a machine for an operating system series upgrade (e.g. Ubuntu 20.04 to 22.04)?",
+      "type": "single-choice",
+      "options": [
+        "juju upgrade-machine <id> prepare <series>",
+        "juju do-release-upgrade <id>",
+        "juju set-series <id> <series>",
+        "juju migrate-machine <id>"
+      ],
+      "answer": "juju upgrade-machine <id> prepare <series>",
+      "explanation": "'juju upgrade-machine prepare' instructs charms to prepare state before the host OS upgrade runs."
+    },
+    {
+      "id": "q5",
+      "prompt": "Which Juju command archives the controller's internal database, credentials, and state for disaster recovery?",
+      "type": "single-choice",
+      "options": [
+        "juju create-backup",
+        "juju dump-controller",
+        "juju snapshot-state",
+        "juju export-database"
+      ],
+      "answer": "juju create-backup",
+      "explanation": "'juju create-backup' creates a full disaster-recovery archive (.tar.gz) of the controller state."
+    },
+    {
+      "id": "q6",
+      "prompt": "What is the primary benefit of 'juju migrate <model> <target-controller>'?",
+      "type": "single-choice",
+      "options": [
+        "It transfers live running workloads and agent connections to a new controller without downtime",
+        "It converts machine charms to Kubernetes sidecar charms",
+        "It compresses all log files on the target machine into gzip archives",
+        "It deletes all persistent volumes attached to units"
+      ],
+      "answer": "It transfers live running workloads and agent connections to a new controller without downtime",
+      "explanation": "'juju migrate' re-homes unit and machine agents to a target controller while workloads remain running."
+    },
+    {
+      "id": "q7",
+      "prompt": "Which command exports the live topology, scale, and relations of a model into a reusable YAML bundle?",
+      "type": "single-choice",
+      "options": [
+        "juju export-bundle --filename <path>",
+        "juju dump-model --yaml",
+        "juju save-bundle <path>",
+        "juju bundle export"
+      ],
+      "answer": "juju export-bundle --filename <path>",
+      "explanation": "'juju export-bundle' generates a declarative bundle YAML file from the active model."
+    },
+    {
+      "id": "q8",
+      "prompt": "How does the Canonical Observability Stack (COS) collect metrics and system logs from machine workloads?",
+      "type": "single-choice",
+      "options": [
+        "Via the grafana-agent subordinate charm related with the cos-agent interface",
+        "By running continuous SSH scrapers from the controller",
+        "By broadcasting syslog packets over UDP port 514",
+        "Through daily cron jobs that rsync /var/log to NFS"
+      ],
+      "answer": "Via the grafana-agent subordinate charm related with the cos-agent interface",
+      "explanation": "The 'grafana-agent' subordinate charm scrapes metrics and logs locally and ships them to COS via CMR."
+    },
+    {
+      "id": "q9",
+      "prompt": "What model configuration key dynamically controls logging verbosity across Juju subsystems?",
+      "type": "single-choice",
+      "options": [
+        "logging-config",
+        "log-level",
+        "agent-verbosity",
+        "debug-flags"
+      ],
+      "answer": "logging-config",
+      "explanation": "'juju model-config logging-config=\"...\"' allows tuning root, unit, and uniter log verbosity dynamically."
+    },
+    {
+      "id": "q10",
+      "prompt": "Which command is used to retry a failed charm hook after fixing an environmental error?",
+      "type": "single-choice",
+      "options": [
+        "juju resolved <unit> --retry",
+        "juju restart-hook <unit>",
+        "juju recover-unit <unit>",
+        "juju retry-hook <unit>"
+      ],
+      "answer": "juju resolved <unit> --retry",
+      "explanation": "'juju resolved <unit> --retry' instructs Juju to re-dispatch the failed hook."
+    }
+  ]
+}

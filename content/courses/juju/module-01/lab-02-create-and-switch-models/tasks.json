@@ -1,0 +1,22 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create model 'lab-dev'",
+      "instructions": "Create a new Juju model named `lab-dev`:\n\n```bash\njuju add-model lab-dev\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Configure logging-config on 'lab-dev'",
+      "instructions": "Set the `logging-config` parameter to `<root>=INFO` on the `lab-dev` model:\n\n```bash\njuju model-config -m lab-dev logging-config=\"<root>=INFO\"\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Create 'lab-staging' and switch active model to 'lab-dev'",
+      "instructions": "Create another model named `lab-staging`, then explicitly switch your active Juju context back to `lab-dev`:\n\n```bash\njuju add-model lab-staging\njuju switch lab-dev\n```",
+      "check": "task-3"
+    }
+  ]
+}

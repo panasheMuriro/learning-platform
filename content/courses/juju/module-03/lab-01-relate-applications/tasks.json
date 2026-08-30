@@ -1,0 +1,34 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create model 'lab-relate'",
+      "instructions": "Create a new Juju model named `lab-relate`:\n\n```bash\njuju add-model lab-relate\n```\n\nVerify that the active model is `lab-relate`:\n\n```bash\njuju switch\n```",
+      "hints": [
+        "Use `juju add-model lab-relate`."
+      ],
+      "solution": "```bash\njuju add-model lab-relate\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Deploy 'ingress-proxy' and 'backend-service'",
+      "instructions": "Deploy two applications using the `haproxy` charm from channel `latest/stable`:\n\n```bash\njuju deploy haproxy ingress-proxy --channel latest/stable\njuju deploy haproxy backend-service --channel latest/stable\n```\n\nVerify that both applications appear in `juju status`:\n\n```bash\njuju status\n```",
+      "hints": [
+        "Deploy both applications with `juju deploy haproxy <alias> --channel latest/stable`."
+      ],
+      "solution": "```bash\njuju deploy haproxy ingress-proxy --channel latest/stable\njuju deploy haproxy backend-service --channel latest/stable\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Integrate 'ingress-proxy' with 'backend-service'",
+      "instructions": "Integrate the reverseproxy endpoint of `ingress-proxy` with the website endpoint of `backend-service`:\n\n```bash\njuju integrate ingress-proxy:reverseproxy backend-service:website\n```\n\nVerify that the relation is listed:\n\n```bash\njuju relations\n```",
+      "hints": [
+        "Use `juju integrate ingress-proxy:reverseproxy backend-service:website`."
+      ],
+      "solution": "```bash\njuju integrate ingress-proxy:reverseproxy backend-service:website\n```",
+      "check": "task-3"
+    }
+  ]
+}

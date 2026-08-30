@@ -1,0 +1,44 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create and Switch to Model",
+      "instructions": "Ensure the model `mod8-backup-lab` exists and is the active target.",
+      "hints": [
+        "Run `juju switch mod8-backup-lab` or `juju add-model mod8-backup-lab`."
+      ],
+      "solution": "juju switch mod8-backup-lab",
+      "check": "juju show-model mod8-backup-lab >/dev/null 2>&1"
+    },
+    {
+      "id": "task-2",
+      "title": "Create Controller Backup Archive",
+      "instructions": "Generate a disaster recovery backup archive of the controller named `backup.tar.gz` using `juju create-backup --filename backup.tar.gz`.",
+      "hints": [
+        "Run `juju create-backup --filename backup.tar.gz`."
+      ],
+      "solution": "juju create-backup --filename backup.tar.gz",
+      "check": "test -f backup.tar.gz"
+    },
+    {
+      "id": "task-3",
+      "title": "Configure Subsystem Model Logging",
+      "instructions": "Configure the model `logging-config` to enable detailed tracing on uniter workers and debug on units: `<root>=INFO;unit=DEBUG;juju.worker.uniter=TRACE`.",
+      "hints": [
+        "Run `juju model-config logging-config='<root>=INFO;unit=DEBUG;juju.worker.uniter=TRACE'`."
+      ],
+      "solution": "juju model-config logging-config='<root>=INFO;unit=DEBUG;juju.worker.uniter=TRACE'",
+      "check": "juju model-config logging-config | grep -q 'juju.worker.uniter=TRACE'"
+    },
+    {
+      "id": "task-4",
+      "title": "Verify Model Status & Log Replay",
+      "instructions": "Execute a non-blocking debug-log replay command to verify operational telemetry: `juju debug-log --replay --no-tail -n 10`.",
+      "hints": [
+        "Run `juju debug-log --replay --no-tail -n 10`."
+      ],
+      "solution": "juju debug-log --replay --no-tail -n 10",
+      "check": "juju status -m mod8-backup-lab >/dev/null 2>&1"
+    }
+  ]
+}

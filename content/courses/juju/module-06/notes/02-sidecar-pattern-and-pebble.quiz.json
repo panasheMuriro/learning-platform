@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the primary role of Pebble in a Kubernetes sidecar charm?",
+      "type": "single-choice",
+      "options": [
+        "A lightweight API-driven process manager running inside the workload container",
+        "A Kubernetes Ingress controller daemon",
+        "A distributed database storage engine",
+        "An authentication proxy for Juju agents"
+      ],
+      "answer": "A lightweight API-driven process manager running inside the workload container",
+      "explanation": "Pebble controls starting, stopping, configuring, and monitoring processes in workload containers via a local API."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which command scales a Kubernetes charm application named 'api-gateway' to 4 replicas?",
+      "type": "single-choice",
+      "options": [
+        "juju scale-application api-gateway 4",
+        "juju add-unit api-gateway -n 4",
+        "juju replicas api-gateway 4",
+        "juju resize api-gateway 4"
+      ],
+      "answer": "juju scale-application api-gateway 4",
+      "explanation": "On Kubernetes models, 'juju scale-application <app> <replicas>' adjusts the underlying Pod replica set directly."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you SSH into a specific container named 'workload' within pod 'web/0'?",
+      "type": "single-choice",
+      "options": [
+        "juju ssh web/0 --container workload",
+        "juju ssh web/0:workload",
+        "juju connect web/0 -c workload",
+        "juju enter web/0 workload"
+      ],
+      "answer": "juju ssh web/0 --container workload",
+      "explanation": "The '--container' flag targets the shell session into the requested container within the Pod."
+    }
+  ]
+}

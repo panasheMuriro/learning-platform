@@ -1,0 +1,183 @@
+{
+  "title": "Juju Hands-On Course",
+  "modules": [
+    {
+      "id": "module-01",
+      "title": "Architecture, Clouds & Models",
+      "lectures": [
+        { "id": "01-what-is-juju", "title": "What is Juju?" },
+        { "id": "02-clouds-and-controllers", "title": "Clouds & Controllers" },
+        { "id": "03-models-and-workspaces", "title": "Models & Context Switching" }
+      ],
+      "labs": [
+        { "id": "lab-01-explore-controller", "title": "Inspect Client, Clouds & Controllers" },
+        { "id": "lab-02-create-and-switch-models", "title": "Create, Configure & Switch Models" }
+      ],
+      "quiz": { "id": "module-01-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-what-is-juju", "title": "What is Juju?" },
+        { "type": "lecture", "id": "02-clouds-and-controllers", "title": "Clouds & Controllers" },
+        { "type": "lab", "id": "lab-01-explore-controller", "title": "Inspect Client, Clouds & Controllers" },
+        { "type": "lecture", "id": "03-models-and-workspaces", "title": "Models & Context Switching" },
+        { "type": "lab", "id": "lab-02-create-and-switch-models", "title": "Create, Configure & Switch Models" },
+        { "type": "quiz", "id": "module-01-quiz", "title": "Quiz" }
+      ]
+    },
+    {
+      "id": "module-02",
+      "title": "Deploying Charms & Applications",
+      "lectures": [
+        { "id": "01-charms-and-charmhub", "title": "Charms & Charmhub" },
+        { "id": "02-deploying-applications", "title": "Deploying Applications & Placement" },
+        { "id": "03-application-configuration", "title": "Application Configuration & Resources" },
+        { "id": "04-application-status-and-health", "title": "Application Status & Health" }
+      ],
+      "labs": [
+        { "id": "lab-01-deploy-charms", "title": "Deploy Charms from Charmhub" },
+        { "id": "lab-02-app-configuration", "title": "Inspect, Update & Reset Configuration" }
+      ],
+      "quiz": { "id": "module-02-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-charms-and-charmhub", "title": "Charms & Charmhub" },
+        { "type": "lecture", "id": "02-deploying-applications", "title": "Deploying Applications & Placement" },
+        { "type": "lab", "id": "lab-01-deploy-charms", "title": "Deploy Charms from Charmhub" },
+        { "type": "lecture", "id": "03-application-configuration", "title": "Application Configuration & Resources" },
+        { "type": "lab", "id": "lab-02-app-configuration", "title": "Inspect, Update & Reset Configuration" },
+        { "type": "lecture", "id": "04-application-status-and-health", "title": "Application Status & Health" },
+        { "type": "quiz", "id": "module-02-quiz", "title": "Quiz" }
+      ]
+    },
+    {
+      "id": "module-03",
+      "title": "Relations & Integration Architecture",
+      "lectures": [
+        { "id": "01-understanding-relations", "title": "Understanding Juju Relations" },
+        { "id": "02-relating-applications", "title": "Relating Applications" },
+        { "id": "03-relation-data-and-hooks", "title": "Relation Data & Event Lifecycle" }
+      ],
+      "labs": [
+        { "id": "lab-01-relate-applications", "title": "Relate & Integrate Applications" },
+        { "id": "lab-02-relation-lifecycle", "title": "Manage Relation Lifecycles" }
+      ],
+      "quiz": { "id": "module-03-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-understanding-relations", "title": "Understanding Juju Relations" },
+        { "type": "lecture", "id": "02-relating-applications", "title": "Relating Applications" },
+        { "type": "lab", "id": "lab-01-relate-applications", "title": "Relate & Integrate Applications" },
+        { "type": "lecture", "id": "03-relation-data-and-hooks", "title": "Relation Data & Event Lifecycle" },
+        { "type": "lab", "id": "lab-02-relation-lifecycle", "title": "Manage Relation Lifecycles" },
+        { "type": "quiz", "id": "module-03-quiz", "title": "Quiz" }
+      ]
+    },
+    {
+      "id": "module-04",
+      "title": "Scaling, High Availability & Machine Management",
+      "lectures": [
+        { "id": "01-scaling-applications", "title": "Scaling Applications & Units" },
+        { "id": "02-machine-management", "title": "Machine Management & Placement" },
+        { "id": "03-storage-in-juju", "title": "Storage Management & Storage Pools" }
+      ],
+      "labs": [
+        { "id": "lab-01-scale-applications", "title": "Scale Applications & Units" },
+        { "id": "lab-02-provision-machines", "title": "Machine Provisioning & Placement" }
+      ],
+      "quiz": { "id": "module-04-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-scaling-applications", "title": "Scaling Applications & Units" },
+        { "type": "lab", "id": "lab-01-scale-applications", "title": "Scale Applications & Units" },
+        { "type": "lecture", "id": "02-machine-management", "title": "Machine Management & Placement" },
+        { "type": "lab", "id": "lab-02-provision-machines", "title": "Machine Provisioning & Placement" },
+        { "type": "lecture", "id": "03-storage-in-juju", "title": "Storage Management & Storage Pools" },
+        { "type": "quiz", "id": "module-04-quiz", "title": "Quiz" }
+      ]
+    },
+    {
+      "id": "module-05",
+      "title": "Day-2 Operations: Actions, Secrets & Cross-Model Relations",
+      "lectures": [
+        { "id": "01-day2-actions-and-execution", "title": "Day-2 Operations: Actions & Remote Execution" },
+        { "id": "02-secrets-management", "title": "Secrets Management in Juju 3.x+" },
+        { "id": "03-cross-model-relations", "title": "Cross-Model Relations (CMR) & Offers" }
+      ],
+      "labs": [
+        { "id": "lab-01-managed-secrets", "title": "Managed Secrets Lifecycle" },
+        { "id": "lab-02-cross-model-offers", "title": "Cross-Model Relations & Offers" }
+      ],
+      "quiz": { "id": "module-05-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-day2-actions-and-execution", "title": "Day-2 Operations: Actions & Remote Execution" },
+        { "type": "lecture", "id": "02-secrets-management", "title": "Secrets Management in Juju 3.x+" },
+        { "type": "lab", "id": "lab-01-managed-secrets", "title": "Managed Secrets Lifecycle" },
+        { "type": "lecture", "id": "03-cross-model-relations", "title": "Cross-Model Relations (CMR) & Offers" },
+        { "type": "lab", "id": "lab-02-cross-model-offers", "title": "Cross-Model Relations & Offers" },
+        { "type": "quiz", "id": "module-05-quiz", "title": "Quiz" }
+      ]
+    },
+    {
+      "id": "module-06",
+      "title": "Kubernetes & Cloud-Native Operations",
+      "lectures": [
+        { "id": "01-k8s-and-microk8s", "title": "Juju on Kubernetes & MicroK8s" },
+        { "id": "02-sidecar-pattern-and-pebble", "title": "Sidecar Charms & Pebble" },
+        { "id": "03-k8s-storage-and-ingress", "title": "Kubernetes Storage, Ingress & Helm Deployments" }
+      ],
+      "labs": [
+        { "id": "lab-01-k8s-cloud-setup", "title": "Cloud Registration & Model Provisioning" },
+        { "id": "lab-02-pebble-and-containers", "title": "Pebble Inspection & Container Workload Simulation" }
+      ],
+      "quiz": { "id": "module-06-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-k8s-and-microk8s", "title": "Juju on Kubernetes & MicroK8s" },
+        { "type": "lab", "id": "lab-01-k8s-cloud-setup", "title": "Cloud Registration & Model Provisioning" },
+        { "type": "lecture", "id": "02-sidecar-pattern-and-pebble", "title": "Sidecar Charms & Pebble" },
+        { "type": "lab", "id": "lab-02-pebble-and-containers", "title": "Pebble Inspection & Container Workload Simulation" },
+        { "type": "lecture", "id": "03-k8s-storage-and-ingress", "title": "Kubernetes Storage, Ingress & Helm Deployments" },
+        { "type": "quiz", "id": "module-06-quiz", "title": "Quiz" }
+      ]
+    },
+    {
+      "id": "module-07",
+      "title": "Observability & Canonical Observability Stack (COS)",
+      "lectures": [
+        { "id": "01-observability-and-cos", "title": "Observability & Canonical Observability Stack (COS)" },
+        { "id": "02-advanced-logging-and-debug-hooks", "title": "Advanced Juju Logging & Debugging" },
+        { "id": "03-alerting-dashboards-and-telemetry", "title": "Alerting, Dashboards & Telemetry Pipelines" }
+      ],
+      "labs": [
+        { "id": "lab-01-cos-integration", "title": "COS Integration & Telemetry Pipeline" },
+        { "id": "lab-02-logging-and-troubleshooting", "title": "Logging & Troubleshooting Workloads" }
+      ],
+      "quiz": { "id": "module-07-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-observability-and-cos", "title": "Observability & Canonical Observability Stack (COS)" },
+        { "type": "lab", "id": "lab-01-cos-integration", "title": "COS Integration & Telemetry Pipeline" },
+        { "type": "lecture", "id": "02-advanced-logging-and-debug-hooks", "title": "Advanced Juju Logging & Debugging" },
+        { "type": "lab", "id": "lab-02-logging-and-troubleshooting", "title": "Logging & Troubleshooting Workloads" },
+        { "type": "lecture", "id": "03-alerting-dashboards-and-telemetry", "title": "Alerting, Dashboards & Telemetry Pipelines" },
+        { "type": "quiz", "id": "module-07-quiz", "title": "Quiz" }
+      ]
+    },
+    {
+      "id": "module-08",
+      "title": "Production Operations, Upgrades & Lifecycle",
+      "lectures": [
+        { "id": "01-upgrades-and-charm-evolution", "title": "Upgrades & Charm Evolution" },
+        { "id": "02-backup-restore-and-migration", "title": "Backup, Restore & Migration" },
+        { "id": "03-monitoring-telemetry-and-lifecycle", "title": "Monitoring & Telemetry" }
+      ],
+      "labs": [
+        { "id": "lab-01-charm-refresh-and-migration", "title": "Perform Live Application Refresh & Model Migration" },
+        { "id": "lab-02-backup-and-recovery", "title": "Create Controller Backup Archives & Verify Recovery" }
+      ],
+      "quiz": { "id": "module-08-quiz" },
+      "items": [
+        { "type": "lecture", "id": "01-upgrades-and-charm-evolution", "title": "Upgrades & Charm Evolution" },
+        { "type": "lab", "id": "lab-01-charm-refresh-and-migration", "title": "Perform Live Application Refresh & Model Migration" },
+        { "type": "lecture", "id": "02-backup-restore-and-migration", "title": "Backup, Restore & Migration" },
+        { "type": "lab", "id": "lab-02-backup-and-recovery", "title": "Create Controller Backup Archives & Verify Recovery" },
+        { "type": "lecture", "id": "03-monitoring-telemetry-and-lifecycle", "title": "Monitoring & Telemetry" },
+        { "type": "quiz", "id": "module-08-quiz", "title": "Quiz" }
+      ]
+    }
+  ]
+}

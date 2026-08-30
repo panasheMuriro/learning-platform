@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How do charms dynamically ship JSON visualization templates into Grafana within COS?",
+      "type": "single-choice",
+      "options": [
+        "Via the grafana-dashboard relation endpoint",
+        "By writing files to /etc/grafana/dashboards/ via SSH",
+        "Using manual HTTP POST requests to Grafana's REST API",
+        "Through DNS TXT record auto-discovery"
+      ],
+      "answer": "Via the grafana-dashboard relation endpoint",
+      "explanation": "The 'grafana-dashboard' relation transmits pre-packaged dashboard JSON files directly into Grafana."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which Juju command configuration key allows dynamically tuning uniter and agent logging verbosity?",
+      "type": "single-choice",
+      "options": [
+        "logging-config",
+        "debug-level",
+        "log-verbosity",
+        "agent-tracing"
+      ],
+      "answer": "logging-config",
+      "explanation": "'juju model-config logging-config=\"...\"' allows granular adjustment of root, unit, and uniter log levels."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which flag allows reading the last 100 historical log entries without streaming continuously?",
+      "type": "single-choice",
+      "options": [
+        "juju debug-log --replay --no-tail -n 100",
+        "juju logs --past 100",
+        "juju dump-log -n 100",
+        "juju tail-log --history 100"
+      ],
+      "answer": "juju debug-log --replay --no-tail -n 100",
+      "explanation": "'--replay --no-tail -n 100' outputs the last 100 log lines and exits without blocking."
+    }
+  ]
+}

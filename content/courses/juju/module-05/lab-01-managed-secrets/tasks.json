@@ -1,0 +1,35 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create model and deploy web-service",
+      "instructions": "Create a new model named `lab-secrets` and deploy the `ubuntu` charm with alias `web-service`:\n\n```bash\njuju add-model lab-secrets\njuju deploy ubuntu web-service --channel latest/stable\n```\n\nVerify that `web-service` exists:\n\n```bash\njuju status\n```",
+      "hints": [
+        "Create the model with `juju add-model lab-secrets`.",
+        "Deploy the application with `juju deploy ubuntu web-service --channel latest/stable`."
+      ],
+      "solution": "```bash\njuju add-model lab-secrets\njuju deploy ubuntu web-service --channel latest/stable\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Create managed secret",
+      "instructions": "Add a managed user secret named `app-token` with content `token=supersecret123`:\n\n```bash\njuju add-secret app-token token=supersecret123\n```\n\nVerify that the secret is listed:\n\n```bash\njuju list-secrets\n```",
+      "hints": [
+        "Syntax: `juju add-secret <name> <key>=<value>`."
+      ],
+      "solution": "```bash\njuju add-secret app-token token=supersecret123\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Grant secret to web-service",
+      "instructions": "Grant read access on secret `app-token` to application `web-service`:\n\n```bash\njuju grant-secret app-token web-service\n```\n\nVerify secret access permissions:\n\n```bash\njuju show-secret app-token --reveal\n```",
+      "hints": [
+        "Syntax: `juju grant-secret <secret-name> <application>`."
+      ],
+      "solution": "```bash\njuju grant-secret app-token web-service\n```",
+      "check": "task-3"
+    }
+  ]
+}

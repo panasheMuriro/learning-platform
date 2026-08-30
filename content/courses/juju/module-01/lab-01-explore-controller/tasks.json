@@ -1,0 +1,36 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Register a custom client cloud definition",
+      "instructions": "Create a cloud definition file named `custom-cloud.yaml` in your workspace directory with the following contents:\n\n```yaml\nclouds:\n  custom-manual:\n    type: manual\n    endpoint: 127.0.0.1\n    regions:\n      default: {}\n```\n\nThen register the cloud with your local Juju client:\n\n```bash\njuju add-cloud custom-manual custom-cloud.yaml --client\n```\n\nVerify that the cloud is registered:\n\n```bash\njuju show-cloud custom-manual --client\n```",
+      "hints": [
+        "Use `juju add-cloud <cloud-name> <definition-file> --client` to register a local client cloud.",
+        "Check that `custom-cloud.yaml` contains `type: manual` and region `default`."
+      ],
+      "solution": "```bash\ncat << 'EOF' > custom-cloud.yaml\nclouds:\n  custom-manual:\n    type: manual\n    endpoint: 127.0.0.1\n    regions:\n      default: {}\nEOF\njuju add-cloud custom-manual custom-cloud.yaml --client\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Configure update status interval on the controller model",
+      "instructions": "Inspect and update the `update-status-hook-interval` model configuration on the `controller` model to `10m`:\n\n```bash\njuju model-config -m controller update-status-hook-interval=10m\n```\n\nVerify that the configuration is active:\n\n```bash\njuju model-config -m controller update-status-hook-interval\n```",
+      "hints": [
+        "The model is named `controller` (or `admin/controller`).",
+        "Set key=value with `juju model-config -m controller update-status-hook-interval=10m`."
+      ],
+      "solution": "```bash\njuju model-config -m controller update-status-hook-interval=10m\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Verify active controller status",
+      "instructions": "Inspect your active Juju controller and ensure it is reachable:\n\n```bash\njuju controllers\njuju show-controller\n```",
+      "hints": [
+        "Run `juju controllers` to view registered controllers."
+      ],
+      "solution": "```bash\njuju show-controller\n```",
+      "check": "task-3"
+    }
+  ]
+}

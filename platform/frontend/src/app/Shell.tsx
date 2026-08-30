@@ -13,7 +13,7 @@ import type {
   Progress,
 } from "@/api/content";
 import { Icon } from "@/components/Icon";
-import { ApplicationLayout, CheckboxInput } from "@canonical/react-components";
+import { ApplicationLayout } from "@canonical/react-components";
 import { useQueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
@@ -308,23 +308,35 @@ function NavItem({
   onToggle: () => void;
 }) {
   return (
-    <li>
+    <li
+      className={`course-sidebar__item-row ${
+        active ? "course-sidebar__item-row--active" : ""
+      }`}
+    >
       <Link
         to={href}
-        className={`course-sidebar__item ${
-          active ? "course-sidebar__item--active" : ""
-        }`}
+        className="course-sidebar__item-link"
+        title={label}
       >
         <span className="course-sidebar__item-icon">{icon}</span>
         <span className="course-sidebar__item-label">{label}</span>
-        <CheckboxInput
-          id={`${href}--toggle`}
-          className="course-sidebar__check"
-          label={done ? "Mark as incomplete" : "Mark as complete"}
-          checked={done}
-          onChange={onToggle}
-        />
       </Link>
+      <label
+        className="course-sidebar__item-check"
+        title={done ? "Mark as incomplete" : "Mark as complete"}
+      >
+        <input
+          type="checkbox"
+          className="course-sidebar__checkbox-input"
+          checked={done}
+          onChange={(e) => {
+            e.stopPropagation();
+            onToggle();
+          }}
+          aria-label={done ? "Mark as incomplete" : "Mark as complete"}
+        />
+        <span className="course-sidebar__checkbox-custom" />
+      </label>
     </li>
   );
 }

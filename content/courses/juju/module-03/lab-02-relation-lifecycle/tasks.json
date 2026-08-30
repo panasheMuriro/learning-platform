@@ -1,0 +1,34 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create model 'lab-unrelate' and deploy applications",
+      "instructions": "Create model `lab-unrelate` and deploy two `haproxy` instances named `gateway` and `api-service`:\n\n```bash\njuju add-model lab-unrelate\njuju deploy haproxy gateway --channel latest/stable\njuju deploy haproxy api-service --channel latest/stable\n```\n\nVerify both applications exist:\n\n```bash\njuju status\n```",
+      "hints": [
+        "Run `juju add-model lab-unrelate` then deploy both applications."
+      ],
+      "solution": "```bash\njuju add-model lab-unrelate\njuju deploy haproxy gateway --channel latest/stable\njuju deploy haproxy api-service --channel latest/stable\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Integrate 'gateway' and 'api-service'",
+      "instructions": "Integrate `gateway:reverseproxy` and `api-service:website`:\n\n```bash\njuju integrate gateway:reverseproxy api-service:website\n```\n\nVerify integration in `juju relations`:\n\n```bash\njuju relations\n```",
+      "hints": [
+        "Run `juju integrate gateway:reverseproxy api-service:website`."
+      ],
+      "solution": "```bash\njuju integrate gateway:reverseproxy api-service:website\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Break relation between 'gateway' and 'api-service'",
+      "instructions": "Sever the integration between `gateway` and `api-service`:\n\n```bash\njuju remove-relation gateway:reverseproxy api-service:website\n```\n\nVerify that the integration is removed:\n\n```bash\njuju relations\n```",
+      "hints": [
+        "Use `juju remove-relation gateway:reverseproxy api-service:website`."
+      ],
+      "solution": "```bash\njuju remove-relation gateway:reverseproxy api-service:website\n```",
+      "check": "task-3"
+    }
+  ]
+}

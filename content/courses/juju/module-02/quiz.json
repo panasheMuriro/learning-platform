@@ -1,0 +1,138 @@
+{
+  "id": "module-02-quiz",
+  "title": "Module 02 Quiz: Deploying Charms & Applications",
+  "description": "Test your mastery of Charmhub, application placement, configuration management, and workload status in Juju.",
+  "passingScore": 80,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the primary role of a Juju charm?",
+      "type": "single-choice",
+      "options": [
+        "To package an application alongside all automated operational knowledge and lifecycle logic",
+        "To compile binary source code into kernel modules",
+        "To manage hardware BIOS and firmware updates",
+        "To replace standard Linux systemd services"
+      ],
+      "answer": "To package an application alongside all automated operational knowledge and lifecycle logic",
+      "explanation": "Charms encapsulate domain operational expertise, configuration, relations, and lifecycle management."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which component is the central public repository for Juju charms and bundles?",
+      "type": "single-choice",
+      "options": [
+        "Charmhub",
+        "Snapcraft",
+        "Launchpad PPA",
+        "Docker Hub"
+      ],
+      "answer": "Charmhub",
+      "explanation": "Charmhub (charmhub.io) is Canonical's official open repository for published charms."
+    },
+    {
+      "id": "q3",
+      "prompt": "How do you deploy a charm named 'postgresql' and name the application instance 'primary-db'?",
+      "type": "single-choice",
+      "options": [
+        "juju deploy postgresql primary-db",
+        "juju deploy --as primary-db postgresql",
+        "juju install postgresql --name primary-db",
+        "juju create postgresql as primary-db"
+      ],
+      "answer": "juju deploy postgresql primary-db",
+      "explanation": "The second positional argument sets the application alias for the deployed charm."
+    },
+    {
+      "id": "q4",
+      "prompt": "Which command-line argument directs Juju to place an application's unit onto an existing machine ID 2?",
+      "type": "single-choice",
+      "options": [
+        "--to 2",
+        "--machine 2",
+        "--target 2",
+        "--host 2"
+      ],
+      "answer": "--to 2",
+      "explanation": "The '--to' flag explicitly assigns unit placement to an existing machine ID or container."
+    },
+    {
+      "id": "q5",
+      "prompt": "What command allows you to view the active configuration options for an application named 'app-server'?",
+      "type": "single-choice",
+      "options": [
+        "juju config app-server",
+        "juju inspect app-server",
+        "juju show app-server",
+        "juju get-config app-server"
+      ],
+      "answer": "juju config app-server",
+      "explanation": "'juju config <app>' lists all configurable parameters, their types, defaults, and current values."
+    },
+    {
+      "id": "q6",
+      "prompt": "How do you reset a configuration option named 'port' on application 'web' back to its upstream charm default?",
+      "type": "single-choice",
+      "options": [
+        "juju config web --reset port",
+        "juju config web port=default",
+        "juju reset web port",
+        "juju unset web:port"
+      ],
+      "answer": "juju config web --reset port",
+      "explanation": "'juju config <app> --reset <key>' clears user overrides and restores the default value."
+    },
+    {
+      "id": "q7",
+      "prompt": "In 'juju status', what does a workload status of 'active' indicate?",
+      "type": "single-choice",
+      "options": [
+        "The charm service is healthy, correctly configured, and running normally",
+        "The machine is actively compiling software",
+        "The unit agent is actively executing a hook",
+        "The application is waiting for a database relation"
+      ],
+      "answer": "The charm service is healthy, correctly configured, and running normally",
+      "explanation": "Workload 'active' means the service is fully installed, configured, and operating healthy."
+    },
+    {
+      "id": "q8",
+      "prompt": "What does a workload status of 'blocked' mean?",
+      "type": "single-choice",
+      "options": [
+        "The charm cannot proceed without manual operator intervention (e.g., missing credentials or configuration)",
+        "The network firewall blocked communication with the controller",
+        "The machine was stopped in the cloud provider",
+        "The charm is compiling and temporary locked"
+      ],
+      "answer": "The charm cannot proceed without manual operator intervention (e.g., missing credentials or configuration)",
+      "explanation": "'blocked' is set by the charm to indicate that human operator configuration or input is required."
+    },
+    {
+      "id": "q9",
+      "prompt": "Which channel risk level represents production-ready software that has undergone full validation?",
+      "type": "single-choice",
+      "options": [
+        "stable",
+        "candidate",
+        "beta",
+        "edge"
+      ],
+      "answer": "stable",
+      "explanation": "The 'stable' risk level represents production-ready releases."
+    },
+    {
+      "id": "q10",
+      "prompt": "How can you watch 'juju status' in real-time with an automatic 2-second refresh?",
+      "type": "single-choice",
+      "options": [
+        "juju status --watch 2s",
+        "juju status -f",
+        "juju status --live",
+        "juju status --interval 2"
+      ],
+      "answer": "juju status --watch 2s",
+      "explanation": "'juju status --watch <interval>' provides interactive live updates."
+    }
+  ]
+}

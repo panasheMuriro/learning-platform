@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What does a Juju Model correspond to in a Kubernetes-backed cloud?",
+      "type": "single-choice",
+      "options": [
+        "A Kubernetes Namespace",
+        "A Kubernetes Deployment",
+        "A Kubernetes Ingress Controller",
+        "A Kubernetes Custom Resource Definition"
+      ],
+      "answer": "A Kubernetes Namespace",
+      "explanation": "When Juju provisions a model on Kubernetes, it creates and manages a dedicated Kubernetes namespace."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which command registers a Kubernetes cluster into Juju using a kubeconfig context?",
+      "type": "single-choice",
+      "options": [
+        "juju add-k8s <cloud-name>",
+        "juju register-k8s <cluster>",
+        "juju connect-k8s <cloud-name>",
+        "juju create-k8s <cluster>"
+      ],
+      "answer": "juju add-k8s <cloud-name>",
+      "explanation": "'juju add-k8s' adds a Kubernetes endpoint into Juju's known cloud registry."
+    },
+    {
+      "id": "q3",
+      "prompt": "In a Juju Kubernetes model, what represents an individual deployed unit?",
+      "type": "single-choice",
+      "options": [
+        "A Pod with a Juju sidecar container",
+        "A virtual machine disk image",
+        "An isolated bare metal host",
+        "A systemd service unit"
+      ],
+      "answer": "A Pod with a Juju sidecar container",
+      "explanation": "Each unit in a K8s model runs as a Kubernetes Pod containing the workload container and the charm operator sidecar."
+    }
+  ]
+}

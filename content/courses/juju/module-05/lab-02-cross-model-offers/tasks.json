@@ -1,0 +1,34 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create provider and consumer models",
+      "instructions": "Create both the provider and consumer models:\n\n```bash\njuju add-model lab-cmr-provider\njuju add-model lab-cmr-consumer\n```\n\nVerify that both models are listed:\n\n```bash\njuju models\n```",
+      "hints": [
+        "Create each model using `juju add-model <name>`."
+      ],
+      "solution": "```bash\njuju add-model lab-cmr-provider\njuju add-model lab-cmr-consumer\n```",
+      "check": "task-1"
+    },
+    {
+      "id": "task-2",
+      "title": "Deploy provider application and create offer",
+      "instructions": "Deploy `haproxy` named `provider-app` into `lab-cmr-provider` and offer its `reverseproxy` endpoint:\n\n```bash\njuju deploy haproxy provider-app --channel latest/stable -m lab-cmr-provider\njuju offer -m lab-cmr-provider provider-app:reverseproxy proxy-offer\n```\n\nVerify that the offer is listed:\n\n```bash\njuju offers\n```",
+      "hints": [
+        "Deploy to model with `-m lab-cmr-provider` and offer with `juju offer -m lab-cmr-provider provider-app:reverseproxy proxy-offer`."
+      ],
+      "solution": "```bash\njuju deploy haproxy provider-app --channel latest/stable -m lab-cmr-provider\njuju offer -m lab-cmr-provider provider-app:reverseproxy proxy-offer\n```",
+      "check": "task-2"
+    },
+    {
+      "id": "task-3",
+      "title": "Deploy consumer and integrate cross-model offer",
+      "instructions": "Deploy `haproxy` named `consumer-app` into `lab-cmr-consumer` and integrate with the offer:\n\n```bash\njuju deploy haproxy consumer-app --channel latest/stable -m lab-cmr-consumer\njuju integrate -m lab-cmr-consumer consumer-app:website admin/lab-cmr-provider.proxy-offer\n```\n\nVerify the cross-model integration:\n\n```bash\njuju status -m lab-cmr-consumer\n```",
+      "hints": [
+        "Use `juju integrate -m lab-cmr-consumer consumer-app:website admin/lab-cmr-provider.proxy-offer`."
+      ],
+      "solution": "```bash\njuju deploy haproxy consumer-app --channel latest/stable -m lab-cmr-consumer\njuju integrate -m lab-cmr-consumer consumer-app:website admin/lab-cmr-provider.proxy-offer\n```",
+      "check": "task-3"
+    }
+  ]
+}

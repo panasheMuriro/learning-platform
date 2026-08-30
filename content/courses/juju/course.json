@@ -1,0 +1,11 @@
+{
+  "id": "juju",
+  "slug": "juju",
+  "title": "Juju Hands-On Course",
+  "summary": "Learn Juju — the universal operator lifecycle manager for deploying, integrating, and operating applications on any cloud. Hands-on labs with an in-browser terminal and auto-grading.",
+  "icon": "containers",
+  "version": "1.0.0",
+  "requiredTools": ["juju"],
+  "workspace": "terminal",
+  "license": "CC-BY-SA-4.0"
+}

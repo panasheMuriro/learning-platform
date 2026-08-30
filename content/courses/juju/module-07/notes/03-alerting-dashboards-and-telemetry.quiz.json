@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Where do modern charms package their Prometheus alert rules for automatic COS integration?",
+      "type": "single-choice",
+      "options": [
+        "Inside the charm directory under src/prometheus_alert_rules/ and transferred via relation data",
+        "Uploaded via FTP directly into /etc/prometheus/rules.d/ on the controller machine",
+        "Configured manually by editing the Prometheus charm source code on GitHub",
+        "Through systemd timers executed by the uniter worker"
+      ],
+      "answer": "Inside the charm directory under src/prometheus_alert_rules/ and transferred via relation data",
+      "explanation": "Charms store alert rule definitions under src/prometheus_alert_rules/ and transmit them dynamically over Juju relation endpoints."
+    },
+    {
+      "id": "q2",
+      "prompt": "What is the recommended architecture for monitoring multiple Juju workload models with COS?",
+      "type": "single-choice",
+      "options": [
+        "Deploy COS in a central model and connect workload models using Cross-Model Relations (CMR)",
+        "Deploy a separate full COS stack inside every single workload model",
+        "Run Prometheus directly inside the Juju controller database container",
+        "Use cron jobs to rsync logs to a central NFS mount"
+      ],
+      "answer": "Deploy COS in a central model and connect workload models using Cross-Model Relations (CMR)",
+      "explanation": "Hosting COS in a dedicated model (often on K8s) and consuming metrics/logs across workload models via Cross-Model Relations is the canonical architecture."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which component in COS provides distributed request tracing across microservices?",
+      "type": "single-choice",
+      "options": [
+        "Tempo",
+        "Loki",
+        "Prometheus",
+        "Alertmanager"
+      ],
+      "answer": "Tempo",
+      "explanation": "Grafana Tempo provides distributed tracing for OTLP/OpenTelemetry traces."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How do you add 2 new units to a deployed application named 'web' on a machine cloud?",
+      "type": "single-choice",
+      "options": [
+        "juju add-unit web -n 2",
+        "juju scale web +2",
+        "juju clone-unit web --count 2",
+        "juju units web add 2"
+      ],
+      "answer": "juju add-unit web -n 2",
+      "explanation": "'juju add-unit <app> -n <count>' scales out the application by adding new units."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which command removes a specific unit named 'worker/1' from the model?",
+      "type": "single-choice",
+      "options": [
+        "juju remove-unit worker/1",
+        "juju delete-unit worker/1",
+        "juju kill-unit worker/1",
+        "juju scale worker -1"
+      ],
+      "answer": "juju remove-unit worker/1",
+      "explanation": "'juju remove-unit <unit-name>' removes the targeted unit and cleans up its machine."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which command is used for direct scale-to-count operations on Kubernetes container models?",
+      "type": "single-choice",
+      "options": [
+        "juju scale-application <app> <count>",
+        "juju add-pod <app> <count>",
+        "juju k8s-scale <app> <count>",
+        "juju resize <app> <count>"
+      ],
+      "answer": "juju scale-application <app> <count>",
+      "explanation": "'juju scale-application' is used on Kubernetes models to set an exact replica count."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is the primary role of a Charm in Juju?",
+      "type": "single-choice",
+      "options": [
+        "A software package that encapsulates application operational logic and Day-2 operations",
+        "A low-level hypervisor configuration script",
+        "A hardware driver for network switches",
+        "A replacement for DNS servers"
+      ],
+      "answer": "A software package that encapsulates application operational logic and Day-2 operations",
+      "explanation": "A charm is an operator package containing code that automates provisioning, configuring, integrating, and maintaining an application."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which Juju component maintains state and orchestrates operations in the target cloud?",
+      "type": "single-choice",
+      "options": [
+        "Juju Controller",
+        "Juju Client",
+        "Charmcraft CLI",
+        "Snap Daemon"
+      ],
+      "answer": "Juju Controller",
+      "explanation": "The Juju controller manages the state database, provisions cloud resources, and communicates with unit agents."
+    },
+    {
+      "id": "q3",
+      "prompt": "What is an individual runtime process/replica of an application called in Juju?",
+      "type": "single-choice",
+      "options": [
+        "Unit",
+        "Pod",
+        "Model",
+        "Machine"
+      ],
+      "answer": "Unit",
+      "explanation": "An application is made up of one or more units (e.g. postgresql/0, postgresql/1) executing the charm's code."
+    },
+    {
+      "id": "q4",
+      "prompt": "Select all cloud substrates that Juju can deploy onto:",
+      "type": "multi-choice",
+      "options": [
+        "LXD system containers",
+        "Kubernetes (K8s/MicroK8s)",
+        "Public clouds (AWS, Azure, GCP)",
+        "Bare metal (MAAS)"
+      ],
+      "answer": [
+        "LXD system containers",
+        "Kubernetes (K8s/MicroK8s)",
+        "Public clouds (AWS, Azure, GCP)",
+        "Bare metal (MAAS)"
+      ],
+      "explanation": "Juju is cloud-agnostic and supports LXD, Kubernetes, public clouds, and bare metal through MAAS."
+    }
+  ]
+}

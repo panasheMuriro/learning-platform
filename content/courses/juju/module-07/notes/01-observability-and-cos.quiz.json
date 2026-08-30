@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What core components comprise the Canonical Observability Stack (COS)?",
+      "type": "single-choice",
+      "options": [
+        "Prometheus, Loki, Grafana, Alertmanager, and Tempo",
+        "ELK Stack, Nagios, and Zabbix",
+        "Datadog Agent, Splunk forwarder, and CloudWatch",
+        "Syslog-ng, Cacti, and Graphite"
+      ],
+      "answer": "Prometheus, Loki, Grafana, Alertmanager, and Tempo",
+      "explanation": "COS integrates Prometheus (metrics), Loki (logs), Grafana (dashboards), Alertmanager (alerts), and Tempo (traces) using charms."
+    },
+    {
+      "id": "q2",
+      "prompt": "How do machine charms (on bare metal / LXD / VMs) typically forward metrics and system logs to COS?",
+      "type": "single-choice",
+      "options": [
+        "Using the grafana-agent subordinate charm via the cos-agent relation",
+        "By manually copying log files over SCP using cron jobs",
+        "By opening port 9090 on the machine firewall for external scraping",
+        "By recompiling the Juju uniter agent with custom C++ extensions"
+      ],
+      "answer": "Using the grafana-agent subordinate charm via the cos-agent relation",
+      "explanation": "grafana-agent runs as a subordinate charm on the principal machine, scraping local endpoints and forwarding telemetry to COS."
+    },
+    {
+      "id": "q3",
+      "prompt": "Which relation interface is used to stream application logs to Loki in COS?",
+      "type": "single-choice",
+      "options": [
+        "logging or log-proxy",
+        "syslog-out",
+        "fluentd-stream",
+        "stdout-forwarder"
+      ],
+      "answer": "logging or log-proxy",
+      "explanation": "Charms use the logging/log-proxy relation endpoints to forward log streams directly to Loki."
+    }
+  ]
+}

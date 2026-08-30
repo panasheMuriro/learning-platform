@@ -1,0 +1,54 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Create and Switch to Lab Model",
+      "instructions": "Ensure you are using the model `mod7-cos-lab`.",
+      "hints": [
+        "Run `juju switch mod7-cos-lab` or `juju add-model mod7-cos-lab` if not present."
+      ],
+      "solution": "juju switch mod7-cos-lab",
+      "check": "juju show-model mod7-cos-lab >/dev/null 2>&1"
+    },
+    {
+      "id": "task-2",
+      "title": "Configure Subsystem Model Logging",
+      "instructions": "Configure the model `logging-config` to enable detailed tracing on uniter workers and debug on units: `<root>=INFO;unit=DEBUG;juju.worker.uniter=TRACE`.",
+      "hints": [
+        "Run `juju model-config logging-config='<root>=INFO;unit=DEBUG;juju.worker.uniter=TRACE'`."
+      ],
+      "solution": "juju model-config logging-config='<root>=INFO;unit=DEBUG;juju.worker.uniter=TRACE'",
+      "check": "juju model-config logging-config | grep -q 'juju.worker.uniter=TRACE'"
+    },
+    {
+      "id": "task-3",
+      "title": "Deploy Workload Application",
+      "instructions": "Deploy the `ubuntu` charm with application name `web-app` into `mod7-cos-lab`.",
+      "hints": [
+        "Run `juju deploy ubuntu web-app`."
+      ],
+      "solution": "juju deploy ubuntu web-app",
+      "check": "juju status --model mod7-cos-lab --format yaml | grep -q 'web-app:'"
+    },
+    {
+      "id": "task-4",
+      "title": "Deploy Grafana Agent Subordinate",
+      "instructions": "Deploy the `grafana-agent` charm into the `mod7-cos-lab` model.",
+      "hints": [
+        "Run `juju deploy grafana-agent`."
+      ],
+      "solution": "juju deploy grafana-agent",
+      "check": "juju status --model mod7-cos-lab --format yaml | grep -q 'grafana-agent:'"
+    },
+    {
+      "id": "task-5",
+      "title": "Integrate Workload with Grafana Agent",
+      "instructions": "Establish a relation between `web-app` and `grafana-agent` via the `cos-agent` interface endpoint.",
+      "hints": [
+        "Run `juju integrate web-app:cos-agent grafana-agent:cos-agent` or `juju integrate web-app grafana-agent`."
+      ],
+      "solution": "juju integrate web-app:cos-agent grafana-agent:cos-agent",
+      "check": "juju status --model mod7-cos-lab --format json | jq -e '.relations // {} | to_entries[] | select(.value.endpoints[]?.name == \"cos-agent\")' >/dev/null 2>&1"
+    }
+  ]
+}

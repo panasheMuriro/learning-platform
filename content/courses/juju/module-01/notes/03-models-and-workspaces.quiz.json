@@ -1,0 +1,43 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "How do you switch the active Juju context to a model named 'staging'?",
+      "type": "single-choice",
+      "options": [
+        "juju switch staging",
+        "juju set-model staging",
+        "juju context --use staging",
+        "juju cd staging"
+      ],
+      "answer": "juju switch staging",
+      "explanation": "'juju switch <model>' changes the active context for subsequent commands."
+    },
+    {
+      "id": "q2",
+      "prompt": "Which command configures model-level parameters such as update status intervals or logging?",
+      "type": "single-choice",
+      "options": [
+        "juju model-config",
+        "juju config model",
+        "juju set-env",
+        "juju controller-config"
+      ],
+      "answer": "juju model-config",
+      "explanation": "'juju model-config' is used to view, set, and reset model configuration keys."
+    },
+    {
+      "id": "q3",
+      "prompt": "When creating a new model with 'juju add-model <name>', what happens to your client's active context?",
+      "type": "single-choice",
+      "options": [
+        "Juju automatically switches the active focus to the newly created model",
+        "It stays on the controller model and requires an explicit switch",
+        "The previous model is paused",
+        "The client disconnects from the controller"
+      ],
+      "answer": "Juju automatically switches the active focus to the newly created model",
+      "explanation": "Adding a model immediately sets it as the current active model context for the client."
+    }
+  ]
+}
