@@ -1,11 +1,11 @@
 # Contributing
 
-Thanks for your interest in contributing to the Juju + Terraform course!
+Thanks for your interest in contributing to the Juju Hands-On Course!
 
 ## Ways to contribute
 
 - **Content** — lecture notes, quiz questions, hands-on labs (most valuable!)
-- **Platform** — frontend (React/Pragma) or backend (Go) improvements
+- **Platform** — frontend (React/Vanilla Framework) or backend (Go) improvements
 - **Workshop SDK** — environment packaging, tool versions, hooks
 - **Docs** — learner setup guides, lab authoring guides
 - **Issues** — bug reports, content corrections, lab ideas

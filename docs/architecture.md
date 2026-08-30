@@ -2,34 +2,34 @@
 
 ## Overview
 
-The Juju + Terraform course is a **fully-local, in-browser** learning platform.
+The Juju Hands-On Course is a **fully-local, in-browser** learning platform.
 Everything runs on the learner's machine — no cloud, no remote hosting. The
-`juju-terraform-course` Workshop SDK bundles the frontend, backend, and lab
-environment as services that auto-start inside a Workshop container.
+Workshop SDK bundles the frontend, backend, and lab environment as services
+that auto-start inside a Workshop container.
 
 ```
 Learner machine (Ubuntu + LXD + Workshop snap)
   workshop launch -> LXD system container (the Workshop)
     |
-    |-- Service: Frontend (React SPA, Canonical Pragma)
-    |     Course catalog / module nav (SideNavigation, Timeline)
-    |     Lecture viewer (MarkdownEditor in preview mode)
-    |     Quiz component (form primitives + lifecycle badges)
-    |     Lab workspace: FileTree | Monaco editor | xterm.js terminal
-    |     Progress dashboard (Timeline + lifecycle badges)
+    |-- Service: Frontend (React SPA, Canonical Vanilla Framework + react-components)
+    |     Course catalog / module navigation (ApplicationLayout, SideNavigation)
+    |     Lecture viewer (Markdown rendering)
+    |     Quiz component (form primitives, instant grading, explanations)
+    |     Lab workspace: Instructions panel + in-browser terminal + Task checkers
+    |     Progress dashboard
     |     Served at localhost:<frontend-port>
     |
     |-- Service: Backend (Go API) - no auth
-    |     Content service (serves notes/quiz/lab metadata + Markdown)
+    |     Content service (serves notes/quiz/lab metadata + Markdown from content/)
     |     Quiz scoring service
     |     File API (list/read/write files in lab working directory)
     |     PTY service (spawns real shell via creack/pty, streams over WebSocket)
-    |     Grading endpoint (runs check.sh, returns pass/fail + tasks)
-    |     Progress tracker (local SQLite, single local profile)
+    |     Grading endpoint (runs check.sh / JSON checkers, returns task status)
+    |     Progress tracker (local database, persistent profile)
     |     Served at localhost:<backend-port>
     |
     |-- Lab env (inside the SAME Workshop container)
-    |     LXD (native) + Juju snap + Terraform
+    |     LXD (native) + Juju snap
     |     /home/student/<lab>/  starter files + check.sh
     |     Backend PTY service execs a shell directly here
     |
@@ -42,26 +42,22 @@ Learner machine (Ubuntu + LXD + Workshop snap)
 The key insight: since the backend and the learner's shell/files live in the
 **same container**, the backend can spawn a real PTY directly (via `creack/pty`)
 — no SSH, no bridging, no multi-tenant complexity. That complexity only appears
-in a hosted/remote scenario (deferred to v2).
+in a hosted/remote scenario.
 
-This means the learner gets the full KodeKloud-style experience — terminal +
-editor + file tree + auto-grading — all in the browser, without leaving it.
+This means the learner gets the full interactive experience — terminal +
+instructions + task verification + auto-grading — all in the browser, without leaving it.
 
 ## Component details
 
-### Frontend (Canonical Pragma + React)
+### Frontend (Canonical Design System + React)
 
-| Component | Pragma package | Purpose |
-|-----------|---------------|---------|
-| ApplicationLayout, SideNavigation | `@canonical/react-ds-app` | App shell + course navigation |
-| MarkdownEditor (preview mode) | `@canonical/react-ds-app-launchpad` | Lecture + lab instruction rendering |
-| FileTree | `@canonical/react-ds-app-launchpad` | Lab file navigation |
-| Button, Card, Accordion, Timeline | `@canonical/react-ds-global` | UI primitives, progress display |
-| Input, Select, Checkbox | `@canonical/react-ds-global-form` | Quiz form inputs |
-
-**Custom components** (Pragma gaps):
-- **xterm.js** — in-browser terminal, connected to backend PTY via WebSocket
-- **Monaco** (`@monaco-editor/react`) — code editor for `.tf` files
+| Component | Package | Purpose |
+|-----------|---------|---------|
+| ApplicationLayout, SideNavigation | `@canonical/react-components` | App shell + collapsible course navigation |
+| Markdown viewer | `react-markdown` | Lecture + lab instruction rendering |
+| Button, Card, Accordion | `@canonical/react-components` | UI primitives, progress display |
+| Input, CheckboxInput, RadioInput | `@canonical/react-components` | Quiz form inputs |
+| xterm.js | `xterm` + `xterm-addon-fit` | In-browser terminal, connected to backend PTY via WebSocket |
 
 ### Backend (Go)
 
@@ -71,53 +67,44 @@ editor + file tree + auto-grading — all in the browser, without leaving it.
 | `internal/quiz` | Evaluates quiz answers, records scores |
 | `internal/files` | File API (list/read/write) with path traversal protection |
 | `internal/pty` | Spawns PTY shell, streams over WebSocket to xterm.js |
-| `internal/grade` | Runs `check.sh`, parses JSON result, records progress |
-| `internal/progress` | SQLite store for quiz/lab/lecture completion |
+| `internal/grade` | Runs `check.sh` / JSON checkers, parses JSON result, records progress |
+| `internal/progress` | Progress store for quiz/lab/lecture completion |
 
 ### Workshop SDK
 
-The `juju-terraform-course` SDK (via SDKcraft) bundles:
+The Workshop environment bundles:
 - Juju snap (`--classic`)
-- Terraform (>= 1.6)
 - LXD (pre-initialized with `lxdbr0`)
 - Frontend + backend binaries (started as systemd services)
-- Course content (seeded from `content/`)
+- Course content (seeded from `content/courses/juju/`)
 
 ### Lab environment
 
 Each lab runs inside the Workshop container:
 - LXD provides the Juju cloud (native, not nested-in-Docker)
-- Learner bootstraps a Juju controller on `localhost` (LXD)
-- Learner writes HCL, runs `terraform init/plan/apply` in the in-browser terminal
-- `check.sh` runs real `terraform`/`juju` commands and emits JSON results
+- Learner bootstraps or accesses a Juju controller on `localhost` (LXD)
+- Learner runs actual `juju` commands in the in-browser terminal
+- Task checkers run real `juju` commands and emit structured verification results
 
 ## Data flow
 
 ### Lecture viewing
 ```
-Browser -> GET /api/modules/{mod}/lectures/{lec} -> Backend reads content/{mod}/notes/{lec}.md -> returns JSON {markdown} -> React renders with react-markdown
+Browser -> GET /api/courses/{courseId}/modules/{mod}/lectures/{lec} -> Backend reads content/courses/{courseId}/{mod}/lectures/{lec}.md -> returns JSON {markdown} -> React renders with react-markdown
 ```
 
 ### Quiz
 ```
-Browser -> GET /api/modules/{mod}/quiz -> Backend reads content/{mod}/quiz.json -> returns questions
-Browser -> POST /api/modules/{mod}/quiz/submit {answers} -> Backend scores -> records in SQLite -> returns {score, passed}
+Browser -> GET /api/courses/{courseId}/modules/{mod}/quiz -> Backend reads content/courses/{courseId}/{mod}/quiz.json -> returns questions
+Browser -> POST /api/courses/{courseId}/modules/{mod}/quiz/submit {answers} -> Backend scores -> records progress -> returns {score, passed}
 ```
 
 ### Lab (in-browser workspace)
 ```
-Browser -> GET /api/modules/{mod}/labs/{lab} -> Backend reads content/{mod}/{lab}/lab.md -> returns instructions
-Browser FileTree -> GET /api/files?path=... -> Backend lists directory -> returns FileEntry[]
-Browser Monaco -> GET /api/files/content?path=... -> Backend reads file -> returns text
-Browser Monaco -> PUT /api/files/content?path=... -> Backend writes file
+Browser -> GET /api/courses/{courseId}/modules/{mod}/labs/{lab} -> Backend reads content/courses/{courseId}/{mod}/{lab}/guide.md + tasks.json
 Browser xterm.js -> WS /ws/terminal -> Backend spawns PTY -> streams shell I/O
-Browser Check button -> POST /api/modules/{mod}/labs/{lab}/check -> Backend runs check.sh -> parses JSON -> records progress -> returns GradeResult
+Browser Check button -> POST /api/courses/{courseId}/modules/{mod}/labs/{lab}/check -> Backend executes checker -> returns TaskResult[]
 ```
-
-## v2 evolution (deferred)
-
-v2 adds hosted, multi-tenant labs:
-- Lab orchestrator (spawn/reset/destroy ephemeral containers per remote user)
 - Web terminal changes from local-PTY to SSH/attach-to-remote-container
 - Lab host tier, concurrency/isolation management
 - Cloud hosting, auth/user accounts

@@ -53,13 +53,13 @@ workshop --version
 
 ```bash
 # Clone the course repository (or use the published SDK)
-git clone https://github.com/juju-tf-course/juju-tf-course.git
-cd juju-tf-course
+git clone https://github.com/panasheMuriro/learning-platform.git
+cd learning-platform
 
 # Launch the Workshop — this bundles:
 #   - Frontend (React app)
 #   - Backend (Go API)
-#   - Juju + Terraform + LXD
+#   - Juju + LXD
 workshop launch
 ```
 
@@ -72,17 +72,15 @@ http://localhost:<port>
 ## Step 4: Take the course
 
 1. **Read lecture notes** — navigate modules in the sidebar
-2. **Take quizzes** — answer questions, get instant feedback
+2. **Take quizzes** — answer questions, get instant scoring and feedback
 3. **Do labs** — open a lab, then:
-   - Read the instructions (shown in the browser)
-   - Edit `.tf` files in the **Monaco editor** (left pane)
-   - Run commands in the **terminal** (bottom pane) — `terraform init`, `terraform apply`, etc.
-   - Click **Check** to auto-grade your work
-   - See your progress update on the dashboard
+   - Read the instructions & hints in the lab guide panel
+   - Execute commands in the in-browser terminal
+   - Click **Check** on tasks to verify completion
+   - See your progress update on the sidebar and module dashboard
 
-**You never need to leave the browser.** The terminal, editor, and file tree
-are all in-browser. (Power users can also use `workshop shell` or VS Code connect
-if they prefer.)
+**You never need to leave the browser.** The terminal and task verification
+are all integrated in-browser.
 
 ## Troubleshooting
 
@@ -106,16 +104,4 @@ The in-browser terminal connects via WebSocket to the backend. Ensure:
 - The backend service is running inside the Workshop
 - No firewall is blocking localhost ports
 - Try refreshing the page
-
-### `terraform init` fails to download provider
-
-The Juju provider is downloaded from the Terraform Registry. If you're offline,
-you may need to pre-cache it. The Workshop SDK should handle this, but if not:
-```bash
-terraform providers lock
-```
-
-### Resetting a lab
-
-Click **Reset** in the lab UI, or run `./setup.sh` in the terminal to restore
 starter files.

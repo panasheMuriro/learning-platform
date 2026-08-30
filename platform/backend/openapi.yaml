@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
-  title: Juju + Terraform Course API
+  title: Juju Hands-On Course API
   version: 0.1.0
   description: |
-    Local backend API for the Juju + Terraform hands-on course.
+    Local backend API for the Juju Hands-On Course.
     No auth — everything runs locally in the Workshop container.
-    Base URL: http://localhost:8080/api
+    Base URL: http://localhost:9090/api
 
 paths:
   /outline:
